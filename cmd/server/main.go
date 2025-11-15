@@ -62,10 +62,10 @@ func main() {
 	// Subscription routes
 	api.HandleFunc("/subscriptions", subHandler.Create).Methods("POST")
 	api.HandleFunc("/subscriptions", subHandler.GetAll).Methods("GET")
+	api.HandleFunc("/subscriptions/stats", subHandler.GetStats).Methods("GET")
 	api.HandleFunc("/subscriptions/{id}", subHandler.GetByID).Methods("GET")
 	api.HandleFunc("/subscriptions/{id}", subHandler.Update).Methods("PUT")
 	api.HandleFunc("/subscriptions/{id}", subHandler.Delete).Methods("DELETE")
-	api.HandleFunc("/subscriptions/stats", subHandler.GetStats).Methods("GET")
 
 	// Telegram routes
 	api.HandleFunc("/telegram/settings", telegramHandler.GetSettings).Methods("GET")
