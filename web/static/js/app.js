@@ -88,6 +88,8 @@ async function handleLogin(e) {
     const email = document.getElementById('login-email').value;
     const password = document.getElementById('login-password').value;
 
+    console.log('Attempting login with email:', email);
+
     try {
         const response = await fetch(`${API_URL}/auth/login`, {
             method: 'POST',
@@ -95,18 +97,24 @@ async function handleLogin(e) {
             body: JSON.stringify({ email, password })
         });
 
+        console.log('Response status:', response.status);
+
         const data = await response.json();
+        console.log('Response data:', data);
 
         if (data.success) {
+            console.log('Login successful, saving token...');
             localStorage.setItem('token', data.data.token);
             currentUser = data.data.user;
+            console.log('Loading app...');
             loadApp();
         } else {
+            console.error('Login failed:', data.error);
             alert(data.error || 'Ошибка входа');
         }
     } catch (error) {
         console.error('Login error:', error);
-        alert('Ошибка подключения к серверу');
+        alert('Ошибка подключения к серверу: ' + error.message);
     }
 }
 
@@ -148,9 +156,18 @@ function handleLogout() {
 
 // App loading
 async function loadApp() {
-    showScreen('app-screen');
-    await loadStats();
-    await loadSubscriptions();
+    console.log('loadApp() called');
+    try {
+        console.log('Switching to app-screen...');
+        showScreen('app-screen');
+        console.log('Loading stats...');
+        await loadStats();
+        console.log('Loading subscriptions...');
+        await loadSubscriptions();
+        console.log('App loaded successfully!');
+    } catch (error) {
+        console.error('Error loading app:', error);
+    }
 }
 
 async function loadStats() {
