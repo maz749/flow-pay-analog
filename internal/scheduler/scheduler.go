@@ -63,6 +63,8 @@ func (s *Scheduler) checkNotifications() {
 		return
 	}
 
+	log.Printf("Found %d upcoming subscriptions", len(subscriptions))
+
 	for _, sub := range subscriptions {
 		// Get notifications for this subscription
 		notifications, err := s.notifRepo.GetBySubscription(sub.ID)
@@ -77,9 +79,13 @@ func (s *Scheduler) checkNotifications() {
 			continue
 		}
 
-		// Calculate days until billing
+		// Calculate days until billing (compare dates only, not time)
 		now := time.Now()
-		daysUntil := int(sub.NextBillingDate.Sub(now).Hours() / 24)
+		today := time.Date(now.Year(), now.Month(), now.Day(), 0, 0, 0, 0, now.Location())
+		billingDate := time.Date(sub.NextBillingDate.Year(), sub.NextBillingDate.Month(), sub.NextBillingDate.Day(), 0, 0, 0, 0, sub.NextBillingDate.Location())
+		daysUntil := int(billingDate.Sub(today).Hours() / 24)
+
+		log.Printf("Subscription '%s' (ID %d): %d days until billing (%s)", sub.Name, sub.ID, daysUntil, sub.NextBillingDate.Format("2006-01-02"))
 
 		// Check each notification setting
 		for _, notif := range notifications {
@@ -89,6 +95,7 @@ func (s *Scheduler) checkNotifications() {
 
 			// Check if we should send notification
 			if daysUntil == notif.NotifyDaysBefore {
+				log.Printf("Match found! Subscription '%s' needs notification (%d days before)", sub.Name, notif.NotifyDaysBefore)
 				// Check if we already sent this notification today
 				history, _ := s.notifRepo.GetHistory(sub.UserID, 100)
 				alreadySent := false
