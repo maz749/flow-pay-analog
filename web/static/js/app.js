@@ -15,50 +15,66 @@ let upcomingPaymentsChart = null;
 
 // Subscription Templates Database
 const subscriptionTemplates = [
-    // Streaming
-    { name: 'Netflix', logo: '🎬', category: 'streaming', price: 649, currency: 'RUB', period: 'monthly', popular: true },
-    { name: 'Spotify', logo: '🎵', category: 'music', price: 169, currency: 'RUB', period: 'monthly', popular: true },
-    { name: 'YouTube Premium', logo: '📺', category: 'streaming', price: 399, currency: 'RUB', period: 'monthly', popular: true },
-    { name: 'Kinopoisk', logo: '🎥', category: 'streaming', price: 399, currency: 'RUB', period: 'monthly', popular: true },
+    // Streaming (10 сервисов)
     { name: 'Apple Music', logo: '🎼', category: 'music', price: 169, currency: 'RUB', period: 'monthly', popular: true },
-    { name: 'Okko', logo: '📹', category: 'streaming', price: 599, currency: 'RUB', period: 'monthly', popular: false },
-    { name: 'ivi', logo: '🎞️', category: 'streaming', price: 399, currency: 'RUB', period: 'monthly', popular: false },
-    { name: 'START', logo: '▶️', category: 'streaming', price: 349, currency: 'RUB', period: 'monthly', popular: false },
-
-    // Software
     { name: 'ChatGPT Plus', logo: '🤖', category: 'software', price: 20, currency: 'USD', period: 'monthly', popular: true },
     { name: 'GitHub Copilot', logo: '💻', category: 'software', price: 10, currency: 'USD', period: 'monthly', popular: true },
-    { name: 'Adobe Creative Cloud', logo: '🎨', category: 'software', price: 54.99, currency: 'USD', period: 'monthly', popular: false },
-    { name: 'Microsoft 365', logo: '📊', category: 'software', price: 7, currency: 'USD', period: 'monthly', popular: false },
-    { name: 'Notion', logo: '📝', category: 'software', price: 8, currency: 'USD', period: 'monthly', popular: false },
-    { name: 'Figma', logo: '🎯', category: 'software', price: 12, currency: 'USD', period: 'monthly', popular: false },
-    { name: 'Canva Pro', logo: '🖼️', category: 'software', price: 12.99, currency: 'USD', period: 'monthly', popular: false },
-
-    // Cloud Storage
+    { name: 'Kinopoisk', logo: '🎥', category: 'streaming', price: 399, currency: 'RUB', period: 'monthly', popular: true },
+    { name: 'Netflix', logo: '🎬', category: 'streaming', price: 649, currency: 'RUB', period: 'monthly', popular: true },
+    { name: 'Spotify', logo: '🎵', category: 'music', price: 169, currency: 'RUB', period: 'monthly', popular: true },
     { name: 'Yandex 360', logo: '☁️', category: 'cloud', price: 199, currency: 'RUB', period: 'monthly', popular: true },
-    { name: 'Google One', logo: '💾', category: 'cloud', price: 139, currency: 'RUB', period: 'monthly', popular: false },
-    { name: 'Dropbox', logo: '📦', category: 'cloud', price: 9.99, currency: 'USD', period: 'monthly', popular: false },
-    { name: 'iCloud+', logo: '☁️', category: 'cloud', price: 149, currency: 'RUB', period: 'monthly', popular: false },
+    { name: 'YouTube Premium', logo: '📺', category: 'streaming', price: 399, currency: 'RUB', period: 'monthly', popular: true },
 
-    // Gaming
-    { name: 'PlayStation Plus', logo: '🎮', category: 'gaming', price: 599, currency: 'RUB', period: 'monthly', popular: false },
-    { name: 'Xbox Game Pass', logo: '🎯', category: 'gaming', price: 499, currency: 'RUB', period: 'monthly', popular: false },
-    { name: 'Nintendo Switch Online', logo: '🕹️', category: 'gaming', price: 299, currency: 'RUB', period: 'monthly', popular: false },
-
-    // Education
-    { name: 'Coursera Plus', logo: '🎓', category: 'education', price: 59, currency: 'USD', period: 'monthly', popular: false },
-    { name: 'Skillbox', logo: '📚', category: 'education', price: 3990, currency: 'RUB', period: 'monthly', popular: false },
-    { name: 'Duolingo Plus', logo: '🦉', category: 'education', price: 6.99, currency: 'USD', period: 'monthly', popular: false },
-
-    // CRM
-    { name: 'Bitrix24', logo: '📞', category: 'crm', price: 1990, currency: 'RUB', period: 'monthly', popular: false },
+    // Остальные сервисы (42 сервиса)
+    { name: 'Adobe Creative Cloud', logo: '🎨', category: 'software', price: 54.99, currency: 'USD', period: 'monthly', popular: false },
+    { name: 'Amazon Prime', logo: '📦', category: 'marketplace', price: 14.99, currency: 'USD', period: 'monthly', popular: false },
     { name: 'amoCRM', logo: '📈', category: 'crm', price: 499, currency: 'RUB', period: 'monthly', popular: false },
-    { name: 'Salesforce', logo: '☁️', category: 'crm', price: 25, currency: 'USD', period: 'monthly', popular: false },
-
-    // Marketplaces
+    { name: 'Asana', logo: '✅', category: 'software', price: 10.99, currency: 'USD', period: 'monthly', popular: false },
+    { name: 'Bitrix24', logo: '📞', category: 'crm', price: 1990, currency: 'RUB', period: 'monthly', popular: false },
+    { name: 'Canva Pro', logo: '🖼️', category: 'software', price: 12.99, currency: 'USD', period: 'monthly', popular: false },
+    { name: 'Coursera Plus', logo: '🎓', category: 'education', price: 59, currency: 'USD', period: 'monthly', popular: false },
+    { name: 'Deezer', logo: '🎶', category: 'music', price: 169, currency: 'RUB', period: 'monthly', popular: false },
+    { name: 'Discord Nitro', logo: '💬', category: 'gaming', price: 9.99, currency: 'USD', period: 'monthly', popular: false },
+    { name: 'Dropbox', logo: '📦', category: 'cloud', price: 9.99, currency: 'USD', period: 'monthly', popular: false },
+    { name: 'Duolingo Plus', logo: '🦉', category: 'education', price: 6.99, currency: 'USD', period: 'monthly', popular: false },
+    { name: 'Evernote', logo: '📓', category: 'software', price: 7.99, currency: 'USD', period: 'monthly', popular: false },
+    { name: 'Figma', logo: '🎯', category: 'software', price: 12, currency: 'USD', period: 'monthly', popular: false },
+    { name: 'GeForce NOW', logo: '🎮', category: 'gaming', price: 999, currency: 'RUB', period: 'monthly', popular: false },
+    { name: 'Google One', logo: '💾', category: 'cloud', price: 139, currency: 'RUB', period: 'monthly', popular: false },
+    { name: 'Grammarly', logo: '✍️', category: 'software', price: 12, currency: 'USD', period: 'monthly', popular: false },
+    { name: 'HBO Max', logo: '🎭', category: 'streaming', price: 9.99, currency: 'USD', period: 'monthly', popular: false },
+    { name: 'Headspace', logo: '🧘', category: 'education', price: 12.99, currency: 'USD', period: 'monthly', popular: false },
+    { name: 'HubSpot', logo: '🚀', category: 'crm', price: 50, currency: 'USD', period: 'monthly', popular: false },
+    { name: 'iCloud+', logo: '☁️', category: 'cloud', price: 149, currency: 'RUB', period: 'monthly', popular: false },
+    { name: 'ivi', logo: '🎞️', category: 'streaming', price: 399, currency: 'RUB', period: 'monthly', popular: false },
+    { name: 'LinkedIn Premium', logo: '💼', category: 'software', price: 29.99, currency: 'USD', period: 'monthly', popular: false },
+    { name: 'Мегафон ТВ', logo: '📱', category: 'streaming', price: 299, currency: 'RUB', period: 'monthly', popular: false },
+    { name: 'Microsoft 365', logo: '📊', category: 'software', price: 7, currency: 'USD', period: 'monthly', popular: false },
+    { name: 'МТС Premium', logo: '📡', category: 'streaming', price: 399, currency: 'RUB', period: 'monthly', popular: false },
+    { name: 'Netflix Basic', logo: '🎬', category: 'streaming', price: 449, currency: 'RUB', period: 'monthly', popular: false },
+    { name: 'Nintendo Switch Online', logo: '🕹️', category: 'gaming', price: 299, currency: 'RUB', period: 'monthly', popular: false },
+    { name: 'Notion', logo: '📝', category: 'software', price: 8, currency: 'USD', period: 'monthly', popular: false },
+    { name: 'Okko', logo: '📹', category: 'streaming', price: 599, currency: 'RUB', period: 'monthly', popular: false },
     { name: 'Ozon Premium', logo: '🛒', category: 'marketplace', price: 199, currency: 'RUB', period: 'monthly', popular: false },
+    { name: 'PlayStation Plus', logo: '🎮', category: 'gaming', price: 599, currency: 'RUB', period: 'monthly', popular: false },
+    { name: 'Salesforce', logo: '🌐', category: 'crm', price: 25, currency: 'USD', period: 'monthly', popular: false },
+    { name: 'Setka', logo: '📰', category: 'software', price: 15, currency: 'USD', period: 'monthly', popular: false },
+    { name: 'Skillbox', logo: '📚', category: 'education', price: 3990, currency: 'RUB', period: 'monthly', popular: false },
+    { name: 'Slack', logo: '💬', category: 'software', price: 6.67, currency: 'USD', period: 'monthly', popular: false },
+    { name: 'START', logo: '▶️', category: 'streaming', price: 349, currency: 'RUB', period: 'monthly', popular: false },
+    { name: 'Telegram Premium', logo: '✈️', category: 'software', price: 599, currency: 'RUB', period: 'monthly', popular: false },
+    { name: 'Tidal', logo: '🎵', category: 'music', price: 9.99, currency: 'USD', period: 'monthly', popular: false },
+    { name: 'Tinkoff Банк Pro', logo: '💳', category: 'marketplace', price: 299, currency: 'RUB', period: 'monthly', popular: false },
+    { name: 'Trello', logo: '📋', category: 'software', price: 5, currency: 'USD', period: 'monthly', popular: false },
+    { name: 'VK Музыка', logo: '🎧', category: 'music', price: 199, currency: 'RUB', period: 'monthly', popular: false },
     { name: 'Wildberries Premium', logo: '🛍️', category: 'marketplace', price: 199, currency: 'RUB', period: 'monthly', popular: false },
-    { name: 'Yandex Plus', logo: '🟡', category: 'marketplace', price: 299, currency: 'RUB', period: 'monthly', popular: false }
+    { name: 'Xbox Game Pass', logo: '🎯', category: 'gaming', price: 499, currency: 'RUB', period: 'monthly', popular: false },
+    { name: 'Yandex Music', logo: '🎼', category: 'music', price: 199, currency: 'RUB', period: 'monthly', popular: false },
+    { name: 'Yandex Plus', logo: '🟡', category: 'marketplace', price: 299, currency: 'RUB', period: 'monthly', popular: false },
+    { name: 'Zoom Pro', logo: '🎥', category: 'software', price: 14.99, currency: 'USD', period: 'monthly', popular: false },
+    { name: 'Альфа-Банк Premium', logo: '🏦', category: 'marketplace', price: 199, currency: 'RUB', period: 'monthly', popular: false },
+    { name: 'Литрес Библиотека', logo: '📚', category: 'education', price: 399, currency: 'RUB', period: 'monthly', popular: false },
+    { name: 'Ростелеком Ключ', logo: '🔑', category: 'streaming', price: 249, currency: 'RUB', period: 'monthly', popular: false }
 ];
 
 // Init
@@ -403,6 +419,9 @@ function openSubscriptionModal(subscription = null) {
 
     form.reset();
 
+    // Clear readonly/disabled state from previous selections
+    clearFieldRestrictions();
+
     if (subscription) {
         // Editing existing subscription - show only manual mode
         title.textContent = 'Редактировать подписку';
@@ -465,13 +484,20 @@ function openSubscriptionModal(subscription = null) {
 async function handleSaveSubscription(e) {
     e.preventDefault();
 
+    // Temporarily enable category field to get its value (disabled fields don't submit)
+    const categoryField = document.getElementById('sub-category');
+    const wasDisabled = categoryField.disabled;
+    if (wasDisabled) {
+        categoryField.disabled = false;
+    }
+
     const name = document.getElementById('sub-name').value;
     const amount = parseFloat(document.getElementById('sub-amount').value);
     const currency = document.getElementById('sub-currency').value;
     const description = document.getElementById('sub-description').value || null;
     const billing_period = document.getElementById('sub-period').value;
     const start_date = document.getElementById('sub-start-date').value;
-    const category = document.getElementById('sub-category').value || null;
+    const category = categoryField.value || null;
 
     const custom_period_days = billing_period === 'custom'
         ? parseInt(document.getElementById('sub-custom-days').value)
@@ -1005,6 +1031,22 @@ function getCurrencySymbol(currency) {
 // SUBSCRIPTION SELECTION FUNCTIONS
 // ============================================
 
+// Clear readonly/disabled restrictions from form fields
+function clearFieldRestrictions() {
+    const nameField = document.getElementById('sub-name');
+    const categoryField = document.getElementById('sub-category');
+
+    // Remove readonly and disabled attributes
+    nameField.removeAttribute('readonly');
+    categoryField.removeAttribute('disabled');
+
+    // Reset styles
+    nameField.style.backgroundColor = '';
+    nameField.style.cursor = '';
+    categoryField.style.backgroundColor = '';
+    categoryField.style.cursor = '';
+}
+
 // Handle mode switching (from list / manual)
 function handleModeSwitch(e) {
     const mode = e.target.dataset.mode;
@@ -1025,6 +1067,8 @@ function handleModeSwitch(e) {
         renderSubscriptionTemplates();
     } else {
         document.getElementById('manual-mode').classList.add('active');
+        // Allow editing when switching to manual mode
+        clearFieldRestrictions();
     }
 }
 
@@ -1120,11 +1164,23 @@ function handleSubscriptionSelect(e) {
 
 // Fill form with template data
 function fillFormWithTemplate(template) {
-    document.getElementById('sub-name').value = template.name;
+    const nameField = document.getElementById('sub-name');
+    const categoryField = document.getElementById('sub-category');
+
+    // Fill all fields
+    nameField.value = template.name;
     document.getElementById('sub-amount').value = template.price;
     document.getElementById('sub-currency').value = template.currency;
     document.getElementById('sub-period').value = template.period;
-    document.getElementById('sub-category').value = template.category;
+    categoryField.value = template.category;
+
+    // Make name and category readonly (can't be edited)
+    nameField.setAttribute('readonly', 'readonly');
+    categoryField.setAttribute('disabled', 'disabled');
+    nameField.style.backgroundColor = '#f5f5f5';
+    nameField.style.cursor = 'not-allowed';
+    categoryField.style.backgroundColor = '#f5f5f5';
+    categoryField.style.cursor = 'not-allowed';
 
     // Set start date to today
     const today = new Date().toISOString().split('T')[0];
