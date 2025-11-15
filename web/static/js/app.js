@@ -1145,7 +1145,10 @@ function renderAllSubscriptions(searchFilter = '') {
     container.innerHTML = templates.map(template => `
         <div class="subscription-list-item" data-subscription='${JSON.stringify(template)}'>
             <div class="subscription-list-logo">${template.logo}</div>
-            <div class="subscription-list-name">${template.name}</div>
+            <div class="subscription-list-info">
+                <div class="subscription-list-name">${template.name}</div>
+                <div class="subscription-list-price">от ${template.price} ${getCurrencySymbol(template.currency)}/мес</div>
+            </div>
         </div>
     `).join('');
 
