@@ -17,19 +17,28 @@ function initApp() {
     if (token) {
         loadApp();
     } else {
-        showScreen('auth-screen');
+        showScreen('landing-screen');
     }
 
     setupEventListeners();
 }
 
 function setupEventListeners() {
-    // Auth tabs
-    document.querySelectorAll('.tab-btn').forEach(btn => {
-        btn.addEventListener('click', (e) => {
-            const tab = e.target.dataset.tab;
-            switchTab(tab);
-        });
+    // Landing page buttons
+    document.getElementById('landing-login-btn')?.addEventListener('click', openLoginModal);
+    document.getElementById('landing-register-btn')?.addEventListener('click', openRegisterModal);
+
+    // Modal switchers
+    document.getElementById('switch-to-register')?.addEventListener('click', (e) => {
+        e.preventDefault();
+        closeModal('login-modal');
+        openRegisterModal();
+    });
+
+    document.getElementById('switch-to-login')?.addEventListener('click', (e) => {
+        e.preventDefault();
+        closeModal('register-modal');
+        openLoginModal();
     });
 
     // Auth forms
@@ -68,17 +77,27 @@ function setupEventListeners() {
     });
 }
 
-function switchTab(tab) {
-    document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-    document.querySelectorAll('.auth-form').forEach(form => form.classList.remove('active'));
-
-    document.querySelector(`[data-tab="${tab}"]`).classList.add('active');
-    document.getElementById(`${tab}-form`).classList.add('active');
-}
-
 function showScreen(screenId) {
     document.querySelectorAll('.screen').forEach(screen => screen.classList.remove('active'));
     document.getElementById(screenId).classList.add('active');
+}
+
+function openModal(modalId) {
+    document.getElementById(modalId).classList.add('active');
+}
+
+function closeModal(modalId) {
+    document.getElementById(modalId).classList.remove('active');
+}
+
+function openLoginModal() {
+    openModal('login-modal');
+    document.getElementById('login-form').reset();
+}
+
+function openRegisterModal() {
+    openModal('register-modal');
+    document.getElementById('register-form').reset();
 }
 
 // Auth handlers
@@ -106,6 +125,7 @@ async function handleLogin(e) {
             console.log('Login successful, saving token...');
             localStorage.setItem('token', data.data.token);
             currentUser = data.data.user;
+            closeModal('login-modal');
             console.log('Loading app...');
             loadApp();
         } else {
@@ -137,6 +157,7 @@ async function handleRegister(e) {
         if (data.success) {
             localStorage.setItem('token', data.data.token);
             currentUser = data.data.user;
+            closeModal('register-modal');
             loadApp();
         } else {
             alert(data.error || 'Ошибка регистрации');
@@ -151,7 +172,7 @@ function handleLogout() {
     localStorage.removeItem('token');
     currentUser = null;
     subscriptions = [];
-    showScreen('auth-screen');
+    showScreen('landing-screen');
 }
 
 // App loading
@@ -160,6 +181,12 @@ async function loadApp() {
     try {
         console.log('Switching to app-screen...');
         showScreen('app-screen');
+
+        // Show user name
+        if (currentUser) {
+            document.getElementById('user-name').textContent = currentUser.username;
+        }
+
         console.log('Loading stats...');
         await loadStats();
         console.log('Loading subscriptions...');
@@ -378,8 +405,10 @@ async function handleSaveSubscription(e) {
 
         if (response.success) {
             document.getElementById('subscription-modal').classList.remove('active');
+            // ВАЖНО: Обновляем и статистику и подписки
             await loadStats();
             await loadSubscriptions();
+            alert('Подписка успешно сохранена!');
         } else {
             alert(response.error || 'Ошибка сохранения');
         }
@@ -403,8 +432,10 @@ async function deleteSubscription(id) {
         const response = await apiRequest(`/subscriptions/${id}`, 'DELETE');
 
         if (response.success) {
+            // ВАЖНО: Обновляем и статистику и подписки
             await loadStats();
             await loadSubscriptions();
+            alert('Подписка удалена');
         } else {
             alert(response.error || 'Ошибка удаления');
         }

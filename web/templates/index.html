@@ -7,49 +7,89 @@
     <link rel="stylesheet" href="/static/css/style.css">
 </head>
 <body>
-    <!-- Auth screens -->
-    <div id="auth-screen" class="screen active">
-        <div class="auth-container">
-            <div class="auth-header">
-                <h1>💳 FlowPay</h1>
-                <p>Управляйте своими подписками легко</p>
+    <!-- Landing Screen -->
+    <div id="landing-screen" class="screen active">
+        <!-- Landing Header -->
+        <header class="landing-header">
+            <div class="container">
+                <div class="header-content">
+                    <h1 class="logo">💳 FlowPay</h1>
+                    <div class="header-actions">
+                        <button id="landing-login-btn" class="btn btn-secondary">Вход</button>
+                        <button id="landing-register-btn" class="btn btn-primary">Регистрация</button>
+                    </div>
+                </div>
             </div>
+        </header>
 
-            <div class="auth-tabs">
-                <button class="tab-btn active" data-tab="login">Вход</button>
-                <button class="tab-btn" data-tab="register">Регистрация</button>
+        <!-- Hero Section -->
+        <section class="hero-section">
+            <div class="container">
+                <div class="hero-content">
+                    <h1 class="hero-title">Контролируйте свои подписки</h1>
+                    <p class="hero-subtitle">Управляйте всеми подписками в одном месте. Получайте напоминания о предстоящих платежах и контролируйте расходы.</p>
+                    <div class="hero-buttons">
+                        <button class="btn btn-primary btn-large" onclick="document.getElementById('landing-register-btn').click()">Начать бесплатно</button>
+                        <button class="btn btn-secondary btn-large" onclick="document.getElementById('landing-login-btn').click()">Уже есть аккаунт?</button>
+                    </div>
+                </div>
             </div>
+        </section>
 
-            <!-- Login Form -->
-            <form id="login-form" class="auth-form active">
-                <div class="form-group">
-                    <label for="login-email">Email</label>
-                    <input type="email" id="login-email" required>
+        <!-- Features Section -->
+        <section class="features-section">
+            <div class="container">
+                <h2 class="section-title">Возможности FlowPay</h2>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">📊</div>
+                        <h3>Управление подписками</h3>
+                        <p>Добавляйте все свои подписки и отслеживайте даты списания в одном месте</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">💰</div>
+                        <h3>Контроль расходов</h3>
+                        <p>Смотрите статистику месячных и годовых трат на подписки</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">⏰</div>
+                        <h3>Напоминания</h3>
+                        <p>Настройте уведомления за 1, 3, 7 или 14 дней до списания</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">📱</div>
+                        <h3>Telegram уведомления</h3>
+                        <p>Получайте напоминания прямо в Telegram</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🎨</div>
+                        <h3>Категории</h3>
+                        <p>Организуйте подписки по категориям: музыка, стриминг, софт и другие</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">📅</div>
+                        <h3>Разные периоды</h3>
+                        <p>Поддержка месячных, годовых, недельных и кастомных периодов оплаты</p>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label for="login-password">Пароль</label>
-                    <input type="password" id="login-password" required>
-                </div>
-                <button type="submit" class="btn btn-primary">Войти</button>
-            </form>
+            </div>
+        </section>
 
-            <!-- Register Form -->
-            <form id="register-form" class="auth-form">
-                <div class="form-group">
-                    <label for="register-username">Имя</label>
-                    <input type="text" id="register-username" required>
-                </div>
-                <div class="form-group">
-                    <label for="register-email">Email</label>
-                    <input type="email" id="register-email" required>
-                </div>
-                <div class="form-group">
-                    <label for="register-password">Пароль</label>
-                    <input type="password" id="register-password" required minlength="6">
-                </div>
-                <button type="submit" class="btn btn-primary">Зарегистрироваться</button>
-            </form>
-        </div>
+        <!-- CTA Section -->
+        <section class="cta-section">
+            <div class="container">
+                <h2>Начните управлять подписками прямо сейчас</h2>
+                <p>Бесплатно и без ограничений</p>
+                <button class="btn btn-primary btn-large" onclick="document.getElementById('landing-register-btn').click()">Создать аккаунт</button>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="landing-footer">
+            <div class="container">
+                <p>FlowPay © 2024 - Управление подписками</p>
+            </div>
+        </footer>
     </div>
 
     <!-- Main app -->
@@ -60,8 +100,9 @@
                 <div class="header-content">
                     <h1>💳 FlowPay</h1>
                     <div class="header-actions">
-                        <button id="settings-btn" class="btn btn-icon">⚙️</button>
-                        <button id="logout-btn" class="btn btn-icon">🚪</button>
+                        <span id="user-name" class="user-name"></span>
+                        <button id="settings-btn" class="btn btn-icon" title="Настройки">⚙️</button>
+                        <button id="logout-btn" class="btn btn-icon" title="Выход">🚪</button>
                     </div>
                 </div>
             </div>
@@ -125,6 +166,58 @@
         </section>
     </div>
 
+    <!-- Login Modal -->
+    <div id="login-modal" class="modal">
+        <div class="modal-content modal-auth">
+            <div class="modal-header">
+                <h2>Вход в FlowPay</h2>
+                <button class="modal-close">&times;</button>
+            </div>
+            <form id="login-form" class="auth-form">
+                <div class="form-group">
+                    <label for="login-email">Email</label>
+                    <input type="email" id="login-email" required placeholder="example@mail.com">
+                </div>
+                <div class="form-group">
+                    <label for="login-password">Пароль</label>
+                    <input type="password" id="login-password" required placeholder="Введите пароль">
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">Войти</button>
+                <p class="auth-switch">
+                    Нет аккаунта? <a href="#" id="switch-to-register">Зарегистрироваться</a>
+                </p>
+            </form>
+        </div>
+    </div>
+
+    <!-- Register Modal -->
+    <div id="register-modal" class="modal">
+        <div class="modal-content modal-auth">
+            <div class="modal-header">
+                <h2>Регистрация в FlowPay</h2>
+                <button class="modal-close">&times;</button>
+            </div>
+            <form id="register-form" class="auth-form">
+                <div class="form-group">
+                    <label for="register-username">Имя</label>
+                    <input type="text" id="register-username" required placeholder="Ваше имя">
+                </div>
+                <div class="form-group">
+                    <label for="register-email">Email</label>
+                    <input type="email" id="register-email" required placeholder="example@mail.com">
+                </div>
+                <div class="form-group">
+                    <label for="register-password">Пароль</label>
+                    <input type="password" id="register-password" required minlength="6" placeholder="Минимум 6 символов">
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">Зарегистрироваться</button>
+                <p class="auth-switch">
+                    Уже есть аккаунт? <a href="#" id="switch-to-login">Войти</a>
+                </p>
+            </form>
+        </div>
+    </div>
+
     <!-- Add/Edit Subscription Modal -->
     <div id="subscription-modal" class="modal">
         <div class="modal-content">
@@ -135,13 +228,13 @@
             <form id="subscription-form">
                 <div class="form-group">
                     <label for="sub-name">Название *</label>
-                    <input type="text" id="sub-name" required>
+                    <input type="text" id="sub-name" required placeholder="Netflix, Spotify, YouTube...">
                 </div>
 
                 <div class="form-row">
                     <div class="form-group">
                         <label for="sub-amount">Сумма *</label>
-                        <input type="number" id="sub-amount" step="0.01" required>
+                        <input type="number" id="sub-amount" step="0.01" required placeholder="999">
                     </div>
                     <div class="form-group">
                         <label for="sub-currency">Валюта</label>
@@ -155,7 +248,7 @@
 
                 <div class="form-group">
                     <label for="sub-description">Описание</label>
-                    <textarea id="sub-description" rows="2"></textarea>
+                    <textarea id="sub-description" rows="2" placeholder="Дополнительная информация (опционально)"></textarea>
                 </div>
 
                 <div class="form-row">
@@ -170,7 +263,7 @@
                     </div>
                     <div class="form-group" id="custom-days-group" style="display: none;">
                         <label for="sub-custom-days">Дней</label>
-                        <input type="number" id="sub-custom-days" min="1">
+                        <input type="number" id="sub-custom-days" min="1" placeholder="30">
                     </div>
                 </div>
 
@@ -232,7 +325,7 @@
                     Для получения уведомлений в Telegram:
                 </p>
                 <ol class="settings-steps">
-                    <li>Найдите бота <strong>@YourBotName</strong> в Telegram</li>
+                    <li>Найдите бота в Telegram (токен бота настраивается на сервере)</li>
                     <li>Отправьте команду <code>/start</code></li>
                     <li>Скопируйте ваш Chat ID</li>
                     <li>Введите его ниже и включите уведомления</li>
