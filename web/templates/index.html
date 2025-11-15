@@ -236,9 +236,26 @@
 
             <!-- From List Mode -->
             <div id="from-list-mode" class="selection-mode active">
-                <!-- Search -->
-                <div class="search-container">
-                    <input type="text" id="subscription-search" placeholder="🔍 Поиск подписки..." class="search-input">
+                <!-- Search and Filters -->
+                <div class="search-filter-container">
+                    <div class="search-container">
+                        <input type="text" id="subscription-search" placeholder="🔍 Поиск подписки..." class="search-input">
+                    </div>
+
+                    <div class="filter-container">
+                        <label class="filter-label">Категория:</label>
+                        <div class="filter-buttons">
+                            <button type="button" class="filter-btn active" data-category="all">Все</button>
+                            <button type="button" class="filter-btn" data-category="streaming">Стриминг</button>
+                            <button type="button" class="filter-btn" data-category="music">Музыка</button>
+                            <button type="button" class="filter-btn" data-category="software">Софт</button>
+                            <button type="button" class="filter-btn" data-category="cloud">Облако</button>
+                            <button type="button" class="filter-btn" data-category="gaming">Игры</button>
+                            <button type="button" class="filter-btn" data-category="education">Образование</button>
+                            <button type="button" class="filter-btn" data-category="crm">CRM</button>
+                            <button type="button" class="filter-btn" data-category="marketplace">Маркетплейсы</button>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Popular Subscriptions -->

@@ -6,6 +6,7 @@ let currentUser = null;
 let currentSubscription = null;
 let subscriptions = [];
 let selectedSubscriptionTemplate = null;
+let currentCategoryFilter = 'all';
 
 // Charts instances
 let monthlyExpensesChart = null;
@@ -138,6 +139,11 @@ function setupEventListeners() {
 
     // Search functionality
     document.getElementById('subscription-search')?.addEventListener('input', handleSubscriptionSearch);
+
+    // Category filter buttons
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.addEventListener('click', handleCategoryFilter);
+    });
 
     // Telegram settings form
     document.getElementById('telegram-settings-form').addEventListener('submit', handleSaveTelegramSettings);
@@ -1074,6 +1080,18 @@ function handleModeSwitch(e) {
 
 // Render subscription templates
 function renderSubscriptionTemplates() {
+    // Reset filter and search
+    currentCategoryFilter = 'all';
+    const searchInput = document.getElementById('subscription-search');
+    if (searchInput) searchInput.value = '';
+
+    // Reset filter buttons
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.classList.remove('active');
+    });
+    const allBtn = document.querySelector('.filter-btn[data-category="all"]');
+    if (allBtn) allBtn.classList.add('active');
+
     renderPopularSubscriptions();
     renderAllSubscriptions();
 }
@@ -1098,19 +1116,31 @@ function renderPopularSubscriptions() {
 }
 
 // Render all subscriptions list
-function renderAllSubscriptions(filter = '') {
+function renderAllSubscriptions(searchFilter = '') {
     const container = document.getElementById('all-subscriptions-list');
 
-    // Filter and sort alphabetically
+    // Filter by search text
     let templates = subscriptionTemplates;
-    if (filter) {
-        const lowerFilter = filter.toLowerCase();
+    if (searchFilter) {
+        const lowerFilter = searchFilter.toLowerCase();
         templates = templates.filter(t =>
             t.name.toLowerCase().includes(lowerFilter)
         );
     }
 
+    // Filter by category
+    if (currentCategoryFilter !== 'all') {
+        templates = templates.filter(t => t.category === currentCategoryFilter);
+    }
+
+    // Sort alphabetically
     templates = [...templates].sort((a, b) => a.name.localeCompare(b.name));
+
+    // Show message if no results
+    if (templates.length === 0) {
+        container.innerHTML = '<div style="text-align: center; padding: 40px; color: var(--text-secondary);">Подписки не найдены</div>';
+        return;
+    }
 
     container.innerHTML = templates.map(template => `
         <div class="subscription-list-item" data-subscription='${JSON.stringify(template)}'>
@@ -1129,6 +1159,24 @@ function renderAllSubscriptions(filter = '') {
 function handleSubscriptionSearch(e) {
     const query = e.target.value;
     renderAllSubscriptions(query);
+}
+
+// Handle category filter
+function handleCategoryFilter(e) {
+    const category = e.target.dataset.category;
+
+    // Update active state
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.classList.remove('active');
+    });
+    e.target.classList.add('active');
+
+    // Set current filter
+    currentCategoryFilter = category;
+
+    // Re-render with current search query
+    const searchQuery = document.getElementById('subscription-search')?.value || '';
+    renderAllSubscriptions(searchQuery);
 }
 
 // Handle subscription selection from template
