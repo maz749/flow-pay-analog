@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FlowPay - Управление подписками</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <!-- Auth screens -->
+    <div id="auth-screen" class="screen active">
+        <div class="auth-container">
+            <div class="auth-header">
+                <h1>💳 FlowPay</h1>
+                <p>Управляйте своими подписками легко</p>
+            </div>
+
+            <div class="auth-tabs">
+                <button class="tab-btn active" data-tab="login">Вход</button>
+                <button class="tab-btn" data-tab="register">Регистрация</button>
+            </div>
+
+            <!-- Login Form -->
+            <form id="login-form" class="auth-form active">
+                <div class="form-group">
+                    <label for="login-email">Email</label>
+                    <input type="email" id="login-email" required>
+                </div>
+                <div class="form-group">
+                    <label for="login-password">Пароль</label>
+                    <input type="password" id="login-password" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Войти</button>
+            </form>
+
+            <!-- Register Form -->
+            <form id="register-form" class="auth-form">
+                <div class="form-group">
+                    <label for="register-username">Имя</label>
+                    <input type="text" id="register-username" required>
+                </div>
+                <div class="form-group">
+                    <label for="register-email">Email</label>
+                    <input type="email" id="register-email" required>
+                </div>
+                <div class="form-group">
+                    <label for="register-password">Пароль</label>
+                    <input type="password" id="register-password" required minlength="6">
+                </div>
+                <button type="submit" class="btn btn-primary">Зарегистрироваться</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Main app -->
+    <div id="app-screen" class="screen">
+        <!-- Header -->
+        <header class="app-header">
+            <div class="container">
+                <div class="header-content">
+                    <h1>💳 FlowPay</h1>
+                    <div class="header-actions">
+                        <button id="settings-btn" class="btn btn-icon">⚙️</button>
+                        <button id="logout-btn" class="btn btn-icon">🚪</button>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Stats Dashboard -->
+        <section class="stats-section">
+            <div class="container">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">📊</div>
+                        <div class="stat-content">
+                            <div class="stat-label">Всего подписок</div>
+                            <div class="stat-value" id="total-subscriptions">0</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">💰</div>
+                        <div class="stat-content">
+                            <div class="stat-label">В месяц</div>
+                            <div class="stat-value" id="monthly-total">0 ₽</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">📅</div>
+                        <div class="stat-content">
+                            <div class="stat-label">В год</div>
+                            <div class="stat-value" id="yearly-total">0 ₽</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">⏰</div>
+                        <div class="stat-content">
+                            <div class="stat-label">Следующее списание</div>
+                            <div class="stat-value" id="next-payment">-</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Subscriptions List -->
+        <section class="subscriptions-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Мои подписки</h2>
+                    <button id="add-subscription-btn" class="btn btn-primary">+ Добавить</button>
+                </div>
+
+                <div id="subscriptions-list" class="subscriptions-list">
+                    <!-- Subscriptions will be loaded here -->
+                </div>
+
+                <div id="empty-state" class="empty-state">
+                    <div class="empty-icon">📭</div>
+                    <h3>Нет подписок</h3>
+                    <p>Добавьте свою первую подписку, чтобы начать отслеживание платежей</p>
+                    <button class="btn btn-primary" onclick="document.getElementById('add-subscription-btn').click()">Добавить подписку</button>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Add/Edit Subscription Modal -->
+    <div id="subscription-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modal-title">Добавить подписку</h2>
+                <button class="modal-close">&times;</button>
+            </div>
+            <form id="subscription-form">
+                <div class="form-group">
+                    <label for="sub-name">Название *</label>
+                    <input type="text" id="sub-name" required>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="sub-amount">Сумма *</label>
+                        <input type="number" id="sub-amount" step="0.01" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="sub-currency">Валюта</label>
+                        <select id="sub-currency">
+                            <option value="RUB">₽ RUB</option>
+                            <option value="USD">$ USD</option>
+                            <option value="EUR">€ EUR</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="sub-description">Описание</label>
+                    <textarea id="sub-description" rows="2"></textarea>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="sub-period">Период *</label>
+                        <select id="sub-period" required>
+                            <option value="monthly">Ежемесячно</option>
+                            <option value="yearly">Ежегодно</option>
+                            <option value="weekly">Еженедельно</option>
+                            <option value="custom">Другой период</option>
+                        </select>
+                    </div>
+                    <div class="form-group" id="custom-days-group" style="display: none;">
+                        <label for="sub-custom-days">Дней</label>
+                        <input type="number" id="sub-custom-days" min="1">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="sub-start-date">Дата начала *</label>
+                    <input type="date" id="sub-start-date" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="sub-category">Категория</label>
+                    <select id="sub-category">
+                        <option value="">Без категории</option>
+                        <option value="streaming">Стриминг</option>
+                        <option value="music">Музыка</option>
+                        <option value="software">Софт</option>
+                        <option value="gaming">Игры</option>
+                        <option value="education">Образование</option>
+                        <option value="cloud">Облако</option>
+                        <option value="other">Другое</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Напоминания (дней до списания)</label>
+                    <div class="notification-options">
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="notify" value="1"> 1 день
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="notify" value="3"> 3 дня
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="notify" value="7"> 7 дней
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="notify" value="14"> 14 дней
+                        </label>
+                    </div>
+                </div>
+
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-secondary modal-close">Отмена</button>
+                    <button type="submit" class="btn btn-primary">Сохранить</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Settings Modal -->
+    <div id="settings-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Настройки</h2>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="settings-content">
+                <h3>Telegram уведомления</h3>
+                <p class="settings-description">
+                    Для получения уведомлений в Telegram:
+                </p>
+                <ol class="settings-steps">
+                    <li>Найдите бота <strong>@YourBotName</strong> в Telegram</li>
+                    <li>Отправьте команду <code>/start</code></li>
+                    <li>Скопируйте ваш Chat ID</li>
+                    <li>Введите его ниже и включите уведомления</li>
+                </ol>
+
+                <form id="telegram-settings-form">
+                    <div class="form-group">
+                        <label for="telegram-chat-id">Chat ID</label>
+                        <input type="text" id="telegram-chat-id" placeholder="123456789">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="telegram-enabled">
+                            Включить Telegram уведомления
+                        </label>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Сохранить</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="/static/js/app.js"></script>
+</body>
+</html>

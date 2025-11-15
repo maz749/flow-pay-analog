@@ -1,0 +1,45 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: flowpay-postgres
+    environment:
+      POSTGRES_USER: flowpay
+      POSTGRES_PASSWORD: flowpay_password
+      POSTGRES_DB: flowpay_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./migrations/001_init_schema.sql:/docker-entrypoint-initdb.d/001_init_schema.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U flowpay"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  app:
+    build: .
+    container_name: flowpay-app
+    ports:
+      - "8080:8080"
+    environment:
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_USER: flowpay
+      DB_PASSWORD: flowpay_password
+      DB_NAME: flowpay_db
+      DB_SSLMODE: disable
+      SERVER_PORT: 8080
+      SERVER_HOST: 0.0.0.0
+      JWT_SECRET: ${JWT_SECRET:-change-this-secret-key-in-production}
+      TELEGRAM_BOT_TOKEN: ${TELEGRAM_BOT_TOKEN:-}
+      APP_ENV: ${APP_ENV:-production}
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
