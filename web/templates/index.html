@@ -222,95 +222,131 @@
 
     <!-- Add/Edit Subscription Modal -->
     <div id="subscription-modal" class="modal">
-        <div class="modal-content">
+        <div class="modal-content modal-large">
             <div class="modal-header">
                 <h2 id="modal-title">Добавить подписку</h2>
                 <button class="modal-close">&times;</button>
             </div>
-            <form id="subscription-form">
-                <div class="form-group">
-                    <label for="sub-name">Название *</label>
-                    <input type="text" id="sub-name" required placeholder="Netflix, Spotify, YouTube...">
+
+            <!-- Mode Selector -->
+            <div class="mode-selector" id="mode-selector">
+                <button type="button" class="mode-btn active" data-mode="list">Выбрать из списка</button>
+                <button type="button" class="mode-btn" data-mode="manual">Добавить вручную</button>
+            </div>
+
+            <!-- From List Mode -->
+            <div id="from-list-mode" class="selection-mode active">
+                <!-- Search -->
+                <div class="search-container">
+                    <input type="text" id="subscription-search" placeholder="🔍 Поиск подписки..." class="search-input">
                 </div>
 
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="sub-amount">Сумма *</label>
-                        <input type="number" id="sub-amount" step="0.01" required placeholder="999">
+                <!-- Popular Subscriptions -->
+                <div class="popular-section">
+                    <h3>Популярные подписки</h3>
+                    <div class="popular-grid" id="popular-subscriptions">
+                        <!-- Will be filled by JS -->
                     </div>
+                </div>
+
+                <!-- All Subscriptions -->
+                <div class="all-subscriptions-section">
+                    <h3>Все подписки</h3>
+                    <div class="subscriptions-grid" id="all-subscriptions-list">
+                        <!-- Will be filled by JS -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Manual Mode -->
+            <div id="manual-mode" class="selection-mode">
+                <form id="subscription-form">
                     <div class="form-group">
-                        <label for="sub-currency">Валюта</label>
-                        <select id="sub-currency">
-                            <option value="RUB">₽ RUB</option>
-                            <option value="USD">$ USD</option>
-                            <option value="EUR">€ EUR</option>
+                        <label for="sub-name">Название *</label>
+                        <input type="text" id="sub-name" required placeholder="Netflix, Spotify, YouTube...">
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="sub-amount">Сумма *</label>
+                            <input type="number" id="sub-amount" step="0.01" required placeholder="999">
+                        </div>
+                        <div class="form-group">
+                            <label for="sub-currency">Валюта</label>
+                            <select id="sub-currency">
+                                <option value="RUB">₽ RUB</option>
+                                <option value="USD">$ USD</option>
+                                <option value="EUR">€ EUR</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="sub-description">Описание</label>
+                        <textarea id="sub-description" rows="2" placeholder="Дополнительная информация (опционально)"></textarea>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="sub-period">Период *</label>
+                            <select id="sub-period" required>
+                                <option value="monthly">Ежемесячно</option>
+                                <option value="yearly">Ежегодно</option>
+                                <option value="weekly">Еженедельно</option>
+                                <option value="custom">Другой период</option>
+                            </select>
+                        </div>
+                        <div class="form-group" id="custom-days-group" style="display: none;">
+                            <label for="sub-custom-days">Дней</label>
+                            <input type="number" id="sub-custom-days" min="1" placeholder="30">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="sub-start-date">Дата начала *</label>
+                        <input type="date" id="sub-start-date" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="sub-category">Категория</label>
+                        <select id="sub-category">
+                            <option value="">Без категории</option>
+                            <option value="streaming">Стриминг</option>
+                            <option value="music">Музыка</option>
+                            <option value="software">Софт</option>
+                            <option value="gaming">Игры</option>
+                            <option value="education">Образование</option>
+                            <option value="cloud">Облако</option>
+                            <option value="marketplace">Маркетплейсы</option>
+                            <option value="crm">CRM</option>
+                            <option value="other">Другое</option>
                         </select>
                     </div>
-                </div>
 
-                <div class="form-group">
-                    <label for="sub-description">Описание</label>
-                    <textarea id="sub-description" rows="2" placeholder="Дополнительная информация (опционально)"></textarea>
-                </div>
-
-                <div class="form-row">
                     <div class="form-group">
-                        <label for="sub-period">Период *</label>
-                        <select id="sub-period" required>
-                            <option value="monthly">Ежемесячно</option>
-                            <option value="yearly">Ежегодно</option>
-                            <option value="weekly">Еженедельно</option>
-                            <option value="custom">Другой период</option>
-                        </select>
+                        <label>Напоминания (дней до списания)</label>
+                        <div class="notification-options">
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="notify" value="1"> 1 день
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="notify" value="3"> 3 дня
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="notify" value="7"> 7 дней
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="notify" value="14"> 14 дней
+                            </label>
+                        </div>
                     </div>
-                    <div class="form-group" id="custom-days-group" style="display: none;">
-                        <label for="sub-custom-days">Дней</label>
-                        <input type="number" id="sub-custom-days" min="1" placeholder="30">
+
+                    <div class="modal-actions">
+                        <button type="button" class="btn btn-secondary modal-close">Отмена</button>
+                        <button type="submit" class="btn btn-primary">Сохранить</button>
                     </div>
-                </div>
-
-                <div class="form-group">
-                    <label for="sub-start-date">Дата начала *</label>
-                    <input type="date" id="sub-start-date" required>
-                </div>
-
-                <div class="form-group">
-                    <label for="sub-category">Категория</label>
-                    <select id="sub-category">
-                        <option value="">Без категории</option>
-                        <option value="streaming">Стриминг</option>
-                        <option value="music">Музыка</option>
-                        <option value="software">Софт</option>
-                        <option value="gaming">Игры</option>
-                        <option value="education">Образование</option>
-                        <option value="cloud">Облако</option>
-                        <option value="other">Другое</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label>Напоминания (дней до списания)</label>
-                    <div class="notification-options">
-                        <label class="checkbox-label">
-                            <input type="checkbox" name="notify" value="1"> 1 день
-                        </label>
-                        <label class="checkbox-label">
-                            <input type="checkbox" name="notify" value="3"> 3 дня
-                        </label>
-                        <label class="checkbox-label">
-                            <input type="checkbox" name="notify" value="7"> 7 дней
-                        </label>
-                        <label class="checkbox-label">
-                            <input type="checkbox" name="notify" value="14"> 14 дней
-                        </label>
-                    </div>
-                </div>
-
-                <div class="modal-actions">
-                    <button type="button" class="btn btn-secondary modal-close">Отмена</button>
-                    <button type="submit" class="btn btn-primary">Сохранить</button>
-                </div>
-            </form>
+                </form>
+            </div>
         </div>
     </div>
 

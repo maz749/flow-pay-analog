@@ -5,12 +5,61 @@ const API_URL = '/api';
 let currentUser = null;
 let currentSubscription = null;
 let subscriptions = [];
+let selectedSubscriptionTemplate = null;
 
 // Charts instances
 let monthlyExpensesChart = null;
 let categoryChart = null;
 let topSubscriptionsChart = null;
 let upcomingPaymentsChart = null;
+
+// Subscription Templates Database
+const subscriptionTemplates = [
+    // Streaming
+    { name: 'Netflix', logo: '🎬', category: 'streaming', price: 649, currency: 'RUB', period: 'monthly', popular: true },
+    { name: 'Spotify', logo: '🎵', category: 'music', price: 169, currency: 'RUB', period: 'monthly', popular: true },
+    { name: 'YouTube Premium', logo: '📺', category: 'streaming', price: 399, currency: 'RUB', period: 'monthly', popular: true },
+    { name: 'Kinopoisk', logo: '🎥', category: 'streaming', price: 399, currency: 'RUB', period: 'monthly', popular: true },
+    { name: 'Apple Music', logo: '🎼', category: 'music', price: 169, currency: 'RUB', period: 'monthly', popular: true },
+    { name: 'Okko', logo: '📹', category: 'streaming', price: 599, currency: 'RUB', period: 'monthly', popular: false },
+    { name: 'ivi', logo: '🎞️', category: 'streaming', price: 399, currency: 'RUB', period: 'monthly', popular: false },
+    { name: 'START', logo: '▶️', category: 'streaming', price: 349, currency: 'RUB', period: 'monthly', popular: false },
+
+    // Software
+    { name: 'ChatGPT Plus', logo: '🤖', category: 'software', price: 20, currency: 'USD', period: 'monthly', popular: true },
+    { name: 'GitHub Copilot', logo: '💻', category: 'software', price: 10, currency: 'USD', period: 'monthly', popular: true },
+    { name: 'Adobe Creative Cloud', logo: '🎨', category: 'software', price: 54.99, currency: 'USD', period: 'monthly', popular: false },
+    { name: 'Microsoft 365', logo: '📊', category: 'software', price: 7, currency: 'USD', period: 'monthly', popular: false },
+    { name: 'Notion', logo: '📝', category: 'software', price: 8, currency: 'USD', period: 'monthly', popular: false },
+    { name: 'Figma', logo: '🎯', category: 'software', price: 12, currency: 'USD', period: 'monthly', popular: false },
+    { name: 'Canva Pro', logo: '🖼️', category: 'software', price: 12.99, currency: 'USD', period: 'monthly', popular: false },
+
+    // Cloud Storage
+    { name: 'Yandex 360', logo: '☁️', category: 'cloud', price: 199, currency: 'RUB', period: 'monthly', popular: true },
+    { name: 'Google One', logo: '💾', category: 'cloud', price: 139, currency: 'RUB', period: 'monthly', popular: false },
+    { name: 'Dropbox', logo: '📦', category: 'cloud', price: 9.99, currency: 'USD', period: 'monthly', popular: false },
+    { name: 'iCloud+', logo: '☁️', category: 'cloud', price: 149, currency: 'RUB', period: 'monthly', popular: false },
+
+    // Gaming
+    { name: 'PlayStation Plus', logo: '🎮', category: 'gaming', price: 599, currency: 'RUB', period: 'monthly', popular: false },
+    { name: 'Xbox Game Pass', logo: '🎯', category: 'gaming', price: 499, currency: 'RUB', period: 'monthly', popular: false },
+    { name: 'Nintendo Switch Online', logo: '🕹️', category: 'gaming', price: 299, currency: 'RUB', period: 'monthly', popular: false },
+
+    // Education
+    { name: 'Coursera Plus', logo: '🎓', category: 'education', price: 59, currency: 'USD', period: 'monthly', popular: false },
+    { name: 'Skillbox', logo: '📚', category: 'education', price: 3990, currency: 'RUB', period: 'monthly', popular: false },
+    { name: 'Duolingo Plus', logo: '🦉', category: 'education', price: 6.99, currency: 'USD', period: 'monthly', popular: false },
+
+    // CRM
+    { name: 'Bitrix24', logo: '📞', category: 'crm', price: 1990, currency: 'RUB', period: 'monthly', popular: false },
+    { name: 'amoCRM', logo: '📈', category: 'crm', price: 499, currency: 'RUB', period: 'monthly', popular: false },
+    { name: 'Salesforce', logo: '☁️', category: 'crm', price: 25, currency: 'USD', period: 'monthly', popular: false },
+
+    // Marketplaces
+    { name: 'Ozon Premium', logo: '🛒', category: 'marketplace', price: 199, currency: 'RUB', period: 'monthly', popular: false },
+    { name: 'Wildberries Premium', logo: '🛍️', category: 'marketplace', price: 199, currency: 'RUB', period: 'monthly', popular: false },
+    { name: 'Yandex Plus', logo: '🟡', category: 'marketplace', price: 299, currency: 'RUB', period: 'monthly', popular: false }
+];
 
 // Init
 document.addEventListener('DOMContentLoaded', () => {
@@ -65,6 +114,14 @@ function setupEventListeners() {
         const customDaysGroup = document.getElementById('custom-days-group');
         customDaysGroup.style.display = e.target.value === 'custom' ? 'block' : 'none';
     });
+
+    // Subscription selection mode buttons
+    document.querySelectorAll('.mode-btn').forEach(btn => {
+        btn.addEventListener('click', handleModeSwitch);
+    });
+
+    // Search functionality
+    document.getElementById('subscription-search')?.addEventListener('input', handleSubscriptionSearch);
 
     // Telegram settings form
     document.getElementById('telegram-settings-form').addEventListener('submit', handleSaveTelegramSettings);
@@ -329,6 +386,8 @@ function getCategoryLabel(category) {
         gaming: 'Игры',
         education: 'Образование',
         cloud: 'Облако',
+        marketplace: 'Маркетплейсы',
+        crm: 'CRM',
         other: 'Другое'
     };
     return labels[category] || category;
@@ -340,11 +399,22 @@ function openSubscriptionModal(subscription = null) {
     const modal = document.getElementById('subscription-modal');
     const form = document.getElementById('subscription-form');
     const title = document.getElementById('modal-title');
+    const modeSelector = document.getElementById('mode-selector');
 
     form.reset();
 
     if (subscription) {
+        // Editing existing subscription - show only manual mode
         title.textContent = 'Редактировать подписку';
+        modeSelector.style.display = 'none';
+
+        // Show only manual mode
+        document.querySelectorAll('.selection-mode').forEach(section => {
+            section.classList.remove('active');
+        });
+        document.getElementById('manual-mode').classList.add('active');
+
+        // Fill form with existing data
         document.getElementById('sub-name').value = subscription.name;
         document.getElementById('sub-amount').value = subscription.amount;
         document.getElementById('sub-currency').value = subscription.currency;
@@ -366,7 +436,25 @@ function openSubscriptionModal(subscription = null) {
             });
         }
     } else {
+        // Adding new subscription - show mode selector and list
         title.textContent = 'Добавить подписку';
+        modeSelector.style.display = 'flex';
+
+        // Reset to "from list" mode
+        document.querySelectorAll('.mode-btn').forEach(btn => {
+            btn.classList.remove('active');
+        });
+        document.querySelector('.mode-btn[data-mode="list"]').classList.add('active');
+
+        document.querySelectorAll('.selection-mode').forEach(section => {
+            section.classList.remove('active');
+        });
+        document.getElementById('from-list-mode').classList.add('active');
+
+        // Render subscription templates
+        renderSubscriptionTemplates();
+
+        // Set default date
         const today = new Date().toISOString().split('T')[0];
         document.getElementById('sub-start-date').value = today;
     }
@@ -660,6 +748,8 @@ function createCategoryChart(subs) {
         'gaming': 'Игры',
         'education': 'Образование',
         'cloud': 'Облако',
+        'marketplace': 'Маркетплейсы',
+        'crm': 'CRM',
         'other': 'Другое'
     };
 
@@ -848,6 +938,8 @@ function fillStatsTable(subs) {
             'gaming': 'Игры',
             'education': 'Образование',
             'cloud': 'Облако',
+            'marketplace': 'Маркетплейсы',
+            'crm': 'CRM',
             'other': 'Другое'
         };
 
@@ -907,4 +999,134 @@ function getCurrencySymbol(currency) {
         'EUR': '€'
     };
     return symbols[currency] || currency;
+}
+
+// ============================================
+// SUBSCRIPTION SELECTION FUNCTIONS
+// ============================================
+
+// Handle mode switching (from list / manual)
+function handleModeSwitch(e) {
+    const mode = e.target.dataset.mode;
+
+    // Update mode buttons
+    document.querySelectorAll('.mode-btn').forEach(btn => {
+        btn.classList.remove('active');
+    });
+    e.target.classList.add('active');
+
+    // Update selection modes
+    document.querySelectorAll('.selection-mode').forEach(section => {
+        section.classList.remove('active');
+    });
+
+    if (mode === 'list') {
+        document.getElementById('from-list-mode').classList.add('active');
+        renderSubscriptionTemplates();
+    } else {
+        document.getElementById('manual-mode').classList.add('active');
+    }
+}
+
+// Render subscription templates
+function renderSubscriptionTemplates() {
+    renderPopularSubscriptions();
+    renderAllSubscriptions();
+}
+
+// Render popular subscriptions (8 items)
+function renderPopularSubscriptions() {
+    const container = document.getElementById('popular-subscriptions');
+    const popular = subscriptionTemplates.filter(t => t.popular).slice(0, 8);
+
+    container.innerHTML = popular.map(template => `
+        <div class="subscription-card-item" data-subscription='${JSON.stringify(template)}'>
+            <div class="subscription-logo">${template.logo}</div>
+            <div class="subscription-card-name">${template.name}</div>
+            <div class="subscription-card-price">от ${template.price} ${getCurrencySymbol(template.currency)}</div>
+        </div>
+    `).join('');
+
+    // Add click handlers
+    container.querySelectorAll('.subscription-card-item').forEach(card => {
+        card.addEventListener('click', handleSubscriptionSelect);
+    });
+}
+
+// Render all subscriptions list
+function renderAllSubscriptions(filter = '') {
+    const container = document.getElementById('all-subscriptions-list');
+
+    // Filter and sort alphabetically
+    let templates = subscriptionTemplates;
+    if (filter) {
+        const lowerFilter = filter.toLowerCase();
+        templates = templates.filter(t =>
+            t.name.toLowerCase().includes(lowerFilter)
+        );
+    }
+
+    templates = [...templates].sort((a, b) => a.name.localeCompare(b.name));
+
+    container.innerHTML = templates.map(template => `
+        <div class="subscription-list-item" data-subscription='${JSON.stringify(template)}'>
+            <div class="subscription-list-logo">${template.logo}</div>
+            <div class="subscription-list-name">${template.name}</div>
+        </div>
+    `).join('');
+
+    // Add click handlers
+    container.querySelectorAll('.subscription-list-item').forEach(item => {
+        item.addEventListener('click', handleSubscriptionSelect);
+    });
+}
+
+// Handle subscription search
+function handleSubscriptionSearch(e) {
+    const query = e.target.value;
+    renderAllSubscriptions(query);
+}
+
+// Handle subscription selection from template
+function handleSubscriptionSelect(e) {
+    const card = e.currentTarget;
+    const templateData = JSON.parse(card.dataset.subscription);
+
+    // Remove previous selection
+    document.querySelectorAll('.subscription-card-item, .subscription-list-item').forEach(item => {
+        item.classList.remove('selected');
+    });
+
+    // Mark as selected
+    card.classList.add('selected');
+
+    // Store selected template
+    selectedSubscriptionTemplate = templateData;
+
+    // Fill form and switch to manual mode
+    fillFormWithTemplate(templateData);
+
+    // Switch to manual mode
+    document.querySelectorAll('.mode-btn').forEach(btn => {
+        btn.classList.remove('active');
+    });
+    document.querySelector('.mode-btn[data-mode="manual"]').classList.add('active');
+
+    document.querySelectorAll('.selection-mode').forEach(section => {
+        section.classList.remove('active');
+    });
+    document.getElementById('manual-mode').classList.add('active');
+}
+
+// Fill form with template data
+function fillFormWithTemplate(template) {
+    document.getElementById('sub-name').value = template.name;
+    document.getElementById('sub-amount').value = template.price;
+    document.getElementById('sub-currency').value = template.currency;
+    document.getElementById('sub-period').value = template.period;
+    document.getElementById('sub-category').value = template.category;
+
+    // Set start date to today
+    const today = new Date().toISOString().split('T')[0];
+    document.getElementById('sub-start-date').value = today;
 }
