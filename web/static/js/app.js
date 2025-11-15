@@ -401,8 +401,14 @@ function renderSubscriptions() {
 
         return `
             <div class="subscription-card">
-                <div class="subscription-icon" style="${sub.color ? `background: ${sub.color}` : ''}">
-                    ${icon}
+                <div class="subscription-card-header">
+                    <div class="subscription-icon" style="${sub.color ? `background: ${sub.color}` : ''}">
+                        ${icon}
+                    </div>
+                    <div class="subscription-actions-top">
+                        <button class="btn btn-secondary btn-sm" onclick="editSubscription(${sub.id})">Изменить</button>
+                        <button class="btn btn-danger btn-sm" onclick="deleteSubscription(${sub.id})">Удалить</button>
+                    </div>
                 </div>
                 <div class="subscription-info">
                     <div class="subscription-name">
@@ -415,16 +421,12 @@ function renderSubscriptions() {
                         ${sub.description ? `<span>• ${sub.description}</span>` : ''}
                     </div>
                 </div>
-                <div>
+                <div class="subscription-footer">
                     <div class="subscription-amount">
                         ${sub.amount.toFixed(2)} ${currencySymbols[sub.currency] || sub.currency}
                     </div>
                     <div class="subscription-next-date">
                         Списание: ${dateStr} ${daysUntil >= 0 ? `(через ${daysUntil} дн.)` : '(просрочено)'}
-                    </div>
-                    <div class="subscription-actions" style="margin-top: 12px;">
-                        <button class="btn btn-secondary" onclick="editSubscription(${sub.id})">✏️</button>
-                        <button class="btn btn-danger" onclick="deleteSubscription(${sub.id})">🗑️</button>
                     </div>
                 </div>
             </div>
