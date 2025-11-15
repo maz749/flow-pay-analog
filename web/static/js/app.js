@@ -6,6 +6,12 @@ let currentUser = null;
 let currentSubscription = null;
 let subscriptions = [];
 
+// Charts instances
+let monthlyExpensesChart = null;
+let categoryChart = null;
+let topSubscriptionsChart = null;
+let upcomingPaymentsChart = null;
+
 // Init
 document.addEventListener('DOMContentLoaded', () => {
     initApp();
@@ -49,6 +55,9 @@ function setupEventListeners() {
     document.getElementById('logout-btn')?.addEventListener('click', handleLogout);
     document.getElementById('add-subscription-btn')?.addEventListener('click', () => openSubscriptionModal());
     document.getElementById('settings-btn')?.addEventListener('click', openSettingsModal);
+    document.getElementById('stats-page-btn')?.addEventListener('click', openStatsPage);
+    document.getElementById('back-to-app-btn')?.addEventListener('click', () => showScreen('app-screen'));
+    document.getElementById('logout-btn-stats')?.addEventListener('click', handleLogout);
 
     // Subscription form
     document.getElementById('subscription-form').addEventListener('submit', handleSaveSubscription);
@@ -512,4 +521,390 @@ async function apiRequest(endpoint, method = 'GET', body = null) {
     }
 
     return await response.json();
+}
+
+// ============================================
+// STATISTICS PAGE FUNCTIONS
+// ============================================
+
+async function openStatsPage() {
+    showScreen('stats-screen');
+    await loadStatsData();
+}
+
+async function loadStatsData() {
+    try {
+        // Load subscriptions
+        const response = await apiRequest('/subscriptions');
+
+        if (response.success) {
+            const subs = response.data;
+
+            // Load stats summary
+            const statsResponse = await apiRequest('/subscriptions/stats');
+            if (statsResponse.success) {
+                updateStatsSummary(statsResponse.data);
+            }
+
+            // Create charts
+            createMonthlyExpensesChart(subs);
+            createCategoryChart(subs);
+            createTopSubscriptionsChart(subs);
+            createUpcomingPaymentsChart(subs);
+
+            // Fill table
+            fillStatsTable(subs);
+        }
+    } catch (error) {
+        console.error('Failed to load stats data:', error);
+    }
+}
+
+function updateStatsSummary(stats) {
+    document.getElementById('stats-monthly-total').textContent = `${stats.total_monthly.toFixed(2)} ₽`;
+    document.getElementById('stats-yearly-total').textContent = `${stats.total_yearly.toFixed(2)} ₽`;
+    document.getElementById('stats-total-count').textContent = stats.total_subscriptions;
+}
+
+function createMonthlyExpensesChart(subs) {
+    const ctx = document.getElementById('monthlyExpensesChart');
+
+    // Destroy previous chart if exists
+    if (monthlyExpensesChart) {
+        monthlyExpensesChart.destroy();
+    }
+
+    // Calculate expenses for next 6 months
+    const months = [];
+    const expenses = [];
+    const today = new Date();
+
+    for (let i = 0; i < 6; i++) {
+        const month = new Date(today.getFullYear(), today.getMonth() + i, 1);
+        const monthName = month.toLocaleDateString('ru-RU', { month: 'short', year: 'numeric' });
+        months.push(monthName);
+
+        // Calculate expenses for this month
+        let monthExpense = 0;
+        subs.forEach(sub => {
+            const monthlyAmount = calculateMonthlyAmount(sub);
+            monthExpense += monthlyAmount;
+        });
+        expenses.push(monthExpense.toFixed(2));
+    }
+
+    monthlyExpensesChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: months,
+            datasets: [{
+                label: 'Расходы (₽)',
+                data: expenses,
+                borderColor: 'rgb(99, 102, 241)',
+                backgroundColor: 'rgba(99, 102, 241, 0.1)',
+                tension: 0.4,
+                fill: true
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    display: true,
+                    position: 'top'
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        callback: function(value) {
+                            return value + ' ₽';
+                        }
+                    }
+                }
+            }
+        }
+    });
+}
+
+function createCategoryChart(subs) {
+    const ctx = document.getElementById('categoryChart');
+
+    // Destroy previous chart if exists
+    if (categoryChart) {
+        categoryChart.destroy();
+    }
+
+    // Group by category
+    const categoryExpenses = {};
+    subs.forEach(sub => {
+        const category = sub.category || 'other';
+        const monthlyAmount = calculateMonthlyAmount(sub);
+
+        if (!categoryExpenses[category]) {
+            categoryExpenses[category] = 0;
+        }
+        categoryExpenses[category] += monthlyAmount;
+    });
+
+    const categories = Object.keys(categoryExpenses);
+    const amounts = Object.values(categoryExpenses);
+
+    // Category names in Russian
+    const categoryNames = {
+        'streaming': 'Стриминг',
+        'music': 'Музыка',
+        'software': 'Софт',
+        'gaming': 'Игры',
+        'education': 'Образование',
+        'cloud': 'Облако',
+        'other': 'Другое'
+    };
+
+    const colors = [
+        'rgb(239, 68, 68)',
+        'rgb(139, 92, 246)',
+        'rgb(59, 130, 246)',
+        'rgb(34, 197, 94)',
+        'rgb(245, 158, 11)',
+        'rgb(14, 165, 233)',
+        'rgb(107, 114, 128)'
+    ];
+
+    categoryChart = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            labels: categories.map(c => categoryNames[c] || c),
+            datasets: [{
+                data: amounts,
+                backgroundColor: colors.slice(0, categories.length),
+                borderWidth: 2,
+                borderColor: '#fff'
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'bottom'
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            return context.label + ': ' + context.parsed.toFixed(2) + ' ₽/мес';
+                        }
+                    }
+                }
+            }
+        }
+    });
+}
+
+function createTopSubscriptionsChart(subs) {
+    const ctx = document.getElementById('topSubscriptionsChart');
+
+    // Destroy previous chart if exists
+    if (topSubscriptionsChart) {
+        topSubscriptionsChart.destroy();
+    }
+
+    // Sort by monthly amount and take top 5
+    const sorted = [...subs].sort((a, b) => {
+        return calculateMonthlyAmount(b) - calculateMonthlyAmount(a);
+    }).slice(0, 5);
+
+    const names = sorted.map(s => s.name);
+    const amounts = sorted.map(s => calculateMonthlyAmount(s));
+
+    topSubscriptionsChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: names,
+            datasets: [{
+                label: 'Расходы в месяц (₽)',
+                data: amounts,
+                backgroundColor: 'rgba(139, 92, 246, 0.8)',
+                borderColor: 'rgb(139, 92, 246)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    display: false
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        callback: function(value) {
+                            return value + ' ₽';
+                        }
+                    }
+                }
+            }
+        }
+    });
+}
+
+function createUpcomingPaymentsChart(subs) {
+    const ctx = document.getElementById('upcomingPaymentsChart');
+
+    // Destroy previous chart if exists
+    if (upcomingPaymentsChart) {
+        upcomingPaymentsChart.destroy();
+    }
+
+    // Get upcoming payments for next 30 days
+    const today = new Date();
+    const next30Days = new Date(today.getTime() + 30 * 24 * 60 * 60 * 1000);
+
+    const upcomingPayments = [];
+    subs.forEach(sub => {
+        const nextDate = new Date(sub.next_billing_date);
+        if (nextDate >= today && nextDate <= next30Days) {
+            upcomingPayments.push({
+                name: sub.name,
+                date: nextDate,
+                amount: sub.amount
+            });
+        }
+    });
+
+    // Sort by date
+    upcomingPayments.sort((a, b) => a.date - b.date);
+
+    // Take first 10
+    const payments = upcomingPayments.slice(0, 10);
+    const labels = payments.map(p => {
+        return p.name + ' (' + p.date.toLocaleDateString('ru-RU', { day: 'numeric', month: 'short' }) + ')';
+    });
+    const amounts = payments.map(p => p.amount);
+
+    upcomingPaymentsChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Сумма платежа (₽)',
+                data: amounts,
+                backgroundColor: 'rgba(99, 102, 241, 0.8)',
+                borderColor: 'rgb(99, 102, 241)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            indexAxis: 'y',
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    display: false
+                }
+            },
+            scales: {
+                x: {
+                    beginAtZero: true,
+                    ticks: {
+                        callback: function(value) {
+                            return value + ' ₽';
+                        }
+                    }
+                }
+            }
+        }
+    });
+}
+
+function fillStatsTable(subs) {
+    const tbody = document.getElementById('stats-table-body');
+    tbody.innerHTML = '';
+
+    if (subs.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="7" style="text-align: center;">Нет подписок</td></tr>';
+        return;
+    }
+
+    // Sort by monthly amount descending
+    const sorted = [...subs].sort((a, b) => {
+        return calculateMonthlyAmount(b) - calculateMonthlyAmount(a);
+    });
+
+    sorted.forEach(sub => {
+        const monthlyAmount = calculateMonthlyAmount(sub);
+        const yearlyAmount = monthlyAmount * 12;
+
+        const category = sub.category || 'other';
+        const categoryNames = {
+            'streaming': 'Стриминг',
+            'music': 'Музыка',
+            'software': 'Софт',
+            'gaming': 'Игры',
+            'education': 'Образование',
+            'cloud': 'Облако',
+            'other': 'Другое'
+        };
+
+        const periodNames = {
+            'monthly': 'Ежемесячно',
+            'yearly': 'Ежегодно',
+            'weekly': 'Еженедельно',
+            'custom': 'Другой'
+        };
+
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td><strong>${sub.name}</strong></td>
+            <td><span class="category-badge category-${category}">${categoryNames[category]}</span></td>
+            <td>${sub.amount.toFixed(2)} ${getCurrencySymbol(sub.currency)}</td>
+            <td>${periodNames[sub.billing_period] || sub.billing_period}</td>
+            <td><strong>${monthlyAmount.toFixed(2)} ₽</strong></td>
+            <td>${yearlyAmount.toFixed(2)} ₽</td>
+            <td>${new Date(sub.next_billing_date).toLocaleDateString('ru-RU')}</td>
+        `;
+        tbody.appendChild(row);
+    });
+}
+
+function calculateMonthlyAmount(sub) {
+    let amount = sub.amount;
+
+    // Convert to RUB if needed (simplified - assume 1:1 for demo)
+    if (sub.currency !== 'RUB') {
+        // In real app, you'd use exchange rates
+        if (sub.currency === 'USD') amount *= 90;
+        if (sub.currency === 'EUR') amount *= 100;
+    }
+
+    // Convert to monthly
+    switch (sub.billing_period) {
+        case 'weekly':
+            return amount * 4.33; // Average weeks per month
+        case 'monthly':
+            return amount;
+        case 'yearly':
+            return amount / 12;
+        case 'custom':
+            if (sub.custom_period_days) {
+                return (amount / sub.custom_period_days) * 30;
+            }
+            return amount;
+        default:
+            return amount;
+    }
+}
+
+function getCurrencySymbol(currency) {
+    const symbols = {
+        'RUB': '₽',
+        'USD': '$',
+        'EUR': '€'
+    };
+    return symbols[currency] || currency;
 }

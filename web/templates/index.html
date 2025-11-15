@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FlowPay - Управление подписками</title>
     <link rel="stylesheet" href="/static/css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 </head>
 <body>
     <!-- Landing Screen -->
@@ -101,6 +102,7 @@
                     <h1>💳 FlowPay</h1>
                     <div class="header-actions">
                         <span id="user-name" class="user-name"></span>
+                        <button id="stats-page-btn" class="btn btn-secondary">📊 Статистика</button>
                         <button id="settings-btn" class="btn btn-icon" title="Настройки">⚙️</button>
                         <button id="logout-btn" class="btn btn-icon" title="Выход">🚪</button>
                     </div>
@@ -348,6 +350,109 @@
                 </form>
             </div>
         </div>
+    </div>
+
+    <!-- Statistics Page -->
+    <div id="stats-screen" class="screen">
+        <!-- Header -->
+        <header class="app-header">
+            <div class="container">
+                <div class="header-content">
+                    <h1>📊 Статистика подписок</h1>
+                    <div class="header-actions">
+                        <button id="back-to-app-btn" class="btn btn-secondary">← Назад</button>
+                        <button id="logout-btn-stats" class="btn btn-icon" title="Выход">🚪</button>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <section class="stats-page-section">
+            <div class="container">
+                <!-- Summary Cards -->
+                <div class="stats-summary">
+                    <div class="stat-card-large">
+                        <div class="stat-icon-large">💰</div>
+                        <div class="stat-content-large">
+                            <div class="stat-label-large">Общие расходы в месяц</div>
+                            <div class="stat-value-large" id="stats-monthly-total">0 ₽</div>
+                        </div>
+                    </div>
+                    <div class="stat-card-large">
+                        <div class="stat-icon-large">📅</div>
+                        <div class="stat-content-large">
+                            <div class="stat-label-large">Общие расходы в год</div>
+                            <div class="stat-value-large" id="stats-yearly-total">0 ₽</div>
+                        </div>
+                    </div>
+                    <div class="stat-card-large">
+                        <div class="stat-icon-large">📊</div>
+                        <div class="stat-content-large">
+                            <div class="stat-label-large">Всего подписок</div>
+                            <div class="stat-value-large" id="stats-total-count">0</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Charts Grid -->
+                <div class="charts-grid">
+                    <!-- Monthly Expenses Chart -->
+                    <div class="chart-card">
+                        <h3>Расходы по месяцам</h3>
+                        <div class="chart-container">
+                            <canvas id="monthlyExpensesChart"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Category Distribution Chart -->
+                    <div class="chart-card">
+                        <h3>Расходы по категориям</h3>
+                        <div class="chart-container">
+                            <canvas id="categoryChart"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Top Subscriptions Chart -->
+                    <div class="chart-card">
+                        <h3>Топ-5 дорогих подписок</h3>
+                        <div class="chart-container">
+                            <canvas id="topSubscriptionsChart"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Upcoming Payments Chart -->
+                    <div class="chart-card">
+                        <h3>Предстоящие платежи (30 дней)</h3>
+                        <div class="chart-container">
+                            <canvas id="upcomingPaymentsChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Detailed Statistics Table -->
+                <div class="stats-table-section">
+                    <h3>Детальная статистика по подпискам</h3>
+                    <div class="table-responsive">
+                        <table class="stats-table">
+                            <thead>
+                                <tr>
+                                    <th>Название</th>
+                                    <th>Категория</th>
+                                    <th>Стоимость</th>
+                                    <th>Период</th>
+                                    <th>В месяц</th>
+                                    <th>В год</th>
+                                    <th>Следующий платеж</th>
+                                </tr>
+                            </thead>
+                            <tbody id="stats-table-body">
+                                <!-- Table rows will be generated here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
     </div>
 
     <script src="/static/js/app.js"></script>
