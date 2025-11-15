@@ -7,6 +7,8 @@ let currentSubscription = null;
 let subscriptions = [];
 let selectedSubscriptionTemplate = null;
 let currentCategoryFilter = 'all';
+let userSubscriptionsFilter = 'all';
+let userSubscriptionsSearchQuery = '';
 
 // Charts instances
 let monthlyExpensesChart = null;
@@ -122,6 +124,7 @@ function setupEventListeners() {
     document.getElementById('add-subscription-btn')?.addEventListener('click', () => openSubscriptionModal());
     document.getElementById('settings-btn')?.addEventListener('click', openSettingsModal);
     document.getElementById('stats-page-btn')?.addEventListener('click', openStatsPage);
+    document.getElementById('theme-toggle-btn')?.addEventListener('click', toggleTheme);
     document.getElementById('back-to-app-btn')?.addEventListener('click', () => showScreen('app-screen'));
     document.getElementById('logout-btn-stats')?.addEventListener('click', handleLogout);
 
@@ -143,6 +146,12 @@ function setupEventListeners() {
     // Category filter buttons
     document.querySelectorAll('.filter-btn').forEach(btn => {
         btn.addEventListener('click', handleCategoryFilter);
+    });
+
+    // User subscriptions filters
+    document.getElementById('user-subscription-search')?.addEventListener('input', handleUserSubscriptionSearch);
+    document.querySelectorAll('.user-filter-btn').forEach(btn => {
+        btn.addEventListener('click', handleUserCategoryFilter);
     });
 
     // Telegram settings form
@@ -324,16 +333,52 @@ async function loadSubscriptions() {
 function renderSubscriptions() {
     const list = document.getElementById('subscriptions-list');
     const emptyState = document.getElementById('empty-state');
+    const filtersContainer = document.getElementById('user-subscriptions-filters');
 
-    if (subscriptions.length === 0) {
+    // Show/hide filters based on whether there are subscriptions
+    if (filtersContainer) {
+        filtersContainer.style.display = subscriptions.length > 0 ? 'block' : 'none';
+    }
+
+    // Apply filters
+    let filtered = [...subscriptions];
+
+    // Filter by category
+    if (userSubscriptionsFilter !== 'all') {
+        filtered = filtered.filter(sub => sub.category === userSubscriptionsFilter);
+    }
+
+    // Filter by search query
+    if (userSubscriptionsSearchQuery) {
+        filtered = filtered.filter(sub =>
+            sub.name.toLowerCase().includes(userSubscriptionsSearchQuery)
+        );
+    }
+
+    if (filtered.length === 0) {
         list.innerHTML = '';
         emptyState.classList.add('active');
+
+        // Update empty state message based on filters
+        const emptyIcon = emptyState.querySelector('.empty-icon');
+        const emptyTitle = emptyState.querySelector('h3');
+        const emptyText = emptyState.querySelector('p');
+
+        if (subscriptions.length > 0 && (userSubscriptionsFilter !== 'all' || userSubscriptionsSearchQuery)) {
+            emptyIcon.textContent = '🔍';
+            emptyTitle.textContent = 'Не найдено';
+            emptyText.textContent = 'Попробуйте изменить фильтры или поисковый запрос';
+        } else {
+            emptyIcon.textContent = '📭';
+            emptyTitle.textContent = 'Нет подписок';
+            emptyText.textContent = 'Добавьте свою первую подписку, чтобы начать отслеживание платежей';
+        }
         return;
     }
 
     emptyState.classList.remove('active');
 
-    list.innerHTML = subscriptions.map(sub => {
+    list.innerHTML = filtered.map(sub => {
         const nextDate = new Date(sub.next_billing_date);
         const dateStr = nextDate.toLocaleDateString('ru-RU');
         const daysUntil = Math.ceil((nextDate - new Date()) / (1000 * 60 * 60 * 24));
@@ -395,6 +440,8 @@ function getSubscriptionIcon(category) {
         gaming: '🎮',
         education: '📚',
         cloud: '☁️',
+        marketplace: '🛒',
+        crm: '📊',
         other: '📦'
     };
     return icons[category] || '💳';
@@ -1237,3 +1284,51 @@ function fillFormWithTemplate(template) {
     const today = new Date().toISOString().split('T')[0];
     document.getElementById('sub-start-date').value = today;
 }
+
+// Theme management
+function initTheme() {
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    document.documentElement.setAttribute('data-theme', savedTheme);
+    updateThemeIcon(savedTheme);
+}
+
+function toggleTheme() {
+    const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
+    const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+
+    document.documentElement.setAttribute('data-theme', newTheme);
+    localStorage.setItem('theme', newTheme);
+    updateThemeIcon(newTheme);
+}
+
+function updateThemeIcon(theme) {
+    const themeBtn = document.getElementById('theme-toggle-btn');
+    if (themeBtn) {
+        themeBtn.textContent = theme === 'light' ? '🌙' : '☀️';
+        themeBtn.title = theme === 'light' ? 'Темная тема' : 'Светлая тема';
+    }
+}
+
+// User subscriptions filtering
+function handleUserSubscriptionSearch(e) {
+    userSubscriptionsSearchQuery = e.target.value.toLowerCase();
+    renderSubscriptions();
+}
+
+function handleUserCategoryFilter(e) {
+    const category = e.target.dataset.category;
+
+    // Update active state
+    document.querySelectorAll('.user-filter-btn').forEach(btn => {
+        btn.classList.remove('active');
+    });
+    e.target.classList.add('active');
+
+    userSubscriptionsFilter = category;
+    renderSubscriptions();
+}
+
+// Initialize theme on app load
+document.addEventListener('DOMContentLoaded', () => {
+    initTheme();
+});

@@ -103,6 +103,7 @@
                     <div class="header-actions">
                         <span id="user-name" class="user-name"></span>
                         <button id="stats-page-btn" class="btn btn-secondary">📊 Статистика</button>
+                        <button id="theme-toggle-btn" class="btn btn-icon" title="Переключить тему">🌙</button>
                         <button id="settings-btn" class="btn btn-icon" title="Настройки">⚙️</button>
                         <button id="logout-btn" class="btn btn-icon" title="Выход">🚪</button>
                     </div>
@@ -152,6 +153,27 @@
                 <div class="section-header">
                     <h2>Мои подписки</h2>
                     <button id="add-subscription-btn" class="btn btn-primary">+ Добавить</button>
+                </div>
+
+                <!-- Filters for user subscriptions -->
+                <div class="user-subscriptions-filters" id="user-subscriptions-filters" style="display: none;">
+                    <div class="user-filter-container">
+                        <div class="user-search-container">
+                            <input type="text" id="user-subscription-search" placeholder="🔍 Поиск подписки..." class="search-input">
+                        </div>
+                        <div class="user-filter-buttons">
+                            <button type="button" class="user-filter-btn active" data-category="all">Все</button>
+                            <button type="button" class="user-filter-btn" data-category="streaming">Стриминг</button>
+                            <button type="button" class="user-filter-btn" data-category="music">Музыка</button>
+                            <button type="button" class="user-filter-btn" data-category="software">Софт</button>
+                            <button type="button" class="user-filter-btn" data-category="cloud">Облако</button>
+                            <button type="button" class="user-filter-btn" data-category="education">Образование</button>
+                            <button type="button" class="user-filter-btn" data-category="gaming">Игры</button>
+                            <button type="button" class="user-filter-btn" data-category="marketplace">Маркетплейсы</button>
+                            <button type="button" class="user-filter-btn" data-category="crm">CRM</button>
+                            <button type="button" class="user-filter-btn" data-category="other">Другое</button>
+                        </div>
+                    </div>
                 </div>
 
                 <div id="subscriptions-list" class="subscriptions-list">
