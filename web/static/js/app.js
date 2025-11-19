@@ -14,8 +14,6 @@ let userSubscriptionsSearchQuery = '';
 // Charts instances
 let monthlyExpensesChart = null;
 let categoryChart = null;
-let topSubscriptionsChart = null;
-let upcomingPaymentsChart = null;
 
 // Subscription Templates Database
 const subscriptionTemplates = [
@@ -127,10 +125,7 @@ function setupEventListeners() {
     document.getElementById('logout-btn')?.addEventListener('click', handleLogout);
     document.getElementById('add-subscription-btn')?.addEventListener('click', () => openSubscriptionModal());
     document.getElementById('settings-btn')?.addEventListener('click', openSettingsModal);
-    document.getElementById('stats-page-btn')?.addEventListener('click', openStatsPage);
     document.getElementById('theme-toggle-btn')?.addEventListener('click', toggleTheme);
-    document.getElementById('back-to-app-btn')?.addEventListener('click', () => showScreen('app-screen'));
-    document.getElementById('logout-btn-stats')?.addEventListener('click', handleLogout);
 
     // Subscription form
     document.getElementById('subscription-form').addEventListener('submit', handleSaveSubscription);
@@ -328,6 +323,8 @@ async function loadSubscriptions() {
         if (response.success) {
             subscriptions = response.data || [];
             renderSubscriptions();
+            // Update charts with subscription data
+            updateCharts(subscriptions);
         }
     } catch (error) {
         console.error('Failed to load subscriptions:', error);
@@ -705,46 +702,15 @@ async function apiRequest(endpoint, method = 'GET', body = null) {
 }
 
 // ============================================
-// STATISTICS PAGE FUNCTIONS
+// CHARTS FUNCTIONS
 // ============================================
 
-async function openStatsPage() {
-    showScreen('stats-screen');
-    await loadStatsData();
-}
-
-async function loadStatsData() {
-    try {
-        // Load subscriptions
-        const response = await apiRequest('/subscriptions');
-
-        if (response.success) {
-            const subs = response.data;
-
-            // Load stats summary
-            const statsResponse = await apiRequest('/subscriptions/stats');
-            if (statsResponse.success) {
-                updateStatsSummary(statsResponse.data);
-            }
-
-            // Create charts
-            createMonthlyExpensesChart(subs);
-            createCategoryChart(subs);
-            createTopSubscriptionsChart(subs);
-            createUpcomingPaymentsChart(subs);
-
-            // Fill table
-            fillStatsTable(subs);
-        }
-    } catch (error) {
-        console.error('Failed to load stats data:', error);
+function updateCharts(subs) {
+    // Only update charts if there are subscriptions
+    if (subs && subs.length > 0) {
+        createMonthlyExpensesChart(subs);
+        createCategoryChart(subs);
     }
-}
-
-function updateStatsSummary(stats) {
-    document.getElementById('stats-monthly-total').textContent = `${stats.total_monthly.toFixed(2)} ₽`;
-    document.getElementById('stats-yearly-total').textContent = `${stats.total_yearly.toFixed(2)} ₽`;
-    document.getElementById('stats-total-count').textContent = stats.total_subscriptions;
 }
 
 function createMonthlyExpensesChart(subs) {
@@ -883,177 +849,6 @@ function createCategoryChart(subs) {
                 }
             }
         }
-    });
-}
-
-function createTopSubscriptionsChart(subs) {
-    const ctx = document.getElementById('topSubscriptionsChart');
-
-    // Destroy previous chart if exists
-    if (topSubscriptionsChart) {
-        topSubscriptionsChart.destroy();
-    }
-
-    // Sort by monthly amount and take top 5
-    const sorted = [...subs].sort((a, b) => {
-        return calculateMonthlyAmount(b) - calculateMonthlyAmount(a);
-    }).slice(0, 5);
-
-    const names = sorted.map(s => s.name);
-    const amounts = sorted.map(s => calculateMonthlyAmount(s));
-
-    topSubscriptionsChart = new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: names,
-            datasets: [{
-                label: 'Расходы в месяц (₽)',
-                data: amounts,
-                backgroundColor: 'rgba(139, 92, 246, 0.8)',
-                borderColor: 'rgb(139, 92, 246)',
-                borderWidth: 1
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                legend: {
-                    display: false
-                }
-            },
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    ticks: {
-                        callback: function(value) {
-                            return value + ' ₽';
-                        }
-                    }
-                }
-            }
-        }
-    });
-}
-
-function createUpcomingPaymentsChart(subs) {
-    const ctx = document.getElementById('upcomingPaymentsChart');
-
-    // Destroy previous chart if exists
-    if (upcomingPaymentsChart) {
-        upcomingPaymentsChart.destroy();
-    }
-
-    // Get upcoming payments for next 30 days
-    const today = new Date();
-    const next30Days = new Date(today.getTime() + 30 * 24 * 60 * 60 * 1000);
-
-    const upcomingPayments = [];
-    subs.forEach(sub => {
-        const nextDate = new Date(sub.next_billing_date);
-        if (nextDate >= today && nextDate <= next30Days) {
-            upcomingPayments.push({
-                name: sub.name,
-                date: nextDate,
-                amount: sub.amount
-            });
-        }
-    });
-
-    // Sort by date
-    upcomingPayments.sort((a, b) => a.date - b.date);
-
-    // Take first 10
-    const payments = upcomingPayments.slice(0, 10);
-    const labels = payments.map(p => {
-        return p.name + ' (' + p.date.toLocaleDateString('ru-RU', { day: 'numeric', month: 'short' }) + ')';
-    });
-    const amounts = payments.map(p => p.amount);
-
-    upcomingPaymentsChart = new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: labels,
-            datasets: [{
-                label: 'Сумма платежа (₽)',
-                data: amounts,
-                backgroundColor: 'rgba(99, 102, 241, 0.8)',
-                borderColor: 'rgb(99, 102, 241)',
-                borderWidth: 1
-            }]
-        },
-        options: {
-            indexAxis: 'y',
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                legend: {
-                    display: false
-                }
-            },
-            scales: {
-                x: {
-                    beginAtZero: true,
-                    ticks: {
-                        callback: function(value) {
-                            return value + ' ₽';
-                        }
-                    }
-                }
-            }
-        }
-    });
-}
-
-function fillStatsTable(subs) {
-    const tbody = document.getElementById('stats-table-body');
-    tbody.innerHTML = '';
-
-    if (subs.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="7" style="text-align: center;">Нет подписок</td></tr>';
-        return;
-    }
-
-    // Sort by monthly amount descending
-    const sorted = [...subs].sort((a, b) => {
-        return calculateMonthlyAmount(b) - calculateMonthlyAmount(a);
-    });
-
-    sorted.forEach(sub => {
-        const monthlyAmount = calculateMonthlyAmount(sub);
-        const yearlyAmount = monthlyAmount * 12;
-
-        const category = sub.category || 'other';
-        const categoryNames = {
-            'streaming': 'Стриминг',
-            'music': 'Музыка',
-            'software': 'Софт',
-            'gaming': 'Игры',
-            'education': 'Образование',
-            'cloud': 'Облако',
-            'marketplace': 'Маркетплейсы',
-            'crm': 'CRM',
-            'other': 'Другое'
-        };
-
-        const periodNames = {
-            'monthly': 'Ежемесячно',
-            'yearly': 'Ежегодно',
-            'weekly': 'Еженедельно',
-            'custom': 'Другой'
-        };
-
-        const row = document.createElement('tr');
-        row.innerHTML = `
-            <td><strong>${sub.name}</strong></td>
-            <td><span class="category-badge category-${category}">${categoryNames[category]}</span></td>
-            <td>${sub.amount.toFixed(2)} ${getCurrencySymbol(sub.currency)}</td>
-            <td>${periodNames[sub.billing_period] || sub.billing_period}</td>
-            <td><strong>${monthlyAmount.toFixed(2)} ₽</strong></td>
-            <td>${yearlyAmount.toFixed(2)} ₽</td>
-            <td>${new Date(sub.next_billing_date).toLocaleDateString('ru-RU')}</td>
-        `;
-        tbody.appendChild(row);
     });
 }
 
