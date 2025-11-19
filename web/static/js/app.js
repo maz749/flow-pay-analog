@@ -29,58 +29,58 @@ const subscriptionTemplates = [
     { name: 'YouTube Premium', logo: '📺', category: 'streaming', price: 399, currency: 'RUB', period: 'monthly', popular: true },
 
     // Маркетплейсы (47 сервисов)
-    { name: 'MPSTATS', logo: '📊', category: 'marketplace', price: 5990, currency: 'RUB', period: 'monthly', popular: false },
-    { name: 'Маяк', logo: '🔦', category: 'marketplace', price: 15990, currency: 'RUB', period: 'monthly', popular: false },
-    { name: 'MarketGuru', logo: '🎯', category: 'marketplace', price: 9990, currency: 'RUB', period: 'monthly', popular: false },
-    { name: 'EGGHEADS', logo: '🥚', category: 'marketplace', price: 25000, currency: 'RUB', period: 'monthly', popular: false },
-    { name: 'Wildbox', logo: '📦', category: 'marketplace', price: 3500, currency: 'RUB', period: 'monthly', popular: false },
-    { name: 'Stat4Market', logo: '📈', category: 'marketplace', price: 2500, currency: 'RUB', period: 'monthly', popular: false },
-    { name: 'SellerStats', logo: '📉', category: 'marketplace', price: 2490, currency: 'RUB', period: 'monthly', popular: false },
-    { name: 'woysa.club', logo: '🎪', category: 'marketplace', price: 10990, currency: 'RUB', period: 'monthly', popular: false },
-    { name: 'XWAY', logo: '🛣️', category: 'marketplace', price: 7900, currency: 'RUB', period: 'monthly', popular: false },
-    { name: 'Sellmonitor', logo: '🖥️', category: 'marketplace', price: 19000, currency: 'RUB', period: 'monthly', popular: false },
-    { name: 'WBStat.PRO', logo: '💼', category: 'marketplace', price: 2990, currency: 'RUB', period: 'monthly', popular: false },
-    { name: 'SellerFox', logo: '🦊', category: 'marketplace', price: 1950, currency: 'RUB', period: 'monthly', popular: false },
-    { name: 'Topseller', logo: '🏆', category: 'marketplace', price: 3500, currency: 'RUB', period: 'monthly', popular: false },
-    { name: 'Pi-Data', logo: '🥧', category: 'marketplace', price: 2900, currency: 'RUB', period: 'monthly', popular: false },
-    { name: 'SelSup', logo: '🛒', category: 'marketplace', price: 4000, currency: 'RUB', period: 'monthly', popular: false },
-    { name: 'Модульселлер', logo: '🧩', category: 'marketplace', price: 2490, currency: 'RUB', period: 'monthly', popular: false },
-    { name: 'Salist', logo: '📋', category: 'marketplace', price: 4900, currency: 'RUB', period: 'monthly', popular: false },
-    { name: 'Тинькофф Селлер', logo: '💳', category: 'marketplace', price: 10000, currency: 'RUB', period: 'monthly', popular: false },
-    { name: 'ADAPTER', logo: '🔌', category: 'marketplace', price: 5000, currency: 'RUB', period: 'monthly', popular: false },
-    { name: 'MPSPACE', logo: '🚀', category: 'marketplace', price: 6900, currency: 'RUB', period: 'monthly', popular: false },
-    { name: 'Huckster', logo: '🎩', category: 'marketplace', price: 10900, currency: 'RUB', period: 'monthly', popular: false },
-    { name: 'MP SURF', logo: '🏄', category: 'marketplace', price: 890, currency: 'RUB', period: 'monthly', popular: false },
-    { name: 'inSales', logo: '🛍️', category: 'marketplace', price: 1490, currency: 'RUB', period: 'monthly', popular: false },
-    { name: 'SalesFinder', logo: '🔍', category: 'marketplace', price: 3500, currency: 'RUB', period: 'monthly', popular: false },
-    { name: 'MP Manager', logo: '👔', category: 'marketplace', price: 8970, currency: 'RUB', period: 'monthly', popular: false },
-    { name: 'Smart Seller', logo: '🧠', category: 'marketplace', price: 4900, currency: 'RUB', period: 'monthly', popular: false },
-    { name: 'Indeepa', logo: '🌊', category: 'marketplace', price: 18990, currency: 'RUB', period: 'monthly', popular: false },
-    { name: 'Точка маркетплейсы', logo: '📍', category: 'marketplace', price: 800, currency: 'RUB', period: 'monthly', popular: false },
-    { name: 'JVO', logo: '⚡', category: 'marketplace', price: 30000, currency: 'RUB', period: 'monthly', popular: false },
-    { name: 'MarketProvider', logo: '🏪', category: 'marketplace', price: 5000, currency: 'RUB', period: 'monthly', popular: false },
-    { name: 'Ракета', logo: '🚀', category: 'marketplace', price: 10000, currency: 'RUB', period: 'monthly', popular: false },
-    { name: 'SoykaSoft', logo: '🐦', category: 'marketplace', price: 14990, currency: 'RUB', period: 'monthly', popular: false },
-    { name: 'Mpfinassist', logo: '💰', category: 'marketplace', price: 2990, currency: 'RUB', period: 'monthly', popular: false },
-    { name: 'WB FIN', logo: '💵', category: 'marketplace', price: 3000, currency: 'RUB', period: 'monthly', popular: false },
-    { name: 'Таблички', logo: '📊', category: 'marketplace', price: 7000, currency: 'RUB', period: 'monthly', popular: false },
-    { name: 'Нейромаркет', logo: '🤖', category: 'marketplace', price: 1690, currency: 'RUB', period: 'monthly', popular: false },
-    { name: 'Sellego', logo: '🎲', category: 'marketplace', price: 3990, currency: 'RUB', period: 'monthly', popular: false },
-    { name: 'ОТВЕТО', logo: '💬', category: 'marketplace', price: 7990, currency: 'RUB', period: 'monthly', popular: false },
-    { name: 'Отвечумба', logo: '💭', category: 'marketplace', price: 1400, currency: 'RUB', period: 'monthly', popular: false },
-    { name: 'ТОРГСТАТ', logo: '📊', category: 'marketplace', price: 3990, currency: 'RUB', period: 'monthly', popular: false },
-    { name: 'MPfact', logo: '✅', category: 'marketplace', price: 2850, currency: 'RUB', period: 'monthly', popular: false },
-    { name: 'TrueStats', logo: '✔️', category: 'marketplace', price: 2999, currency: 'RUB', period: 'monthly', popular: false },
-    { name: 'MP Profit', logo: '💎', category: 'marketplace', price: 2399, currency: 'RUB', period: 'monthly', popular: false },
-    { name: 'RASK', logo: '🎨', category: 'marketplace', price: 7500, currency: 'RUB', period: 'monthly', popular: false },
-    { name: 'TACTICs', logo: '♟️', category: 'marketplace', price: 7000, currency: 'RUB', period: 'monthly', popular: false },
-    { name: 'Спикс', logo: '🗣️', category: 'marketplace', price: 4900, currency: 'RUB', period: 'monthly', popular: false },
-    { name: 'Джем', logo: '🍓', category: 'marketplace', price: 18990, currency: 'RUB', period: 'monthly', popular: false },
+    { name: 'MPSTATS', logo: 'https://www.google.com/s2/favicons?domain=mpstats.io&sz=128', category: 'marketplace', price: 5990, currency: 'RUB', period: 'monthly', popular: false },
+    { name: 'Маяк', logo: 'https://www.google.com/s2/favicons?domain=mayak.market&sz=128', category: 'marketplace', price: 15990, currency: 'RUB', period: 'monthly', popular: false },
+    { name: 'MarketGuru', logo: 'https://www.google.com/s2/favicons?domain=marketguru.io&sz=128', category: 'marketplace', price: 9990, currency: 'RUB', period: 'monthly', popular: false },
+    { name: 'EGGHEADS', logo: 'https://www.google.com/s2/favicons?domain=eggheads.team&sz=128', category: 'marketplace', price: 25000, currency: 'RUB', period: 'monthly', popular: false },
+    { name: 'Wildbox', logo: 'https://www.google.com/s2/favicons?domain=wildbox.ru&sz=128', category: 'marketplace', price: 3500, currency: 'RUB', period: 'monthly', popular: false },
+    { name: 'Stat4Market', logo: 'https://www.google.com/s2/favicons?domain=stat4market.ru&sz=128', category: 'marketplace', price: 2500, currency: 'RUB', period: 'monthly', popular: false },
+    { name: 'SellerStats', logo: 'https://www.google.com/s2/favicons?domain=sellerstats.ru&sz=128', category: 'marketplace', price: 2490, currency: 'RUB', period: 'monthly', popular: false },
+    { name: 'woysa.club', logo: 'https://www.google.com/s2/favicons?domain=woysa.club&sz=128', category: 'marketplace', price: 10990, currency: 'RUB', period: 'monthly', popular: false },
+    { name: 'XWAY', logo: 'https://www.google.com/s2/favicons?domain=xway.pro&sz=128', category: 'marketplace', price: 7900, currency: 'RUB', period: 'monthly', popular: false },
+    { name: 'Sellmonitor', logo: 'https://www.google.com/s2/favicons?domain=sellmonitor.ru&sz=128', category: 'marketplace', price: 19000, currency: 'RUB', period: 'monthly', popular: false },
+    { name: 'WBStat.PRO', logo: 'https://www.google.com/s2/favicons?domain=wbstat.pro&sz=128', category: 'marketplace', price: 2990, currency: 'RUB', period: 'monthly', popular: false },
+    { name: 'SellerFox', logo: 'https://www.google.com/s2/favicons?domain=sellerfox.ru&sz=128', category: 'marketplace', price: 1950, currency: 'RUB', period: 'monthly', popular: false },
+    { name: 'Topseller', logo: 'https://www.google.com/s2/favicons?domain=topseller.ru&sz=128', category: 'marketplace', price: 3500, currency: 'RUB', period: 'monthly', popular: false },
+    { name: 'Pi-Data', logo: 'https://www.google.com/s2/favicons?domain=pi-data.ru&sz=128', category: 'marketplace', price: 2900, currency: 'RUB', period: 'monthly', popular: false },
+    { name: 'SelSup', logo: 'https://www.google.com/s2/favicons?domain=selsup.ru&sz=128', category: 'marketplace', price: 4000, currency: 'RUB', period: 'monthly', popular: false },
+    { name: 'Модульселлер', logo: 'https://www.google.com/s2/favicons?domain=module-seller.ru&sz=128', category: 'marketplace', price: 2490, currency: 'RUB', period: 'monthly', popular: false },
+    { name: 'Salist', logo: 'https://www.google.com/s2/favicons?domain=salist.ru&sz=128', category: 'marketplace', price: 4900, currency: 'RUB', period: 'monthly', popular: false },
+    { name: 'Тинькофф Селлер', logo: 'https://www.google.com/s2/favicons?domain=tinkoff.ru&sz=128', category: 'marketplace', price: 10000, currency: 'RUB', period: 'monthly', popular: false },
+    { name: 'ADAPTER', logo: 'https://www.google.com/s2/favicons?domain=adapter.tech&sz=128', category: 'marketplace', price: 5000, currency: 'RUB', period: 'monthly', popular: false },
+    { name: 'MPSPACE', logo: 'https://www.google.com/s2/favicons?domain=mpspace.ru&sz=128', category: 'marketplace', price: 6900, currency: 'RUB', period: 'monthly', popular: false },
+    { name: 'Huckster', logo: 'https://www.google.com/s2/favicons?domain=huckster.pro&sz=128', category: 'marketplace', price: 10900, currency: 'RUB', period: 'monthly', popular: false },
+    { name: 'MP SURF', logo: 'https://www.google.com/s2/favicons?domain=mpsurf.ru&sz=128', category: 'marketplace', price: 890, currency: 'RUB', period: 'monthly', popular: false },
+    { name: 'inSales', logo: 'https://www.google.com/s2/favicons?domain=insales.ru&sz=128', category: 'marketplace', price: 1490, currency: 'RUB', period: 'monthly', popular: false },
+    { name: 'SalesFinder', logo: 'https://www.google.com/s2/favicons?domain=salesfinder.ru&sz=128', category: 'marketplace', price: 3500, currency: 'RUB', period: 'monthly', popular: false },
+    { name: 'MP Manager', logo: 'https://www.google.com/s2/favicons?domain=mpmanager.ru&sz=128', category: 'marketplace', price: 8970, currency: 'RUB', period: 'monthly', popular: false },
+    { name: 'Smart Seller', logo: 'https://www.google.com/s2/favicons?domain=smartseller.ru&sz=128', category: 'marketplace', price: 4900, currency: 'RUB', period: 'monthly', popular: false },
+    { name: 'Indeepa', logo: 'https://www.google.com/s2/favicons?domain=indeepa.ru&sz=128', category: 'marketplace', price: 18990, currency: 'RUB', period: 'monthly', popular: false },
+    { name: 'Точка маркетплейсы', logo: 'https://www.google.com/s2/favicons?domain=tochka.com&sz=128', category: 'marketplace', price: 800, currency: 'RUB', period: 'monthly', popular: false },
+    { name: 'JVO', logo: 'https://www.google.com/s2/favicons?domain=jvo.pro&sz=128', category: 'marketplace', price: 30000, currency: 'RUB', period: 'monthly', popular: false },
+    { name: 'MarketProvider', logo: 'https://www.google.com/s2/favicons?domain=marketprovider.ru&sz=128', category: 'marketplace', price: 5000, currency: 'RUB', period: 'monthly', popular: false },
+    { name: 'Ракета', logo: 'https://www.google.com/s2/favicons?domain=raketa.market&sz=128', category: 'marketplace', price: 10000, currency: 'RUB', period: 'monthly', popular: false },
+    { name: 'SoykaSoft', logo: 'https://www.google.com/s2/favicons?domain=soykasoft.ru&sz=128', category: 'marketplace', price: 14990, currency: 'RUB', period: 'monthly', popular: false },
+    { name: 'Mpfinassist', logo: 'https://www.google.com/s2/favicons?domain=mpfinassist.ru&sz=128', category: 'marketplace', price: 2990, currency: 'RUB', period: 'monthly', popular: false },
+    { name: 'WB FIN', logo: 'https://www.google.com/s2/favicons?domain=wbfin.ru&sz=128', category: 'marketplace', price: 3000, currency: 'RUB', period: 'monthly', popular: false },
+    { name: 'Таблички', logo: 'https://www.google.com/s2/favicons?domain=tablicki.com&sz=128', category: 'marketplace', price: 7000, currency: 'RUB', period: 'monthly', popular: false },
+    { name: 'Нейромаркет', logo: 'https://www.google.com/s2/favicons?domain=neiromarket.ru&sz=128', category: 'marketplace', price: 1690, currency: 'RUB', period: 'monthly', popular: false },
+    { name: 'Sellego', logo: 'https://www.google.com/s2/favicons?domain=sellego.ru&sz=128', category: 'marketplace', price: 3990, currency: 'RUB', period: 'monthly', popular: false },
+    { name: 'ОТВЕТО', logo: 'https://www.google.com/s2/favicons?domain=otveto.app&sz=128', category: 'marketplace', price: 7990, currency: 'RUB', period: 'monthly', popular: false },
+    { name: 'Отвечумба', logo: 'https://www.google.com/s2/favicons?domain=otvechumba.ru&sz=128', category: 'marketplace', price: 1400, currency: 'RUB', period: 'monthly', popular: false },
+    { name: 'ТОРГСТАТ', logo: 'https://www.google.com/s2/favicons?domain=torgstat.ru&sz=128', category: 'marketplace', price: 3990, currency: 'RUB', period: 'monthly', popular: false },
+    { name: 'MPfact', logo: 'https://www.google.com/s2/favicons?domain=mpfact.ru&sz=128', category: 'marketplace', price: 2850, currency: 'RUB', period: 'monthly', popular: false },
+    { name: 'TrueStats', logo: 'https://www.google.com/s2/favicons?domain=truestats.ru&sz=128', category: 'marketplace', price: 2999, currency: 'RUB', period: 'monthly', popular: false },
+    { name: 'MP Profit', logo: 'https://www.google.com/s2/favicons?domain=mpprofit.ru&sz=128', category: 'marketplace', price: 2399, currency: 'RUB', period: 'monthly', popular: false },
+    { name: 'RASK', logo: 'https://www.google.com/s2/favicons?domain=rask.pro&sz=128', category: 'marketplace', price: 7500, currency: 'RUB', period: 'monthly', popular: false },
+    { name: 'TACTICs', logo: 'https://www.google.com/s2/favicons?domain=tactics.pro&sz=128', category: 'marketplace', price: 7000, currency: 'RUB', period: 'monthly', popular: false },
+    { name: 'Спикс', logo: 'https://www.google.com/s2/favicons?domain=spiks.ru&sz=128', category: 'marketplace', price: 4900, currency: 'RUB', period: 'monthly', popular: false },
+    { name: 'Джем', logo: 'https://www.google.com/s2/favicons?domain=jam.market&sz=128', category: 'marketplace', price: 18990, currency: 'RUB', period: 'monthly', popular: false },
 
     // CRM (3 сервиса)
-    { name: 'AMOCRM', logo: '📞', category: 'crm', price: 1199, currency: 'RUB', period: 'monthly', popular: false },
-    { name: 'Мегаплан', logo: '📋', category: 'crm', price: 450, currency: 'RUB', period: 'monthly', popular: false },
-    { name: 'Битрикс24', logo: '🔷', category: 'crm', price: 2490, currency: 'RUB', period: 'monthly', popular: false }
+    { name: 'AMOCRM', logo: 'https://www.google.com/s2/favicons?domain=amocrm.ru&sz=128', category: 'crm', price: 1199, currency: 'RUB', period: 'monthly', popular: false },
+    { name: 'Мегаплан', logo: 'https://www.google.com/s2/favicons?domain=megaplan.ru&sz=128', category: 'crm', price: 450, currency: 'RUB', period: 'monthly', popular: false },
+    { name: 'Битрикс24', logo: 'https://www.google.com/s2/favicons?domain=bitrix24.ru&sz=128', category: 'crm', price: 2490, currency: 'RUB', period: 'monthly', popular: false }
 ];
 
 // Init
@@ -1148,6 +1148,14 @@ function renderSubscriptionTemplates() {
     renderAllSubscriptions();
 }
 
+// Helper function to render logo (emoji or image)
+function renderLogo(logo) {
+    if (logo.startsWith('http://') || logo.startsWith('https://')) {
+        return `<img src="${logo}" alt="Logo" style="width: 100%; height: 100%; object-fit: contain;" onerror="this.style.display='none'; this.parentElement.textContent='🏢';">`;
+    }
+    return logo; // emoji
+}
+
 // Render popular subscriptions (8 items)
 function renderPopularSubscriptions() {
     const container = document.getElementById('popular-subscriptions');
@@ -1155,7 +1163,7 @@ function renderPopularSubscriptions() {
 
     container.innerHTML = popular.map(template => `
         <div class="subscription-card-item" data-subscription='${JSON.stringify(template)}'>
-            <div class="subscription-logo">${template.logo}</div>
+            <div class="subscription-logo">${renderLogo(template.logo)}</div>
             <div class="subscription-card-name">${template.name}</div>
             <div class="subscription-card-price">от ${template.price} ${getCurrencySymbol(template.currency)}</div>
         </div>
@@ -1196,7 +1204,7 @@ function renderAllSubscriptions(searchFilter = '') {
 
     container.innerHTML = templates.map(template => `
         <div class="subscription-list-item" data-subscription='${JSON.stringify(template)}'>
-            <div class="subscription-list-logo">${template.logo}</div>
+            <div class="subscription-list-logo">${renderLogo(template.logo)}</div>
             <div class="subscription-list-info">
                 <div class="subscription-list-name">${template.name}</div>
                 <div class="subscription-list-price">от ${template.price} ${getCurrencySymbol(template.currency)}/мес</div>
