@@ -22,11 +22,11 @@ const subscriptionTemplates = [
     { name: 'Apple Music', logo: 'https://www.google.com/s2/favicons?domain=music.apple.com&sz=128', category: 'music', price: 169, currency: 'RUB', period: 'monthly', popular: true },
     { name: 'ChatGPT Plus', logo: 'https://www.google.com/s2/favicons?domain=chat.openai.com&sz=128', category: 'software', price: 20, currency: 'USD', period: 'monthly', popular: true },
     { name: 'GitHub Copilot', logo: 'https://www.google.com/s2/favicons?domain=github.com&sz=128', category: 'software', price: 10, currency: 'USD', period: 'monthly', popular: true },
-    { name: 'Kinopoisk', logo: '🎥', category: 'streaming', price: 399, currency: 'RUB', period: 'monthly', popular: true },
-    { name: 'Netflix', logo: '🎬', category: 'streaming', price: 649, currency: 'RUB', period: 'monthly', popular: true },
-    { name: 'Spotify', logo: '🎵', category: 'music', price: 169, currency: 'RUB', period: 'monthly', popular: true },
-    { name: 'Yandex 360', logo: '☁️', category: 'cloud', price: 199, currency: 'RUB', period: 'monthly', popular: true },
-    { name: 'YouTube Premium', logo: '📺', category: 'streaming', price: 399, currency: 'RUB', period: 'monthly', popular: true },
+    { name: 'Kinopoisk', logo: 'https://www.google.com/s2/favicons?domain=kinopoisk.ru&sz=128', category: 'streaming', price: 399, currency: 'RUB', period: 'monthly', popular: true },
+    { name: 'Netflix', logo: 'https://www.google.com/s2/favicons?domain=netflix.com&sz=128', category: 'streaming', price: 649, currency: 'RUB', period: 'monthly', popular: true },
+    { name: 'Spotify', logo: 'https://www.google.com/s2/favicons?domain=spotify.com&sz=128', category: 'music', price: 169, currency: 'RUB', period: 'monthly', popular: true },
+    { name: 'Yandex 360', logo: 'https://www.google.com/s2/favicons?domain=360.yandex.ru&sz=128', category: 'cloud', price: 199, currency: 'RUB', period: 'monthly', popular: true },
+    { name: 'YouTube Premium', logo: 'https://www.google.com/s2/favicons?domain=youtube.com&sz=128', category: 'streaming', price: 399, currency: 'RUB', period: 'monthly', popular: true },
 
     // Маркетплейсы (47 сервисов)
     { name: 'MPSTATS', logo: 'https://www.google.com/s2/favicons?domain=mpstats.io&sz=128', category: 'marketplace', price: 5990, currency: 'RUB', period: 'monthly', popular: false },
