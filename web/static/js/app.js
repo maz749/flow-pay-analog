@@ -6,6 +6,7 @@ let currentUser = null;
 let currentSubscription = null;
 let subscriptions = [];
 let selectedSubscriptionTemplate = null;
+let selectedSubscriptionLogo = null; // Store selected logo from template
 let currentCategoryFilter = 'all';
 let userSubscriptionsFilter = 'all';
 let userSubscriptionsSearchQuery = '';
@@ -399,7 +400,8 @@ function renderSubscriptions() {
             EUR: '€'
         };
 
-        const icon = getSubscriptionIcon(sub.category);
+        // Use saved icon/logo if available, otherwise fallback to category icon
+        const icon = sub.icon ? renderLogo(sub.icon) : getSubscriptionIcon(sub.category);
         const isActive = sub.is_active;
 
         return `
@@ -500,6 +502,9 @@ function openSubscriptionModal(subscription = null) {
         document.getElementById('sub-start-date').value = subscription.start_date.split('T')[0];
         document.getElementById('sub-category').value = subscription.category || '';
 
+        // Preserve existing icon/logo
+        selectedSubscriptionLogo = subscription.icon || null;
+
         if (subscription.billing_period === 'custom') {
             document.getElementById('custom-days-group').style.display = 'block';
             document.getElementById('sub-custom-days').value = subscription.custom_period_days;
@@ -516,6 +521,9 @@ function openSubscriptionModal(subscription = null) {
         // Adding new subscription - show mode selector and list
         title.textContent = 'Добавить подписку';
         modeSelector.style.display = 'flex';
+
+        // Clear selected logo
+        selectedSubscriptionLogo = null;
 
         // Reset to "from list" mode
         document.querySelectorAll('.mode-btn').forEach(btn => {
@@ -573,7 +581,8 @@ async function handleSaveSubscription(e) {
         start_date,
         category,
         custom_period_days,
-        notify_days_before
+        notify_days_before,
+        icon: selectedSubscriptionLogo // Add logo from template
     };
 
     try {
@@ -1284,6 +1293,9 @@ function fillFormWithTemplate(template) {
     document.getElementById('sub-currency').value = template.currency;
     document.getElementById('sub-period').value = template.period;
     categoryField.value = template.category;
+
+    // Save logo from template
+    selectedSubscriptionLogo = template.logo || null;
 
     // Make name and category readonly (can't be edited)
     nameField.setAttribute('readonly', 'readonly');
