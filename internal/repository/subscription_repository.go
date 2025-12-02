@@ -124,6 +124,24 @@ func (r *SubscriptionRepository) GetUpcomingBillings(daysAhead int) ([]models.Su
 	return subs, nil
 }
 
+// Cancel marks a subscription as cancelled (is_active = false)
+func (r *SubscriptionRepository) Cancel(id, userID int) error {
+	query := `UPDATE subscriptions SET is_active = false WHERE id = $1 AND user_id = $2`
+	result, err := r.db.Exec(query, id, userID)
+	if err != nil {
+		return err
+	}
+
+	rows, err := result.RowsAffected()
+	if err != nil {
+		return err
+	}
+	if rows == 0 {
+		return fmt.Errorf("subscription not found")
+	}
+	return nil
+}
+
 func (r *SubscriptionRepository) GetStats(userID int) (*models.SubscriptionStats, error) {
 	stats := &models.SubscriptionStats{}
 
