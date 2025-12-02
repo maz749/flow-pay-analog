@@ -73,6 +73,38 @@ func main() {
 
 	// Serve static files
 	router.PathPrefix("/static/").Handler(http.StripPrefix("/static/", http.FileServer(http.Dir("web/static"))))
+
+	// Serve landing pages
+	router.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		http.ServeFile(w, r, "web/templates/index.html")
+	}).Methods("GET")
+
+	router.HandleFunc("/personal", func(w http.ResponseWriter, r *http.Request) {
+		http.ServeFile(w, r, "web/templates/personal.html")
+	}).Methods("GET")
+
+	router.HandleFunc("/business", func(w http.ResponseWriter, r *http.Request) {
+		http.ServeFile(w, r, "web/templates/business.html")
+	}).Methods("GET")
+
+	router.HandleFunc("/about", func(w http.ResponseWriter, r *http.Request) {
+		http.ServeFile(w, r, "web/templates/about.html")
+	}).Methods("GET")
+
+	router.HandleFunc("/blog", func(w http.ResponseWriter, r *http.Request) {
+		http.ServeFile(w, r, "web/templates/blog.html")
+	}).Methods("GET")
+
+	router.HandleFunc("/privacy", func(w http.ResponseWriter, r *http.Request) {
+		http.ServeFile(w, r, "web/templates/privacy.html")
+	}).Methods("GET")
+
+	// Signup redirects to home page with registration modal
+	router.HandleFunc("/signup", func(w http.ResponseWriter, r *http.Request) {
+		http.Redirect(w, r, "/#register", http.StatusSeeOther)
+	}).Methods("GET")
+
+	// Catch-all route for SPA (must be last)
 	router.PathPrefix("/").HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		http.ServeFile(w, r, "web/templates/index.html")
 	})
