@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Отмена подписок - FlowPay</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="/static/css/cancellation.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="landing-header">
+        <div class="container">
+            <div class="header-content">
+                <h1 class="logo"><a href="/" style="text-decoration: none; color: inherit;">💳 FlowPay</a></h1>
+                <div class="header-actions">
+                    <button onclick="window.location.href='/'" class="btn btn-secondary">На главную</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Cancellation Page -->
+    <section class="cancellation-page-section">
+        <div class="container">
+            <div class="cancellation-header">
+                <h1 class="page-title">Отмена подписок стала проще</h1>
+                <p class="page-subtitle">Найдите нужный сервис, чтобы быстро отменить подписку. Мы собрали инструкции<br>для десятков популярных сервисов.</p>
+            </div>
+
+            <!-- Search Box -->
+            <div class="search-box-wrapper">
+                <input
+                    type="text"
+                    id="searchInput"
+                    class="search-input-large"
+                    placeholder="🔍 Найти сервис (например, Кинопоиск, Spotify...)"
+                    oninput="filterServices()"
+                >
+            </div>
+
+            <!-- Services List -->
+            <div id="servicesList" class="services-accordion">
+                <p class="loading-text">Загрузка сервисов...</p>
+            </div>
+
+            <!-- View All Link -->
+            <div class="view-all-wrapper">
+                <a href="#" class="view-all-link" onclick="scrollToTop(); return false;">
+                    Посмотреть все сервисы →
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <h3>💳 FlowPay</h3>
+                    <p>Управление подписками стало проще</p>
+                </div>
+                <div class="footer-links">
+                    <a href="/">Главная</a>
+                    <a href="/about">О нас</a>
+                    <a href="/blog">Блог</a>
+                    <a href="/privacy">Политика конфиденциальности</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        let allServices = [];
+        let expandedServices = new Set();
+
+        // Load services on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            loadServices();
+        });
+
+        async function loadServices() {
+            try {
+                const response = await fetch('/api/cancellation/instructions');
+                if (!response.ok) {
+                    throw new Error('Failed to fetch services');
+                }
+
+                allServices = await response.json();
+                renderServices(allServices);
+            } catch (error) {
+                console.error('Error loading services:', error);
+                document.getElementById('servicesList').innerHTML =
+                    '<p class="error-text">Ошибка загрузки сервисов. Пожалуйста, попробуйте позже.</p>';
+            }
+        }
+
+        function renderServices(services) {
+            const servicesList = document.getElementById('servicesList');
+
+            if (services.length === 0) {
+                servicesList.innerHTML = '<p class="no-results-text">Сервисы не найдены. Попробуйте другой запрос.</p>';
+                return;
+            }
+
+            servicesList.innerHTML = services.map(service => `
+                <div class="service-accordion-item ${expandedServices.has(service.id) ? 'expanded' : ''}" id="service-${service.id}">
+                    <div class="service-header" onclick="toggleService(${service.id})">
+                        <span class="service-name">${service.service_name}</span>
+                        <span class="service-arrow">${expandedServices.has(service.id) ? '⌃' : '⌄'}</span>
+                    </div>
+                    <div class="service-content" style="display: ${expandedServices.has(service.id) ? 'block' : 'none'};">
+                        <div class="instruction-section">
+                            <h4>Инструкция по отмене:</h4>
+                            <p class="instruction-text">${service.instructions}</p>
+                        </div>
+                        ${service.note ? `
+                        <div class="note-section">
+                            <h4>Примечания:</h4>
+                            <p class="note-text">${service.note}</p>
+                        </div>
+                        ` : ''}
+                        ${service.url ? `
+                        <a href="${service.url}" target="_blank" class="btn btn-primary cancel-btn">
+                            Перейти на страницу отмены ↗
+                        </a>
+                        ` : ''}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function toggleService(serviceId) {
+            if (expandedServices.has(serviceId)) {
+                expandedServices.delete(serviceId);
+            } else {
+                expandedServices.add(serviceId);
+            }
+
+            const serviceItem = document.getElementById(`service-${serviceId}`);
+            const content = serviceItem.querySelector('.service-content');
+            const arrow = serviceItem.querySelector('.service-arrow');
+
+            if (expandedServices.has(serviceId)) {
+                serviceItem.classList.add('expanded');
+                content.style.display = 'block';
+                arrow.textContent = '⌃';
+            } else {
+                serviceItem.classList.remove('expanded');
+                content.style.display = 'none';
+                arrow.textContent = '⌄';
+            }
+        }
+
+        function filterServices() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+
+            if (searchTerm === '') {
+                renderServices(allServices);
+                return;
+            }
+
+            const filtered = allServices.filter(service =>
+                service.service_name.toLowerCase().includes(searchTerm) ||
+                (service.category && service.category.toLowerCase().includes(searchTerm))
+            );
+
+            renderServices(filtered);
+        }
+
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>

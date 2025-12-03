@@ -36,11 +36,13 @@ func main() {
 	userRepo := repository.NewUserRepository(db)
 	subRepo := repository.NewSubscriptionRepository(db)
 	notifRepo := repository.NewNotificationRepository(db)
+	cancelRepo := repository.NewCancellationRepository(db)
 
 	// Initialize handlers
 	authHandler := handlers.NewAuthHandler(userRepo, cfg.JWT.Secret)
 	subHandler := handlers.NewSubscriptionHandler(subRepo, notifRepo)
 	telegramHandler := handlers.NewTelegramHandler(userRepo)
+	cancelHandler := handlers.NewCancellationHandler(cancelRepo, subRepo)
 
 	// Initialize router
 	router := mux.NewRouter()
@@ -66,6 +68,11 @@ func main() {
 	api.HandleFunc("/subscriptions/{id}", subHandler.GetByID).Methods("GET")
 	api.HandleFunc("/subscriptions/{id}", subHandler.Update).Methods("PUT")
 	api.HandleFunc("/subscriptions/{id}", subHandler.Delete).Methods("DELETE")
+	api.HandleFunc("/subscriptions/{id}/cancel", cancelHandler.CancelSubscription).Methods("POST")
+
+	// Cancellation routes
+	api.HandleFunc("/cancellation/instructions", cancelHandler.GetAllInstructions).Methods("GET")
+	api.HandleFunc("/cancellation/instructions/{serviceName}", cancelHandler.GetInstructionByService).Methods("GET")
 
 	// Telegram routes
 	api.HandleFunc("/telegram/settings", telegramHandler.GetSettings).Methods("GET")
@@ -97,6 +104,10 @@ func main() {
 
 	router.HandleFunc("/privacy", func(w http.ResponseWriter, r *http.Request) {
 		http.ServeFile(w, r, "web/templates/privacy.html")
+	}).Methods("GET")
+
+	router.HandleFunc("/cancel-subscriptions", func(w http.ResponseWriter, r *http.Request) {
+		http.ServeFile(w, r, "web/templates/cancel-subscriptions.html")
 	}).Methods("GET")
 
 	// Signup redirects to home page with registration modal
