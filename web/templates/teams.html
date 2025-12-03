@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Управление командами - FlowPay</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="/static/css/teams.css">
+</head>
+<body>
+    <div class="teams-container">
+        <div class="teams-header">
+            <div>
+                <h1>Управление командами</h1>
+                <p style="color: var(--text-secondary); margin: 8px 0 0 0;">Создавайте команды и управляйте доступом участников</p>
+            </div>
+            <button class="btn btn-primary" onclick="showCreateTeamModal()">
+                <span>➕</span> Создать команду
+            </button>
+        </div>
+
+        <div class="teams-grid" id="teams-list">
+            <!-- Teams will be rendered here -->
+        </div>
+
+        <!-- Invitations Section -->
+        <div class="invitations-section" style="margin-top: 48px;">
+            <div class="section-header">
+                <h2>Приглашения</h2>
+                <button class="btn btn-secondary btn-sm" onclick="loadInvitations()">Обновить</button>
+            </div>
+            <div id="invitations-list" class="invitations-list">
+                <!-- Invitations will be rendered here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Create/Edit Team Modal -->
+    <div id="team-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="team-modal-title">Создать команду</h2>
+                <button class="modal-close" onclick="closeTeamModal()">&times;</button>
+            </div>
+            <form id="team-form">
+                <div class="form-group">
+                    <label for="team-name">Название команды *</label>
+                    <input type="text" id="team-name" name="name" required placeholder="Например: Маркетинг, Семья">
+                </div>
+
+                <div class="form-group">
+                    <label for="team-description">Описание</label>
+                    <textarea id="team-description" name="description" placeholder="Краткое описание команды"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="team-budget">Бюджет (необязательно)</label>
+                    <div class="form-row">
+                        <input type="number" id="team-budget" name="budget_amount" step="0.01" placeholder="0.00">
+                        <select id="team-currency" name="budget_currency">
+                            <option value="RUB">RUB ₽</option>
+                            <option value="USD">USD $</option>
+                            <option value="EUR">EUR €</option>
+                        </select>
+                        <select id="team-period" name="budget_period">
+                            <option value="monthly">В месяц</option>
+                            <option value="yearly">В год</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="closeTeamModal()">Отмена</button>
+                    <button type="submit" class="btn btn-primary">Сохранить</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Team Details Modal -->
+    <div id="team-details-modal" class="modal">
+        <div class="modal-content modal-large">
+            <div class="modal-header">
+                <h2>Детали команды</h2>
+                <button class="modal-close" onclick="closeTeamDetailsModal()">&times;</button>
+            </div>
+            <div id="team-details-content" class="modal-body">
+                <!-- Team details will be rendered here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Invite Member Modal -->
+    <div id="invite-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Пригласить участника</h2>
+                <button class="modal-close" onclick="closeInviteModal()">&times;</button>
+            </div>
+            <form id="invite-form">
+                <input type="hidden" id="invite-team-id" name="team_id">
+
+                <div class="form-group">
+                    <label for="invite-email">Email адрес *</label>
+                    <input type="email" id="invite-email" name="email" required placeholder="user@example.com">
+                </div>
+
+                <div class="form-group">
+                    <label for="invite-role">Роль *</label>
+                    <select id="invite-role" name="role" required>
+                        <option value="user">Пользователь</option>
+                        <option value="admin">Администратор</option>
+                    </select>
+                    <small style="color: var(--text-secondary); display: block; margin-top: 4px;">
+                        Администраторы могут управлять командами и приглашать участников.
+                        Пользователи могут только просматривать подписки своей команды.
+                    </small>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="closeInviteModal()">Отмена</button>
+                    <button type="submit" class="btn btn-primary">Отправить приглашение</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="/static/js/app.js"></script>
+    <script src="/static/js/teams.js"></script>
+    <script>
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', async () => {
+            // Check if user is authenticated
+            const token = localStorage.getItem('token');
+            if (!token) {
+                window.location.href = '/';
+                return;
+            }
+
+            // Load teams and invitations
+            await loadTeamsScreen();
+            await loadInvitations();
+        });
+    </script>
+</body>
+</html>

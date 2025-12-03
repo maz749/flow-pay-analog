@@ -131,6 +131,14 @@ func main() {
 		http.ServeFile(w, r, "web/templates/cancel-subscriptions.html")
 	}).Methods("GET")
 
+	router.HandleFunc("/teams", func(w http.ResponseWriter, r *http.Request) {
+		http.ServeFile(w, r, "web/templates/teams.html")
+	}).Methods("GET")
+
+	router.HandleFunc("/accept-invitation", func(w http.ResponseWriter, r *http.Request) {
+		http.ServeFile(w, r, "web/templates/accept-invitation.html")
+	}).Methods("GET")
+
 	// Signup redirects to home page with registration modal
 	router.HandleFunc("/signup", func(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, "/#register", http.StatusSeeOther)

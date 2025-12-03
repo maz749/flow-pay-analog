@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Принять приглашение - FlowPay</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <style>
+        .invitation-container {
+            max-width: 500px;
+            margin: 80px auto;
+            padding: 32px;
+        }
+
+        .invitation-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 32px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .invitation-header {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .invitation-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 16px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+        }
+
+        .invitation-header h1 {
+            font-size: 28px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin: 0 0 8px 0;
+        }
+
+        .invitation-header p {
+            color: var(--text-secondary);
+            margin: 0;
+        }
+
+        .invitation-details {
+            background: var(--surface-bg);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 20px;
+            margin-bottom: 24px;
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+        }
+
+        .detail-row:not(:last-child) {
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .detail-label {
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
+        .detail-value {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .role-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 16px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .role-badge.admin {
+            background: rgba(255, 193, 7, 0.2);
+            color: #ff9800;
+        }
+
+        .role-badge.user {
+            background: rgba(33, 150, 243, 0.2);
+            color: #2196F3;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            background: var(--surface-bg);
+            color: var(--text-primary);
+            font-size: 14px;
+            transition: all 0.2s ease;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(var(--primary-rgb), 0.1);
+        }
+
+        .error-message {
+            text-align: center;
+            padding: 24px;
+        }
+
+        .error-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+        }
+
+        .error-message h2 {
+            color: var(--text-primary);
+            margin: 0 0 8px 0;
+        }
+
+        .error-message p {
+            color: var(--text-secondary);
+        }
+
+        .loading {
+            text-align: center;
+            padding: 48px;
+        }
+
+        .spinner {
+            width: 48px;
+            height: 48px;
+            margin: 0 auto 16px;
+            border: 4px solid var(--border-color);
+            border-top-color: var(--primary-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="invitation-container">
+        <div id="loading" class="loading">
+            <div class="spinner"></div>
+            <p style="color: var(--text-secondary);">Загрузка приглашения...</p>
+        </div>
+
+        <div id="invitation-content" style="display: none;">
+            <!-- Content will be loaded here -->
+        </div>
+    </div>
+
+    <script src="/static/js/app.js"></script>
+    <script>
+        let invitation = null;
+
+        async function loadInvitation() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const token = urlParams.get('token');
+
+            if (!token) {
+                showError('Неверная ссылка приглашения');
+                return;
+            }
+
+            try {
+                const response = await fetch(`/api/invitations/${token}`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error('Приглашение не найдено или истекло');
+                }
+
+                invitation = await response.json();
+                renderInvitation();
+            } catch (error) {
+                console.error('Error loading invitation:', error);
+                showError(error.message);
+            }
+        }
+
+        function renderInvitation() {
+            document.getElementById('loading').style.display = 'none';
+            const content = document.getElementById('invitation-content');
+            content.style.display = 'block';
+
+            const roleText = invitation.role === 'admin' ? 'Администратор' : 'Пользователь';
+            const roleBadge = `<span class="role-badge ${invitation.role}">${roleText}</span>`;
+
+            content.innerHTML = `
+                <div class="invitation-card">
+                    <div class="invitation-header">
+                        <div class="invitation-icon">✉️</div>
+                        <h1>Приглашение в FlowPay</h1>
+                        <p>Вас пригласили присоединиться к системе управления подписками</p>
+                    </div>
+
+                    <div class="invitation-details">
+                        <div class="detail-row">
+                            <span class="detail-label">Email:</span>
+                            <span class="detail-value">${invitation.email}</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Роль:</span>
+                            <span class="detail-value">${roleBadge}</span>
+                        </div>
+                        ${invitation.team_name ? `
+                        <div class="detail-row">
+                            <span class="detail-label">Команда:</span>
+                            <span class="detail-value">${invitation.team_name}</span>
+                        </div>
+                        ` : ''}
+                        <div class="detail-row">
+                            <span class="detail-label">От кого:</span>
+                            <span class="detail-value">${invitation.inviter_name} (${invitation.inviter_email})</span>
+                        </div>
+                    </div>
+
+                    <form id="accept-form" onsubmit="acceptInvitation(event)">
+                        <div class="form-group">
+                            <label for="username">Ваше имя *</label>
+                            <input type="text" id="username" name="username" required placeholder="Введите ваше имя">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="password">Пароль *</label>
+                            <input type="password" id="password" name="password" required placeholder="Минимум 6 символов" minlength="6">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="confirm-password">Повторите пароль *</label>
+                            <input type="password" id="confirm-password" name="confirm_password" required placeholder="Повторите пароль">
+                        </div>
+
+                        <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 8px;">
+                            Принять приглашение
+                        </button>
+                    </form>
+                </div>
+            `;
+        }
+
+        async function acceptInvitation(event) {
+            event.preventDefault();
+
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirm-password').value;
+
+            if (password !== confirmPassword) {
+                alert('Пароли не совпадают');
+                return;
+            }
+
+            const formData = {
+                token: new URLSearchParams(window.location.search).get('token'),
+                username: document.getElementById('username').value,
+                password: password
+            };
+
+            try {
+                const response = await fetch('/api/invitations/accept', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(data.error || 'Ошибка при принятии приглашения');
+                }
+
+                // Save token and redirect to app
+                localStorage.setItem('token', data.token);
+                alert('Приглашение принято! Добро пожаловать в FlowPay!');
+                window.location.href = '/';
+            } catch (error) {
+                console.error('Error accepting invitation:', error);
+                alert(error.message);
+            }
+        }
+
+        function showError(message) {
+            document.getElementById('loading').style.display = 'none';
+            const content = document.getElementById('invitation-content');
+            content.style.display = 'block';
+
+            content.innerHTML = `
+                <div class="error-message">
+                    <div class="error-icon">❌</div>
+                    <h2>Ошибка</h2>
+                    <p>${message}</p>
+                    <a href="/" class="btn btn-primary" style="margin-top: 16px;">Вернуться на главную</a>
+                </div>
+            `;
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', loadInvitation);
+    </script>
+</body>
+</html>
