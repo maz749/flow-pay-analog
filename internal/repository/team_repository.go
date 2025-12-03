@@ -56,9 +56,9 @@ func (r *TeamRepository) GetByOwnerID(ownerID int) ([]models.Team, error) {
 func (r *TeamRepository) GetTeamsByUserID(userID int) ([]models.Team, error) {
 	var teams []models.Team
 	query := `
-		SELECT t.* FROM teams t
-		INNER JOIN team_members tm ON t.id = tm.team_id
-		WHERE tm.user_id = $1
+		SELECT DISTINCT t.* FROM teams t
+		LEFT JOIN team_members tm ON t.id = tm.team_id
+		WHERE tm.user_id = $1 OR t.owner_id = $1
 		ORDER BY t.created_at DESC
 	`
 	err := r.db.Select(&teams, query, userID)
