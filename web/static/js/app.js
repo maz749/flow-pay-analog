@@ -1043,18 +1043,64 @@ function createInlineMonthlyChart() {
     const currentMonth = today.getMonth();
     const currentYear = today.getFullYear();
 
+    // Helper function to calculate actual payments in a specific month
+    function calculatePaymentsInMonth(targetYear, targetMonth) {
+        let total = 0;
+        const monthStart = new Date(targetYear, targetMonth, 1);
+        const monthEnd = new Date(targetYear, targetMonth + 1, 0, 23, 59, 59);
+
+        subscriptions.forEach(sub => {
+            // Parse the next billing date
+            let nextBillingDate = new Date(sub.next_billing_date);
+
+            // Determine billing period in days
+            let periodDays = 30; // default
+            if (sub.billing_period === 'monthly') {
+                periodDays = 30;
+            } else if (sub.billing_period === 'yearly') {
+                periodDays = 365;
+            } else if (sub.billing_period === 'weekly') {
+                periodDays = 7;
+            } else if (sub.billing_period === 'custom' && sub.custom_period_days) {
+                periodDays = sub.custom_period_days;
+            }
+
+            // Count how many payments occur in this month
+            // We need to check both backwards (for past months) and forwards
+            let paymentCount = 0;
+            const maxIterations = 100; // safety limit
+
+            // Start from a date well before the target month
+            let checkDate = new Date(nextBillingDate);
+            // Go back until we're before the month start
+            while (checkDate > monthStart && paymentCount < maxIterations) {
+                checkDate = new Date(checkDate.getTime() - periodDays * 24 * 60 * 60 * 1000);
+            }
+
+            // Now go forward and count payments in this month
+            let iterations = 0;
+            while (checkDate <= monthEnd && iterations < maxIterations) {
+                if (checkDate >= monthStart && checkDate <= monthEnd) {
+                    paymentCount++;
+                }
+                checkDate = new Date(checkDate.getTime() + periodDays * 24 * 60 * 60 * 1000);
+                iterations++;
+            }
+
+            total += sub.amount * paymentCount;
+        });
+
+        return total;
+    }
+
     // Create 7 months: -3, -2, -1, 0 (current), +1, +2, +3
     for (let i = -3; i <= 3; i++) {
         const date = new Date(currentYear, currentMonth + i, 1);
         const monthName = date.toLocaleDateString('ru-RU', { month: 'short', year: 'numeric' });
         months.push(monthName);
 
-        // Calculate total monthly amount for all subscriptions
-        let monthExpense = 0;
-        subscriptions.forEach(sub => {
-            const monthlyAmount = calculateMonthlyAmount(sub);
-            monthExpense += monthlyAmount;
-        });
+        // Calculate actual expenses for this specific month
+        const monthExpense = calculatePaymentsInMonth(date.getFullYear(), date.getMonth());
 
         // Past and current months have actual data, future months have projected data
         if (i <= 0) {
