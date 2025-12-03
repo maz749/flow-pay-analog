@@ -116,8 +116,8 @@ function setupEventListeners() {
     });
 
     // Auth forms
-    document.getElementById('login-form').addEventListener('submit', handleLogin);
-    document.getElementById('register-form').addEventListener('submit', handleRegister);
+    document.getElementById('login-form')?.addEventListener('submit', handleLogin);
+    document.getElementById('register-form')?.addEventListener('submit', handleRegister);
 
     // App buttons
     document.getElementById('logout-btn')?.addEventListener('click', handleLogout);
@@ -129,11 +129,16 @@ function setupEventListeners() {
     document.getElementById('logout-btn-stats')?.addEventListener('click', handleLogout);
 
     // Subscription form
-    document.getElementById('subscription-form').addEventListener('submit', handleSaveSubscription);
-    document.getElementById('sub-period').addEventListener('change', (e) => {
-        const customDaysGroup = document.getElementById('custom-days-group');
-        customDaysGroup.style.display = e.target.value === 'custom' ? 'block' : 'none';
-    });
+    document.getElementById('subscription-form')?.addEventListener('submit', handleSaveSubscription);
+    const subPeriodEl = document.getElementById('sub-period');
+    if (subPeriodEl) {
+        subPeriodEl.addEventListener('change', (e) => {
+            const customDaysGroup = document.getElementById('custom-days-group');
+            if (customDaysGroup) {
+                customDaysGroup.style.display = e.target.value === 'custom' ? 'block' : 'none';
+            }
+        });
+    }
 
     // Subscription selection mode buttons
     document.querySelectorAll('.mode-btn').forEach(btn => {
@@ -155,7 +160,7 @@ function setupEventListeners() {
     });
 
     // Telegram settings form
-    document.getElementById('telegram-settings-form').addEventListener('submit', handleSaveTelegramSettings);
+    document.getElementById('telegram-settings-form')?.addEventListener('submit', handleSaveTelegramSettings);
 
     // Modal close buttons
     document.querySelectorAll('.modal-close').forEach(btn => {
@@ -176,7 +181,10 @@ function setupEventListeners() {
 
 function showScreen(screenId) {
     document.querySelectorAll('.screen').forEach(screen => screen.classList.remove('active'));
-    document.getElementById(screenId).classList.add('active');
+    const screen = document.getElementById(screenId);
+    if (screen) {
+        screen.classList.add('active');
+    }
 }
 
 function openModal(modalId) {

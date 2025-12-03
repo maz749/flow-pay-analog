@@ -10,11 +10,14 @@ let selectedTeam = null;
 async function loadTeamsScreen() {
     try {
         const response = await apiRequest('/teams', 'GET');
-        currentTeams = response;
+        // Ensure response is an array
+        currentTeams = Array.isArray(response) ? response : [];
         renderTeams();
     } catch (error) {
         console.error('Error loading teams:', error);
-        alert('Ошибка при загрузке команд', 'error');
+        currentTeams = [];
+        renderTeams();
+        alert('Ошибка при загрузке команд. Возможно, требуется применить миграции базы данных.');
     }
 }
 
@@ -256,11 +259,14 @@ async function removeMember(teamId, memberId) {
 async function loadInvitations() {
     try {
         const invitations = await apiRequest('/invitations', 'GET');
-        currentInvitations = invitations;
+        // Ensure response is an array
+        currentInvitations = Array.isArray(invitations) ? invitations : [];
         renderInvitations();
     } catch (error) {
         console.error('Error loading invitations:', error);
-        alert('Ошибка при загрузке приглашений', 'error');
+        currentInvitations = [];
+        renderInvitations();
+        alert('Ошибка при загрузке приглашений. Возможно, требуется применить миграции базы данных.');
     }
 }
 
