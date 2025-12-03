@@ -18,9 +18,9 @@ type Invitation struct {
 
 type InvitationWithDetails struct {
 	Invitation
-	TeamName      *string `json:"team_name"`
-	InviterEmail  string  `json:"inviter_email"`
-	InviterName   string  `json:"inviter_name"`
+	TeamName      *string `db:"team_name" json:"team_name"`
+	InviterEmail  string  `db:"inviter_email" json:"inviter_email"`
+	InviterName   string  `db:"inviter_name" json:"inviter_name"`
 }
 
 type CreateInvitationRequest struct {
