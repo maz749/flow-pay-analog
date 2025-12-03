@@ -46,7 +46,7 @@ func main() {
 	telegramHandler := handlers.NewTelegramHandler(userRepo)
 	cancelHandler := handlers.NewCancellationHandler(cancelRepo, subRepo)
 	teamHandler := handlers.NewTeamHandler(teamRepo, userRepo)
-	invitationHandler := handlers.NewInvitationHandler(invitationRepo, teamRepo, userRepo)
+	invitationHandler := handlers.NewInvitationHandler(invitationRepo, teamRepo, userRepo, cfg.JWT.Secret)
 
 	// Initialize router
 	router := mux.NewRouter()

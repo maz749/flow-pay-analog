@@ -4,7 +4,6 @@ import (
 	"database/sql"
 	"errors"
 	"fmt"
-	"time"
 
 	"github.com/maz749/flow-pay-analog/internal/models"
 	"github.com/maz749/flow-pay-analog/pkg/database"

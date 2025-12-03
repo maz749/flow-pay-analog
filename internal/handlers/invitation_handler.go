@@ -18,17 +18,20 @@ type InvitationHandler struct {
 	invitationRepo *repository.InvitationRepository
 	teamRepo       *repository.TeamRepository
 	userRepo       *repository.UserRepository
+	jwtSecret      string
 }
 
 func NewInvitationHandler(
 	invitationRepo *repository.InvitationRepository,
 	teamRepo *repository.TeamRepository,
 	userRepo *repository.UserRepository,
+	jwtSecret string,
 ) *InvitationHandler {
 	return &InvitationHandler{
 		invitationRepo: invitationRepo,
 		teamRepo:       teamRepo,
 		userRepo:       userRepo,
+		jwtSecret:      jwtSecret,
 	}
 }
 
@@ -260,7 +263,7 @@ func (h *InvitationHandler) AcceptInvitation(w http.ResponseWriter, r *http.Requ
 	}
 
 	// Generate JWT token
-	token, err := utils.GenerateJWT(user.ID)
+	token, err := utils.GenerateToken(user.ID, user.Email, h.jwtSecret)
 	if err != nil {
 		utils.SendError(w, http.StatusInternalServerError, "Failed to generate token")
 		return
