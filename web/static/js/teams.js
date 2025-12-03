@@ -14,7 +14,7 @@ async function loadTeamsScreen() {
         renderTeams();
     } catch (error) {
         console.error('Error loading teams:', error);
-        showNotification('Ошибка при загрузке команд', 'error');
+        alert('Ошибка при загрузке команд', 'error');
     }
 }
 
@@ -89,7 +89,7 @@ async function editTeam(teamId) {
         modal.classList.add('active');
     } catch (error) {
         console.error('Error loading team:', error);
-        showNotification('Ошибка при загрузке данных команды', 'error');
+        alert('Ошибка при загрузке данных команды', 'error');
     }
 }
 
@@ -109,18 +109,18 @@ async function saveTeam(event) {
         if (selectedTeam) {
             // Update existing team
             await apiRequest(`/teams/${selectedTeam.id}`, 'PUT', formData);
-            showNotification('Команда обновлена', 'success');
+            alert('Команда обновлена', 'success');
         } else {
             // Create new team
             await apiRequest('/teams', 'POST', formData);
-            showNotification('Команда создана', 'success');
+            alert('Команда создана', 'success');
         }
 
         closeTeamModal();
         await loadTeamsScreen();
     } catch (error) {
         console.error('Error saving team:', error);
-        showNotification(error.message || 'Ошибка при сохранении команды', 'error');
+        alert(error.message || 'Ошибка при сохранении команды', 'error');
     }
 }
 
@@ -132,11 +132,11 @@ async function deleteTeam(teamId) {
 
     try {
         await apiRequest(`/teams/${teamId}`, 'DELETE');
-        showNotification('Команда удалена', 'success');
+        alert('Команда удалена', 'success');
         await loadTeamsScreen();
     } catch (error) {
         console.error('Error deleting team:', error);
-        showNotification('Ошибка при удалении команды', 'error');
+        alert('Ошибка при удалении команды', 'error');
     }
 }
 
@@ -155,7 +155,7 @@ async function showTeamDetails(teamId) {
         modal.classList.add('active');
     } catch (error) {
         console.error('Error loading team details:', error);
-        showNotification('Ошибка при загрузке данных команды', 'error');
+        alert('Ошибка при загрузке данных команды', 'error');
     }
 }
 
@@ -226,13 +226,13 @@ async function sendInvitation(event) {
 
     try {
         const response = await apiRequest('/invitations', 'POST', formData);
-        showNotification('Приглашение отправлено', 'success');
+        alert('Приглашение отправлено', 'success');
         console.log('Invitation URL:', response.url);
         closeInviteModal();
         await loadInvitations();
     } catch (error) {
         console.error('Error sending invitation:', error);
-        showNotification(error.message || 'Ошибка при отправке приглашения', 'error');
+        alert(error.message || 'Ошибка при отправке приглашения', 'error');
     }
 }
 
@@ -244,11 +244,11 @@ async function removeMember(teamId, memberId) {
 
     try {
         await apiRequest(`/teams/${teamId}/members/${memberId}`, 'DELETE');
-        showNotification('Участник удален из команды', 'success');
+        alert('Участник удален из команды', 'success');
         await showTeamDetails(teamId);
     } catch (error) {
         console.error('Error removing member:', error);
-        showNotification('Ошибка при удалении участника', 'error');
+        alert('Ошибка при удалении участника', 'error');
     }
 }
 
@@ -260,7 +260,7 @@ async function loadInvitations() {
         renderInvitations();
     } catch (error) {
         console.error('Error loading invitations:', error);
-        showNotification('Ошибка при загрузке приглашений', 'error');
+        alert('Ошибка при загрузке приглашений', 'error');
     }
 }
 
@@ -302,11 +302,11 @@ async function deleteInvitation(token) {
 
     try {
         await apiRequest(`/invitations/${token}`, 'DELETE');
-        showNotification('Приглашение отменено', 'success');
+        alert('Приглашение отменено', 'success');
         await loadInvitations();
     } catch (error) {
         console.error('Error deleting invitation:', error);
-        showNotification('Ошибка при отмене приглашения', 'error');
+        alert('Ошибка при отмене приглашения', 'error');
     }
 }
 
