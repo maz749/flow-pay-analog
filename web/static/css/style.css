@@ -2789,656 +2789,6 @@ textarea {
 }
 
 /* ============================================
-   FLOWPAY STYLE - NEW LAYOUT
-   ============================================ */
-
-/* Hero Grid Layout */
-.hero-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 60px;
-    align-items: center;
-    position: relative;
-    z-index: 1;
-}
-
-.hero-content {
-    text-align: left;
-}
-
-.hero-title {
-    font-size: 3rem !important;
-    font-weight: 800 !important;
-    line-height: 1.2 !important;
-    margin-bottom: 20px !important;
-    text-align: left !important;
-}
-
-.hero-subtitle {
-    font-size: 1.15rem !important;
-    line-height: 1.7 !important;
-    opacity: 0.9 !important;
-    margin-bottom: 32px !important;
-    text-align: left !important;
-    max-width: none !important;
-}
-
-.hero-features-list {
-    margin-top: 24px;
-    font-size: 0.95rem;
-    opacity: 0.85;
-}
-
-/* Mockup Browser */
-.hero-mockup {
-    position: relative;
-}
-
-.mockup-browser {
-    background: white;
-    border-radius: 12px;
-    overflow: hidden;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-}
-
-.browser-header {
-    background: #f5f5f5;
-    padding: 12px 16px;
-    display: flex;
-    align-items: center;
-}
-
-.browser-dots {
-    display: flex;
-    gap: 6px;
-}
-
-.browser-dots span {
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    background: #ddd;
-}
-
-.browser-dots span:nth-child(1) { background: #ff5f56; }
-.browser-dots span:nth-child(2) { background: #ffbd2e; }
-.browser-dots span:nth-child(3) { background: #27c93f; }
-
-.mockup-content {
-    padding: 24px;
-    background: #fafafa;
-    min-height: 350px;
-}
-
-.mockup-card {
-    background: white;
-    padding: 24px;
-    border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-}
-
-.mockup-card h3 {
-    font-size: 1.1rem;
-    color: #333;
-    margin-bottom: 12px;
-}
-
-.mockup-price {
-    font-size: 2rem;
-    font-weight: 800;
-    color: var(--primary-color);
-    margin-bottom: 20px;
-}
-
-.mockup-list {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-}
-
-.mockup-item {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 12px;
-    background: #f8f8f8;
-    border-radius: 8px;
-    font-size: 0.95rem;
-}
-
-.item-icon {
-    font-size: 1.5rem;
-}
-
-.item-price {
-    margin-left: auto;
-    font-weight: 700;
-    color: var(--primary-color);
-}
-
-/* AI Features Section */
-.ai-features-section {
-    background: #1a1d2e;
-    padding: 100px 0;
-    color: white;
-}
-
-.section-title-white {
-    text-align: center;
-    font-size: 2.5rem;
-    font-weight: 800;
-    color: white;
-    margin-bottom: 16px;
-}
-
-.section-subtitle-white {
-    text-align: center;
-    font-size: 1.15rem;
-    color: rgba(255, 255, 255, 0.7);
-    margin-bottom: 60px;
-}
-
-.ai-features-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 24px;
-    margin-bottom: 80px;
-}
-
-.ai-feature-card {
-    padding: 48px 32px;
-    border-radius: 16px;
-    text-align: center;
-    transition: var(--transition-base);
-}
-
-.ai-feature-card:hover {
-    transform: translateY(-8px);
-}
-
-.ai-purple {
-    background: linear-gradient(135deg, #a78bfa 0%, #8b5cf6 100%);
-}
-
-.ai-blue {
-    background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%);
-}
-
-.ai-red {
-    background: linear-gradient(135deg, #f87171 0%, #ef4444 100%);
-}
-
-.ai-green {
-    background: linear-gradient(135deg, #34d399 0%, #10b981 100%);
-}
-
-.ai-icon {
-    font-size: 4rem;
-    margin-bottom: 24px;
-}
-
-.ai-feature-card h3 {
-    font-size: 1.25rem;
-    font-weight: 700;
-    margin-bottom: 12px;
-}
-
-.ai-feature-card p {
-    font-size: 1rem;
-    opacity: 0.9;
-    line-height: 1.6;
-}
-
-.ai-tech-section {
-    margin-top: 60px;
-    text-align: center;
-}
-
-/* How it Works Section - New Style */
-.how-it-works-section {
-    background: #1a1d2e !important;
-    padding: 100px 0 !important;
-}
-
-.steps-grid-new {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 40px;
-    margin-top: 60px;
-}
-
-.step-column {
-    text-align: center;
-}
-
-.step-mockup {
-    margin-bottom: 32px;
-}
-
-.step-screen {
-    background: white;
-    border-radius: 12px;
-    padding: 24px;
-    min-height: 280px;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
-}
-
-.step-screen-dark {
-    background: #2d3748;
-}
-
-.screen-header {
-    font-size: 1.1rem;
-    font-weight: 700;
-    color: #333;
-    margin-bottom: 20px;
-    padding-bottom: 12px;
-    border-bottom: 2px solid #e5e5e5;
-}
-
-.expense-card {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    padding: 24px;
-    border-radius: 12px;
-    color: white;
-    margin-bottom: 16px;
-}
-
-.expense-title {
-    font-size: 0.9rem;
-    opacity: 0.9;
-    margin-bottom: 8px;
-}
-
-.expense-amount {
-    font-size: 2rem;
-    font-weight: 800;
-    margin-bottom: 8px;
-}
-
-.expense-note {
-    font-size: 0.85rem;
-    opacity: 0.85;
-}
-
-.chart-placeholder {
-    height: 100px;
-    background: #f5f5f5;
-    border-radius: 8px;
-    position: relative;
-    overflow: hidden;
-}
-
-.chart-line {
-    position: absolute;
-    bottom: 20%;
-    left: 10%;
-    right: 10%;
-    height: 2px;
-    background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
-}
-
-.notification-list,
-.status-list {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-}
-
-.notification-item {
-    background: #a7f3d0;
-    padding: 16px;
-    border-radius: 8px;
-    color: #064e3b;
-    text-align: left;
-}
-
-.notif-detail {
-    font-size: 0.9rem;
-    margin-top: 8px;
-    opacity: 0.8;
-}
-
-.status-item {
-    display: flex;
-    gap: 16px;
-    padding: 16px;
-    background: rgba(255, 255, 255, 0.05);
-    border-radius: 8px;
-    text-align: left;
-}
-
-.status-icon {
-    font-size: 2rem;
-}
-
-.status-title {
-    color: white;
-    font-weight: 600;
-    margin-bottom: 4px;
-}
-
-.status-sub {
-    color: rgba(255, 255, 255, 0.7);
-    font-size: 0.9rem;
-}
-
-.step-label {
-    font-size: 0.85rem;
-    color: rgba(255, 255, 255, 0.6);
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    margin-bottom: 12px;
-}
-
-.step-title-new {
-    font-size: 1.5rem;
-    font-weight: 800;
-    color: white;
-    margin-bottom: 12px;
-}
-
-.step-description {
-    color: rgba(255, 255, 255, 0.7);
-    line-height: 1.7;
-}
-
-/* Benefits Showcase Section */
-.benefits-showcase-section {
-    background: #f8fafc;
-    padding: 100px 0;
-}
-
-.section-title-dark {
-    text-align: center;
-    font-size: 2.5rem;
-    font-weight: 800;
-    color: var(--text-primary);
-    margin-bottom: 60px;
-}
-
-.benefits-layout {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 60px;
-    align-items: start;
-}
-
-.mockup-browser-large {
-    background: white;
-    border-radius: 12px;
-    overflow: hidden;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
-    margin-bottom: 32px;
-}
-
-.browser-title {
-    margin-left: auto;
-    font-weight: 700;
-    font-size: 0.9rem;
-    color: #666;
-}
-
-.mockup-dashboard {
-    padding: 24px;
-    background: #fafafa;
-}
-
-.dashboard-stats {
-    background: white;
-    padding: 24px;
-    border-radius: 12px;
-    margin-bottom: 16px;
-}
-
-.stat-label {
-    font-size: 0.9rem;
-    color: #666;
-    margin-bottom: 8px;
-}
-
-.stat-value {
-    font-size: 2rem;
-    font-weight: 800;
-    color: var(--primary-color);
-    margin-bottom: 8px;
-}
-
-.stat-change {
-    font-size: 0.85rem;
-    color: #10b981;
-}
-
-.chart-mini {
-    height: 80px;
-    background: #f0f0f0;
-    border-radius: 8px;
-    margin-top: 16px;
-}
-
-.dashboard-subscriptions {
-    background: white;
-    padding: 20px;
-    border-radius: 12px;
-}
-
-.dashboard-title {
-    font-size: 1rem;
-    font-weight: 700;
-    color: #333;
-    margin-bottom: 12px;
-}
-
-.sub-item {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 12px;
-    background: #f8f8f8;
-    border-radius: 8px;
-}
-
-.sub-icon {
-    font-size: 1.5rem;
-}
-
-.sub-name {
-    flex: 1;
-    color: #333;
-}
-
-.sub-price {
-    font-weight: 700;
-    color: var(--primary-color);
-}
-
-.benefits-text-block {
-    background: #f0f0f0;
-    padding: 24px;
-    border-radius: 12px;
-}
-
-.benefits-text-block h3 {
-    font-size: 1.25rem;
-    font-weight: 700;
-    color: #333;
-    margin-bottom: 12px;
-}
-
-.benefits-text-block p {
-    color: #666;
-    line-height: 1.7;
-}
-
-.benefits-list {
-    display: flex;
-    flex-direction: column;
-    gap: 24px;
-}
-
-.benefit-item {
-    display: flex;
-    gap: 20px;
-    align-items: start;
-}
-
-.benefit-icon-circle {
-    width: 56px;
-    height: 56px;
-    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.8rem;
-    flex-shrink: 0;
-}
-
-.benefit-content h3 {
-    font-size: 1.35rem;
-    font-weight: 700;
-    color: var(--text-primary);
-    margin-bottom: 8px;
-}
-
-.benefit-content p {
-    color: var(--text-secondary);
-    line-height: 1.7;
-}
-
-/* Cancellation Section */
-.cancellation-section {
-    background: #1a1d2e;
-    padding: 100px 0;
-    color: white;
-}
-
-.search-box {
-    max-width: 700px;
-    margin: 0 auto 40px;
-}
-
-.search-input {
-    width: 100%;
-    padding: 18px 24px;
-    font-size: 1.05rem;
-    border: none;
-    border-radius: 12px;
-    background: rgba(255, 255, 255, 0.1);
-    color: white;
-    outline: none;
-}
-
-.search-input::placeholder {
-    color: rgba(255, 255, 255, 0.5);
-}
-
-.services-list {
-    max-width: 700px;
-    margin: 0 auto;
-    display: flex;
-    flex-direction: column;
-    gap: 1px;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 12px;
-    overflow: hidden;
-}
-
-.service-item {
-    background: rgba(255, 255, 255, 0.05);
-    padding: 20px 24px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    cursor: pointer;
-    transition: var(--transition-fast);
-}
-
-.service-item:hover {
-    background: rgba(255, 255, 255, 0.1);
-}
-
-.service-name {
-    font-size: 1.1rem;
-    font-weight: 500;
-}
-
-.service-arrow {
-    font-size: 1.5rem;
-    opacity: 0.5;
-}
-
-.view-all-services {
-    text-align: center;
-    margin-top: 32px;
-}
-
-.view-all-link {
-    color: rgba(255, 255, 255, 0.8);
-    text-decoration: none;
-    font-weight: 600;
-    transition: var(--transition-fast);
-}
-
-.view-all-link:hover {
-    color: white;
-}
-
-/* Simple FAQ Section */
-.simple-faq-section {
-    background: white;
-    padding: 100px 0;
-}
-
-.faq-simple-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 32px;
-    max-width: 1000px;
-    margin: 0 auto;
-}
-
-.faq-simple-item {
-    padding: 32px;
-    background: #f8fafc;
-    border-radius: 12px;
-    border-left: 4px solid var(--primary-color);
-}
-
-.faq-simple-item h3 {
-    font-size: 1.2rem;
-    font-weight: 700;
-    color: var(--text-primary);
-    margin-bottom: 12px;
-}
-
-.faq-simple-item p {
-    color: var(--text-secondary);
-    line-height: 1.7;
-}
-
-/* Final CTA Section */
-.final-cta-section {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    padding: 100px 0;
-    text-align: center;
-    color: white;
-}
-
-.cta-title {
-    font-size: 3rem;
-    font-weight: 800;
-    margin-bottom: 16px;
-}
-
-.cta-subtitle {
-    font-size: 1.25rem;
-    opacity: 0.9;
-    margin-bottom: 40px;
-}
-
-/* ============================================
    NEW HTML LAYOUT ELEMENTS
    ============================================ */
 
@@ -3820,117 +3170,6 @@ textarea {
     .stat-card-large {
         padding: 40px 28px;
     }
-
-    /* FlowPay Style - Responsive */
-    .hero-grid {
-        grid-template-columns: 1fr;
-        gap: 40px;
-    }
-
-    .hero-content {
-        text-align: center;
-    }
-
-    .hero-title {
-        font-size: 2rem !important;
-        text-align: center !important;
-    }
-
-    .hero-subtitle {
-        font-size: 1.1rem;
-        text-align: center;
-    }
-
-    .hero-buttons {
-        justify-content: center;
-    }
-
-    .ai-features-grid {
-        grid-template-columns: 1fr;
-        gap: 16px;
-    }
-
-    .ai-feature-card {
-        padding: 32px 24px;
-    }
-
-    .steps-grid-new {
-        grid-template-columns: 1fr;
-        gap: 32px;
-    }
-
-    .step-mockup {
-        margin-bottom: 24px;
-    }
-
-    .benefits-layout {
-        grid-template-columns: 1fr;
-        gap: 40px;
-    }
-
-    .benefits-mockup {
-        order: -1;
-    }
-
-    .benefit-list {
-        gap: 16px;
-    }
-
-    .benefit-item-new {
-        padding: 20px;
-    }
-
-    .benefit-icon-circle {
-        width: 50px;
-        height: 50px;
-        font-size: 1.5rem;
-    }
-
-    .faq-simple-grid {
-        grid-template-columns: 1fr;
-        gap: 16px;
-    }
-
-    .faq-simple-item {
-        padding: 24px;
-    }
-
-    .cta-title {
-        font-size: 2rem;
-    }
-
-    .cta-subtitle {
-        font-size: 1.1rem;
-    }
-
-    .ai-features-section,
-    .how-it-works-section,
-    .benefits-showcase-section,
-    .cancellation-section,
-    .simple-faq-section,
-    .final-cta-section {
-        padding: 60px 0;
-    }
-
-    .section-title-white {
-        font-size: 2rem;
-    }
-
-    .section-subtitle-white {
-        font-size: 1rem;
-    }
-
-    .step-title-new {
-        font-size: 1.3rem;
-    }
-
-    .services-list {
-        margin-top: 32px;
-    }
-
-    .search-box {
-        margin-bottom: 24px;
-    }
 }
 
 /* ============================================
@@ -3948,4 +3187,337 @@ textarea {
 
 .privacy-content-section .content-block:last-child {
     margin-bottom: 0;
+}
+/* ============================================
+   TILDA-STYLE ENHANCEMENTS
+   ============================================ */
+
+/* Enhanced Section Styling - Clean, Spacious, Professional */
+
+/* More generous section padding for breathing room */
+.hero-section {
+    padding: 140px 0 120px;
+}
+
+.features-section,
+.how-it-works-section,
+.target-audience-section,
+.why-matters-section,
+.faq-section,
+.problems-section,
+.benefits-section,
+.testimonials-section,
+.cta-section {
+    padding: 120px 0;
+}
+
+/* Better section backgrounds - clean alternation */
+.how-it-works-section,
+.why-matters-section,
+.testimonials-section,
+.benefits-section {
+    background: #ffffff;
+}
+
+.features-section,
+.target-audience-section,
+.faq-section,
+.problems-section {
+    background: #f8fafc;
+}
+
+/* Enhanced typography - more impact */
+.hero-title {
+    font-size: 4.5rem;
+    font-weight: 900;
+    line-height: 1.1;
+    margin-bottom: 32px;
+}
+
+.section-title {
+    font-size: 3.25rem;
+    font-weight: 900;
+    line-height: 1.2;
+    margin-bottom: 28px;
+}
+
+.section-subtitle {
+    font-size: 1.3rem;
+    line-height: 1.8;
+    max-width: 800px;
+}
+
+/* Enhanced cards - cleaner, more elevation */
+.step-card,
+.feature-card,
+.audience-card,
+.reason-card,
+.problem-card,
+.benefit-card,
+.testimonial-card,
+.value-card {
+    background: white;
+    border-radius: 20px;
+    padding: 52px 40px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    border: 1px solid rgba(0, 0, 0, 0.03);
+}
+
+.step-card:hover,
+.feature-card:hover,
+.audience-card:hover,
+.reason-card:hover,
+.problem-card:hover,
+.benefit-card:hover,
+.testimonial-card:hover,
+.value-card:hover {
+    transform: translateY(-16px) scale(1.02);
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.15);
+    border-color: var(--primary-color);
+}
+
+/* Enhanced icons - bigger, bolder */
+.step-icon,
+.feature-icon,
+.reason-icon,
+.problem-icon,
+.benefit-icon {
+    font-size: 5rem;
+    margin-bottom: 28px;
+    display: block;
+}
+
+/* Better grid spacing */
+.steps-grid,
+.features-grid,
+.audience-grid,
+.reasons-grid,
+.problems-grid,
+.benefits-grid,
+.testimonials-grid {
+    gap: 48px;
+}
+
+/* Enhanced section headers */
+.section-header-block {
+    margin-bottom: 100px;
+}
+
+.section-badge {
+    padding: 12px 28px;
+    font-size: 1rem;
+    font-weight: 800;
+    border-width: 2px;
+}
+
+/* Better button styling */
+.btn-large {
+    padding: 22px 52px;
+    font-size: 1.2rem;
+    border-radius: 14px;
+}
+
+.btn-large:hover {
+    transform: translateY(-4px) scale(1.03);
+}
+
+/* Enhanced featured cards */
+.audience-card-featured,
+.feature-highlight {
+    border: 3px solid var(--primary-color);
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.03), rgba(139, 92, 246, 0.03));
+    transform: scale(1.05);
+}
+
+.audience-card-featured:hover,
+.feature-highlight:hover {
+    transform: translateY(-16px) scale(1.07);
+}
+
+/* Better spacing for content blocks */
+.step-card h3,
+.feature-card h3,
+.audience-card h3,
+.reason-card h3,
+.problem-card h3 {
+    font-size: 1.65rem;
+    font-weight: 800;
+    margin-bottom: 20px;
+    line-height: 1.3;
+}
+
+.step-card p,
+.feature-card p,
+.audience-card p,
+.reason-card p,
+.problem-card p {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: var(--text-secondary);
+}
+
+/* Enhanced FAQ items */
+.faq-item {
+    background: white;
+    padding: 48px;
+    border-radius: 20px;
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.07);
+    border-left: 5px solid var(--primary-color);
+}
+
+.faq-item h3 {
+    font-size: 1.5rem;
+    font-weight: 800;
+    margin-bottom: 20px;
+}
+
+.faq-item p {
+    font-size: 1.1rem;
+    line-height: 1.8;
+}
+
+/* Better testimonial cards */
+.testimonial-card {
+    padding: 48px 44px;
+}
+
+.testimonial-text {
+    font-size: 1.15rem;
+    line-height: 1.9;
+    font-style: italic;
+    margin-bottom: 28px;
+}
+
+.testimonial-author {
+    font-size: 1.1rem;
+    font-weight: 700;
+}
+
+/* Enhanced CTA section */
+.cta-section {
+    padding: 140px 0;
+}
+
+.cta-section h2 {
+    font-size: 3.5rem;
+    margin-bottom: 32px;
+}
+
+.cta-section p {
+    font-size: 1.35rem;
+    margin-bottom: 48px;
+}
+
+/* Better stats display */
+.stat-number-big {
+    font-size: 5rem;
+    font-weight: 900;
+}
+
+.stat-label-big {
+    font-size: 1.4rem;
+    font-weight: 700;
+}
+
+/* Enhanced newsletter section */
+.newsletter-box {
+    padding: 64px 56px;
+    border-radius: 24px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.12);
+}
+
+/* Better problem/solution cards */
+.problem-card {
+    border-left: 5px solid var(--danger-color);
+}
+
+.solution-highlight {
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.05), rgba(34, 197, 94, 0.05));
+    border: 2px solid var(--success-color);
+}
+
+/* Enhanced mobile responsiveness */
+@media (max-width: 768px) {
+    .hero-title {
+        font-size: 2.75rem;
+    }
+    
+    .section-title {
+        font-size: 2.25rem;
+    }
+    
+    .section-subtitle {
+        font-size: 1.15rem;
+    }
+    
+    .hero-section {
+        padding: 100px 0 80px;
+    }
+    
+    .features-section,
+    .how-it-works-section,
+    .target-audience-section,
+    .why-matters-section,
+    .faq-section,
+    .problems-section,
+    .benefits-section,
+    .testimonials-section,
+    .cta-section {
+        padding: 80px 0;
+    }
+    
+    .step-card,
+    .feature-card,
+    .audience-card,
+    .reason-card,
+    .problem-card,
+    .benefit-card,
+    .testimonial-card,
+    .value-card {
+        padding: 40px 32px;
+    }
+    
+    .section-header-block {
+        margin-bottom: 64px;
+    }
+}
+
+/* Clean, professional animations */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(40px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.step-card,
+.feature-card,
+.audience-card {
+    animation: fadeInUp 0.6s ease-out backwards;
+}
+
+.step-card:nth-child(1) { animation-delay: 0.1s; }
+.step-card:nth-child(2) { animation-delay: 0.2s; }
+.step-card:nth-child(3) { animation-delay: 0.3s; }
+
+/* Enhanced focus states for accessibility */
+.btn:focus,
+.btn-large:focus {
+    outline: 3px solid var(--primary-light);
+    outline-offset: 3px;
+}
+
+/* Better link hover states */
+a:hover {
+    color: var(--primary-dark);
+}
+
+/* Clean section transitions */
+section {
+    scroll-margin-top: 80px;
 }
