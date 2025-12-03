@@ -34,6 +34,7 @@ docker-logs: ## Показать логи Docker контейнеров
 migrate: ## Применить миграции базы данных (вручную)
 	psql -h localhost -U flowpay -d flowpay_db -f migrations/001_init_schema.sql
 	psql -h localhost -U flowpay -d flowpay_db -f migrations/002_add_cancellation_instructions.sql
+	psql -h localhost -U flowpay -d flowpay_db -f migrations/003_add_teams_and_roles.sql
 
 dev: ## Запустить в режиме разработки с hot reload
 	air
