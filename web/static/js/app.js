@@ -16,6 +16,10 @@ let categoryChart = null;
 let topSubscriptionsChart = null;
 let upcomingPaymentsChart = null;
 
+// Inline charts instances
+let inlineMonthlyChart = null;
+let inlineCategoryChart = null;
+
 // Subscription Templates Database
 const subscriptionTemplates = [
     // Streaming (10 сервисов)
@@ -339,6 +343,8 @@ async function loadSubscriptions() {
         if (response.success) {
             subscriptions = response.data || [];
             renderSubscriptions();
+            // Create inline charts
+            createInlineCharts();
         }
     } catch (error) {
         console.error('Failed to load subscriptions:', error);
@@ -1004,6 +1010,151 @@ function createUpcomingPaymentsChart(subs) {
                     ticks: {
                         callback: function(value) {
                             return value + ' ₽';
+                        }
+                    }
+                }
+            }
+        }
+    });
+}
+
+// Inline Charts for Main Dashboard
+function createInlineCharts() {
+    if (subscriptions.length === 0) return;
+
+    createInlineMonthlyChart();
+    createInlineCategoryChart();
+}
+
+function createInlineMonthlyChart() {
+    const ctx = document.getElementById('inlineMonthlyChart');
+    if (!ctx) return;
+
+    // Destroy previous chart if exists
+    if (inlineMonthlyChart) {
+        inlineMonthlyChart.destroy();
+    }
+
+    // Calculate monthly expenses for last 6 months
+    const months = [];
+    const expenses = [];
+    const today = new Date();
+
+    for (let i = 5; i >= 0; i--) {
+        const date = new Date(today.getFullYear(), today.getMonth() - i, 1);
+        const monthName = date.toLocaleDateString('ru-RU', { month: 'short', year: 'numeric' });
+        months.push(monthName);
+
+        // Calculate expenses for this month
+        let monthExpense = 0;
+        subscriptions.forEach(sub => {
+            const monthlyAmount = calculateMonthlyAmount(sub);
+            monthExpense += monthlyAmount;
+        });
+        expenses.push(monthExpense);
+    }
+
+    inlineMonthlyChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: months,
+            datasets: [{
+                label: 'Расходы (₽)',
+                data: expenses,
+                borderColor: 'rgb(99, 102, 241)',
+                backgroundColor: 'rgba(99, 102, 241, 0.1)',
+                borderWidth: 2,
+                fill: true,
+                tension: 0.4
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    display: false
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        callback: function(value) {
+                            return value + ' ₽';
+                        }
+                    }
+                }
+            }
+        }
+    });
+}
+
+function createInlineCategoryChart() {
+    const ctx = document.getElementById('inlineCategoryChart');
+    if (!ctx) return;
+
+    // Destroy previous chart if exists
+    if (inlineCategoryChart) {
+        inlineCategoryChart.destroy();
+    }
+
+    // Calculate expenses by category
+    const categoryExpenses = {};
+    subscriptions.forEach(sub => {
+        const category = sub.category || 'other';
+        const monthlyAmount = calculateMonthlyAmount(sub);
+        categoryExpenses[category] = (categoryExpenses[category] || 0) + monthlyAmount;
+    });
+
+    const categoryNames = {
+        'streaming': 'Стриминг',
+        'music': 'Музыка',
+        'software': 'Софт',
+        'gaming': 'Игры',
+        'education': 'Образование',
+        'cloud': 'Облако',
+        'marketplace': 'Маркетплейсы',
+        'crm': 'CRM',
+        'other': 'Другое'
+    };
+
+    const labels = Object.keys(categoryExpenses).map(cat => categoryNames[cat] || cat);
+    const data = Object.values(categoryExpenses);
+
+    const colors = [
+        'rgba(99, 102, 241, 0.8)',
+        'rgba(139, 92, 246, 0.8)',
+        'rgba(236, 72, 153, 0.8)',
+        'rgba(251, 146, 60, 0.8)',
+        'rgba(34, 197, 94, 0.8)',
+        'rgba(59, 130, 246, 0.8)',
+        'rgba(249, 115, 22, 0.8)',
+        'rgba(168, 85, 247, 0.8)',
+        'rgba(107, 114, 128, 0.8)'
+    ];
+
+    inlineCategoryChart = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            labels: labels,
+            datasets: [{
+                data: data,
+                backgroundColor: colors,
+                borderWidth: 2,
+                borderColor: '#fff'
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                    labels: {
+                        padding: 15,
+                        font: {
+                            size: 12
                         }
                     }
                 }

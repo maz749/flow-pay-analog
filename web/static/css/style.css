@@ -602,6 +602,58 @@ textarea {
     color: var(--primary-color);
 }
 
+/* Inline Charts Section */
+.inline-charts-section {
+    padding: 24px 0;
+    background: var(--bg-color);
+}
+
+.inline-charts-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+}
+
+.inline-chart-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    padding: 24px;
+    box-shadow: var(--shadow);
+    transition: all var(--transition-base);
+}
+
+.inline-chart-card:hover {
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+}
+
+.inline-chart-card h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 16px;
+}
+
+.inline-chart-container {
+    position: relative;
+    height: 250px;
+}
+
+.inline-chart-container canvas {
+    max-height: 250px;
+}
+
+@media (max-width: 768px) {
+    .inline-charts-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .inline-chart-container {
+        height: 220px;
+    }
+}
+
 /* Subscriptions Section */
 .subscriptions-section {
     padding: 30px 0 60px;
