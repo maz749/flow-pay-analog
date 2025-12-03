@@ -1458,14 +1458,23 @@ function renderSubscriptionTemplates() {
     renderAllSubscriptions();
 }
 
-// Render popular subscriptions (8 items)
+// Helper function to render subscription logo
+function renderSubscriptionLogo(template) {
+    if (template.logoUrl) {
+        return `<img src="${template.logoUrl}" alt="${template.name}" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                <div class="subscription-logo-fallback" style="display:none;">${template.logo}</div>`;
+    }
+    return template.logo;
+}
+
+// Render popular subscriptions (all popular items)
 function renderPopularSubscriptions() {
     const container = document.getElementById('popular-subscriptions');
-    const popular = subscriptionTemplates.filter(t => t.popular).slice(0, 8);
+    const popular = subscriptionTemplates.filter(t => t.popular);
 
     container.innerHTML = popular.map(template => `
         <div class="subscription-card-item" data-subscription='${JSON.stringify(template)}'>
-            <div class="subscription-logo">${template.logo}</div>
+            <div class="subscription-logo">${renderSubscriptionLogo(template)}</div>
             <div class="subscription-card-name">${template.name}</div>
             <div class="subscription-card-price">от ${template.price} ${getCurrencySymbol(template.currency)}</div>
         </div>
