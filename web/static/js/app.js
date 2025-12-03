@@ -1067,24 +1067,34 @@ function createInlineMonthlyChart() {
     }
 
     inlineMonthlyChart = new Chart(ctx, {
-        type: 'bar',
+        type: 'line',
         data: {
             labels: months,
             datasets: [
                 {
                     label: 'Прошлые расходы',
                     data: pastExpenses,
-                    backgroundColor: 'rgba(99, 102, 241, 0.8)',
                     borderColor: 'rgb(99, 102, 241)',
-                    borderWidth: 1
+                    backgroundColor: 'rgba(99, 102, 241, 0.1)',
+                    borderWidth: 3,
+                    fill: true,
+                    tension: 0.4,
+                    pointRadius: 5,
+                    pointBackgroundColor: 'rgb(99, 102, 241)'
                 },
                 {
                     label: 'Прогноз',
                     data: futureExpenses,
-                    backgroundColor: 'rgba(139, 92, 246, 0.5)',
                     borderColor: 'rgb(139, 92, 246)',
-                    borderWidth: 1,
-                    borderDash: [5, 5]
+                    backgroundColor: 'rgba(139, 92, 246, 0.05)',
+                    borderWidth: 3,
+                    borderDash: [8, 4],
+                    fill: true,
+                    tension: 0.4,
+                    pointRadius: 5,
+                    pointBackgroundColor: 'rgb(139, 92, 246)',
+                    pointBorderColor: 'rgb(139, 92, 246)',
+                    pointStyle: 'circle'
                 }
             ]
         },
@@ -1099,7 +1109,8 @@ function createInlineMonthlyChart() {
                         padding: 10,
                         font: {
                             size: 11
-                        }
+                        },
+                        usePointStyle: true
                     }
                 },
                 tooltip: {
@@ -1118,9 +1129,6 @@ function createInlineMonthlyChart() {
                             return value + ' ₽';
                         }
                     }
-                },
-                x: {
-                    stacked: false
                 }
             }
         }
