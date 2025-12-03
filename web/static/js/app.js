@@ -308,16 +308,23 @@ async function loadStats() {
 
         if (response.success) {
             const stats = response.data;
-            document.getElementById('total-subscriptions').textContent = stats.total_subscriptions;
-            document.getElementById('monthly-total').textContent = `${stats.monthly_total.toFixed(2)} ₽`;
-            document.getElementById('yearly-total').textContent = `${stats.yearly_total.toFixed(2)} ₽`;
+            const totalSubs = document.getElementById('total-subscriptions');
+            const monthlyTotal = document.getElementById('monthly-total');
+            const yearlyTotal = document.getElementById('yearly-total');
+            const nextPayment = document.getElementById('next-payment');
 
-            if (stats.next_payment) {
-                const date = new Date(stats.next_payment.next_billing_date);
-                const dateStr = date.toLocaleDateString('ru-RU');
-                document.getElementById('next-payment').textContent = `${stats.next_payment.name} (${dateStr})`;
-            } else {
-                document.getElementById('next-payment').textContent = '-';
+            if (totalSubs) totalSubs.textContent = stats.total_subscriptions;
+            if (monthlyTotal) monthlyTotal.textContent = `${stats.monthly_total.toFixed(2)} ₽`;
+            if (yearlyTotal) yearlyTotal.textContent = `${stats.yearly_total.toFixed(2)} ₽`;
+
+            if (nextPayment) {
+                if (stats.next_payment) {
+                    const date = new Date(stats.next_payment.next_billing_date);
+                    const dateStr = date.toLocaleDateString('ru-RU');
+                    nextPayment.textContent = `${stats.next_payment.name} (${dateStr})`;
+                } else {
+                    nextPayment.textContent = '-';
+                }
             }
         }
     } catch (error) {
@@ -342,6 +349,9 @@ function renderSubscriptions() {
     const list = document.getElementById('subscriptions-list');
     const emptyState = document.getElementById('empty-state');
     const filtersContainer = document.getElementById('user-subscriptions-filters');
+
+    // If elements don't exist (e.g., on teams page), skip rendering
+    if (!list || !emptyState) return;
 
     // Show/hide filters based on whether there are subscriptions
     if (filtersContainer) {
