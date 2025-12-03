@@ -1035,45 +1035,79 @@ function createInlineMonthlyChart() {
         inlineMonthlyChart.destroy();
     }
 
-    // Calculate monthly expenses for last 6 months
+    // Calculate for 3 months past, current, and 3 months future (7 total)
     const months = [];
-    const expenses = [];
+    const pastExpenses = [];
+    const futureExpenses = [];
     const today = new Date();
+    const currentMonth = today.getMonth();
+    const currentYear = today.getFullYear();
 
-    for (let i = 5; i >= 0; i--) {
-        const date = new Date(today.getFullYear(), today.getMonth() - i, 1);
+    // Create 7 months: -3, -2, -1, 0 (current), +1, +2, +3
+    for (let i = -3; i <= 3; i++) {
+        const date = new Date(currentYear, currentMonth + i, 1);
         const monthName = date.toLocaleDateString('ru-RU', { month: 'short', year: 'numeric' });
         months.push(monthName);
 
-        // Calculate expenses for this month
+        // Calculate total monthly amount for all subscriptions
         let monthExpense = 0;
         subscriptions.forEach(sub => {
             const monthlyAmount = calculateMonthlyAmount(sub);
             monthExpense += monthlyAmount;
         });
-        expenses.push(monthExpense);
+
+        // Past and current months have actual data, future months have projected data
+        if (i <= 0) {
+            pastExpenses.push(monthExpense);
+            futureExpenses.push(null);
+        } else {
+            pastExpenses.push(null);
+            futureExpenses.push(monthExpense);
+        }
     }
 
     inlineMonthlyChart = new Chart(ctx, {
-        type: 'line',
+        type: 'bar',
         data: {
             labels: months,
-            datasets: [{
-                label: 'Расходы (₽)',
-                data: expenses,
-                borderColor: 'rgb(99, 102, 241)',
-                backgroundColor: 'rgba(99, 102, 241, 0.1)',
-                borderWidth: 2,
-                fill: true,
-                tension: 0.4
-            }]
+            datasets: [
+                {
+                    label: 'Прошлые расходы',
+                    data: pastExpenses,
+                    backgroundColor: 'rgba(99, 102, 241, 0.8)',
+                    borderColor: 'rgb(99, 102, 241)',
+                    borderWidth: 1
+                },
+                {
+                    label: 'Прогноз',
+                    data: futureExpenses,
+                    backgroundColor: 'rgba(139, 92, 246, 0.5)',
+                    borderColor: 'rgb(139, 92, 246)',
+                    borderWidth: 1,
+                    borderDash: [5, 5]
+                }
+            ]
         },
         options: {
             responsive: true,
             maintainAspectRatio: false,
             plugins: {
                 legend: {
-                    display: false
+                    display: true,
+                    position: 'top',
+                    labels: {
+                        padding: 10,
+                        font: {
+                            size: 11
+                        }
+                    }
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            return context.dataset.label + ': ' + context.parsed.y.toFixed(2) + ' ₽';
+                        }
+                    }
                 }
             },
             scales: {
@@ -1084,6 +1118,9 @@ function createInlineMonthlyChart() {
                             return value + ' ₽';
                         }
                     }
+                },
+                x: {
+                    stacked: false
                 }
             }
         }
