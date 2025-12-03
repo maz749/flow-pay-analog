@@ -11,6 +11,8 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
       - ./migrations/001_init_schema.sql:/docker-entrypoint-initdb.d/001_init_schema.sql
+      - ./migrations/002_add_cancellation_instructions.sql:/docker-entrypoint-initdb.d/002_add_cancellation_instructions.sql
+      - ./migrations/003_add_teams_and_roles.sql:/docker-entrypoint-initdb.d/003_add_teams_and_roles.sql
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U flowpay -d flowpay_db"]
       interval: 10s
