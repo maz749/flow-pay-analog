@@ -26,264 +26,308 @@
         <!-- Hero Section -->
         <section class="hero-section">
             <div class="container">
-                <div class="hero-content">
-                    <div class="hero-badge">✨ Новый способ управления подписками</div>
-                    <h1 class="hero-title">Управляйте всеми<br>подписками в одном месте</h1>
-                    <p class="hero-subtitle">Контроль расходов, умные напоминания и детальная аналитика.<br>Экономьте до <strong>30% на подписках</strong> уже в первый месяц.</p>
-                    <div class="hero-buttons">
-                        <button class="btn btn-primary btn-large" onclick="window.location.href='/signup'">
-                            <span>Начать бесплатно</span>
-                            <span class="btn-icon-arrow">→</span>
-                        </button>
-                        <button class="btn btn-secondary btn-large" onclick="document.getElementById('how-it-works').scrollIntoView({behavior: 'smooth'})">
-                            Как это работает
-                        </button>
+                <div class="hero-grid">
+                    <div class="hero-content">
+                        <h1 class="hero-title">Привет, это ФлоуПей — сервис для управления подписками</h1>
+                        <p class="hero-subtitle">Отслеживайте все свои подписки в одном месте и экономьте на ежемесячных платежах. Это бесплатно и с новыми ИИ-возможностями.</p>
+                        <div class="hero-buttons">
+                            <button class="btn btn-primary btn-large" onclick="window.location.href='/signup'">
+                                Начать с Telegram
+                                <span class="btn-icon-arrow">💬</span>
+                            </button>
+                        </div>
+                        <div class="hero-features-list">
+                            ✨ Голосовой ввод • Импорт из фото • Безопасное обнаружение подписок в почте
+                        </div>
                     </div>
-                    <div class="hero-features">
-                        <div class="hero-feature">
-                            <span class="check-icon">✓</span> Бесплатно навсегда
-                        </div>
-                        <div class="hero-feature">
-                            <span class="check-icon">✓</span> Без кредитной карты
-                        </div>
-                        <div class="hero-feature">
-                            <span class="check-icon">✓</span> Настройка за 60 секунд
+                    <div class="hero-mockup">
+                        <div class="mockup-browser">
+                            <div class="browser-header">
+                                <div class="browser-dots">
+                                    <span></span><span></span><span></span>
+                                </div>
+                            </div>
+                            <div class="mockup-content">
+                                <div class="mockup-card">
+                                    <h3>Управление подписками</h3>
+                                    <p class="mockup-price">8 280 ₽/мес</p>
+                                    <div class="mockup-list">
+                                        <div class="mockup-item">
+                                            <span class="item-icon">📺</span>
+                                            <span>Кинопоиск HD</span>
+                                            <span class="item-price">500 ₽</span>
+                                        </div>
+                                        <div class="mockup-item">
+                                            <span class="item-icon">🎵</span>
+                                            <span>Spotify</span>
+                                            <span class="item-price">349 ₽</span>
+                                        </div>
+                                        <div class="mockup-item">
+                                            <span class="item-icon">📱</span>
+                                            <span>Битрикс24</span>
+                                            <span class="item-price">1190 ₽</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
+            </div>
+        </section>
+
+        <!-- AI Features Section -->
+        <section class="ai-features-section">
+            <div class="container">
+                <div class="section-header-block">
+                    <h2 class="section-title-white">✨ Новые ИИ-функции ✨</h2>
+                    <p class="section-subtitle-white">Мы внедрили передовые технологии искусственного интеллекта для упрощения<br>управления вашими подписками</p>
+                </div>
+                <div class="ai-features-grid">
+                    <div class="ai-feature-card ai-purple">
+                        <div class="ai-icon">🎤</div>
+                        <h3>🎙 Голосовой ввод</h3>
+                        <p>Добавляйте подписки, просто надиктовывая их название, стоимость и дату списания</p>
+                    </div>
+                    <div class="ai-feature-card ai-blue">
+                        <div class="ai-icon">📸</div>
+                        <h3>📸 Импорт из фото</h3>
+                        <p>Автоматическое распознавание данных подписок со скриншотов из App Store и Google Play</p>
+                    </div>
+                    <div class="ai-feature-card ai-red">
+                        <div class="ai-icon">📧</div>
+                        <h3>📧 Подписки из почты</h3>
+                        <p>Безопасное получение ваших подписок из почты</p>
+                    </div>
+                    <div class="ai-feature-card ai-green">
+                        <div class="ai-icon">⚡️</div>
+                        <h3>⚡️ Быстрая отмена</h3>
+                        <p>Прямые ссылки на страницы отмены подписок для мгновенного управления сервисами</p>
+                    </div>
+                </div>
+            </div>
+            <div class="container ai-tech-section">
+                <h2 class="section-title-white">🧠 Умные технологии на страже вашего бюджета</h2>
+                <p class="section-subtitle-white">Наши ИИ-инструменты автоматизируют рутинные задачи и помогают<br>оптимизировать расходы на подписки</p>
             </div>
         </section>
 
         <!-- How it works Section -->
         <section id="how-it-works" class="how-it-works-section">
             <div class="container">
-                <div class="section-header-block">
-                    <span class="section-badge">💡 Простота использования</span>
-                    <h2 class="section-title">Как это работает</h2>
-                    <p class="section-subtitle">Три простых шага к полному контролю над подписками</p>
-                </div>
-                <div class="steps-grid">
-                    <div class="step-card">
-                        <div class="step-number">1</div>
-                        <div class="step-icon">📝</div>
-                        <h3>Добавьте подписки</h3>
-                        <p>Внесите все свои подписки вручную или импортируйте их автоматически из почты. Укажите стоимость, дату списания и категорию.</p>
-                        <div class="step-time">⏱ Займёт 2 минуты</div>
-                    </div>
-                    <div class="step-card">
-                        <div class="step-number">2</div>
-                        <div class="step-icon">🔔</div>
-                        <h3>Получайте напоминания</h3>
-                        <p>Настройте уведомления в Telegram и получайте напоминания за 1, 3, 7 или 14 дней до списания. Никаких неожиданных платежей!</p>
-                        <div class="step-time">⚡️ Мгновенные уведомления</div>
-                    </div>
-                    <div class="step-card">
-                        <div class="step-number">3</div>
-                        <div class="step-icon">📊</div>
-                        <h3>Анализируйте расходы</h3>
-                        <p>Смотрите детальную статистику по месяцам и категориям. Находите неиспользуемые подписки и экономьте деньги.</p>
-                        <div class="step-time">💰 Экономия до 30%</div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Features Section -->
-        <section class="features-section">
-            <div class="container">
-                <div class="section-header-block">
-                    <span class="section-badge">⚡️ Мощные возможности</span>
-                    <h2 class="section-title">Всё, что нужно для контроля подписок</h2>
-                    <p class="section-subtitle">Полный набор инструментов для управления подписками и экономии денег</p>
-                </div>
-                <div class="features-grid">
-                    <div class="feature-card feature-highlight">
-                        <span class="feature-badge">Популярно</span>
-                        <div class="feature-icon">⏰</div>
-                        <h3>Умные уведомления</h3>
-                        <p>Получайте персонализированные напоминания о предстоящих платежах прямо в Telegram. Настройте уведомления за 1, 3, 7 или 14 дней до списания.</p>
-                        <ul class="feature-list">
-                            <li>✓ Telegram-боты</li>
-                            <li>✓ Email-уведомления</li>
-                            <li>✓ Гибкие настройки времени</li>
-                        </ul>
-                    </div>
-                    <div class="feature-card">
-                        <div class="feature-icon">🎨</div>
-                        <h3>Категории и организация</h3>
-                        <p>Организуйте подписки по категориям: музыка, стриминг, софт, облако, фитнес и другие. Добавляйте теги для быстрого поиска.</p>
-                    </div>
-                    <div class="feature-card feature-highlight">
-                        <span class="feature-badge">Новинка</span>
-                        <div class="feature-icon">📊</div>
-                        <h3>Детальная аналитика</h3>
-                        <p>Интерактивные графики и отчёты по расходам. Сравнивайте месяцы, анализируйте категории, находите возможности для экономии.</p>
-                        <ul class="feature-list">
-                            <li>✓ Графики трат</li>
-                            <li>✓ Прогнозы расходов</li>
-                            <li>✓ Экспорт в Excel</li>
-                        </ul>
-                    </div>
-                    <div class="feature-card">
-                        <div class="feature-icon">🔒</div>
-                        <h3>Безопасный импорт из почты</h3>
-                        <p>Автоматическое обнаружение подписок через метаданные писем. Мы НЕ читаем содержимое ваших писем - только заголовки и отправителей.</p>
-                    </div>
-                    <div class="feature-card">
-                        <div class="feature-icon">👥</div>
-                        <h3>Семейный и командный доступ</h3>
-                        <p>Управляйте подписками для всей семьи или команды. Разные уровни доступа: владелец, редактор, наблюдатель.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Target Audience Section -->
-        <section class="target-audience-section">
-            <div class="container">
-                <div class="section-header-block">
-                    <span class="section-badge">👥 Выбери свой тариф</span>
-                    <h2 class="section-title">FlowPay для всех</h2>
-                    <p class="section-subtitle">Выберите решение, которое подходит именно вам</p>
-                </div>
-                <div class="audience-grid">
-                    <div class="audience-card">
-                        <div class="audience-icon">👤</div>
-                        <h3>Для личного использования</h3>
-                        <p class="audience-description">Контролируйте личные подписки, получайте напоминания и экономьте деньги</p>
-                        <div class="audience-features">
-                            <div class="audience-feature">✓ Неограниченное количество подписок</div>
-                            <div class="audience-feature">✓ Telegram-уведомления</div>
-                            <div class="audience-feature">✓ Детальная аналитика</div>
-                            <div class="audience-feature">✓ Импорт из почты</div>
+                <h2 class="section-title-white">Как это работает?</h2>
+                <div class="steps-grid-new">
+                    <div class="step-column">
+                        <div class="step-mockup">
+                            <div class="step-screen">
+                                <div class="screen-header">+ Добавить подписку</div>
+                                <div class="screen-content">
+                                    <div class="expense-card">
+                                        <p class="expense-title">Ежемесячные расходы</p>
+                                        <p class="expense-amount">8 280 ₽/мес</p>
+                                        <p class="expense-note">↓ На 100% меньше, чем в прошлом месяце</p>
+                                    </div>
+                                    <div class="chart-placeholder">
+                                        <div class="chart-line"></div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="audience-price">
-                            <span class="price-value">Бесплатно</span>
-                            <span class="price-period">навсегда</span>
-                        </div>
-                        <button class="btn btn-primary btn-large" onclick="window.location.href='/personal'">Узнать больше →</button>
+                        <p class="step-label">ШАГ 1</p>
+                        <h3 class="step-title-new">Создай список подписок</h3>
+                        <p class="step-description">Добавляй нужные подписки с их стоимостью и датой списания</p>
                     </div>
-                    <div class="audience-card audience-card-featured">
-                        <div class="featured-badge">Для команд</div>
-                        <div class="audience-icon">💼</div>
-                        <h3>Для бизнеса</h3>
-                        <p class="audience-description">Полный учёт SaaS-сервисов, управление доступом команды и контроль расходов</p>
-                        <div class="audience-features">
-                            <div class="audience-feature">✓ Всё из личного тарифа</div>
-                            <div class="audience-feature">✓ Командные workspace</div>
-                            <div class="audience-feature">✓ Роли и права доступа</div>
-                            <div class="audience-feature">✓ Отчёты для бухгалтерии</div>
-                            <div class="audience-feature">✓ Приоритетная поддержка</div>
+                    <div class="step-column">
+                        <div class="step-mockup">
+                            <div class="step-screen step-screen-dark">
+                                <div class="notification-list">
+                                    <div class="notification-item">
+                                        <p>✅ Новая подписка добавлена</p>
+                                        <p class="notif-detail">Битрикс24<br>💰 Стоимость: 1190 ₽/мес</p>
+                                    </div>
+                                    <div class="notification-item">
+                                        <p>🔔 Скоро списание</p>
+                                        <p class="notif-detail">Spotify - 349 ₽ через 3 дня</p>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="audience-price">
-                            <span class="price-value">По запросу</span>
-                            <span class="price-period">индивидуальные условия</span>
+                        <p class="step-label">ШАГ 2</p>
+                        <h3 class="step-title-new">Отслеживай расходы</h3>
+                        <p class="step-description">Получай уведомления о предстоящих списаниях в Телеграм и анализируй свои траты на подписки</p>
+                    </div>
+                    <div class="step-column">
+                        <div class="step-mockup">
+                            <div class="step-screen step-screen-dark">
+                                <div class="status-list">
+                                    <div class="status-item">
+                                        <div class="status-icon">✅</div>
+                                        <div>
+                                            <p class="status-title">Твоя подписка на Netflix</p>
+                                            <p class="status-sub">Продлится еще 12 дней</p>
+                                        </div>
+                                    </div>
+                                    <div class="status-item">
+                                        <div class="status-icon">🔔</div>
+                                        <div>
+                                            <p class="status-title">Скоро списание</p>
+                                            <p class="status-sub">Spotify - 349 ₽ через 3 дня</p>
+                                        </div>
+                                    </div>
+                                    <div class="status-item">
+                                        <div class="status-icon">💰</div>
+                                        <div>
+                                            <p class="status-title">Экономия за месяц</p>
+                                            <p class="status-sub">Вы сэкономили 1 200 ₽</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <button class="btn btn-primary btn-large" onclick="window.location.href='/business'">Узнать больше →</button>
+                        <p class="step-label">ШАГ 3</p>
+                        <h3 class="step-title-new">Готово! Наслаждайся!</h3>
+                        <p class="step-description">Ты контролируешь все подписки и не забываешь об оплате</p>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Why It Matters Section -->
-        <section class="why-matters-section">
+        <!-- Benefits Section -->
+        <section class="benefits-showcase-section">
             <div class="container">
-                <div class="section-header-block">
-                    <span class="section-badge">📈 Статистика</span>
-                    <h2 class="section-title">Почему это важно</h2>
-                    <p class="section-subtitle">Проблемы, которые решает FlowPay</p>
-                </div>
-                <div class="stats-showcase">
-                    <div class="stat-card-large">
-                        <div class="stat-visual">💸</div>
-                        <div class="stat-number-big">30%</div>
-                        <div class="stat-label-big">подписок не используются</div>
-                        <p class="stat-description">Исследования показывают, что люди платят за неиспользуемые подписки в среднем 3-5 тысяч рублей в месяц</p>
+                <h2 class="section-title-dark">Преимущества ФлоуПей</h2>
+                <div class="benefits-layout">
+                    <div class="benefits-mockup">
+                        <div class="mockup-browser-large">
+                            <div class="browser-header">
+                                <div class="browser-dots">
+                                    <span></span><span></span><span></span>
+                                </div>
+                                <div class="browser-title">💳 ФлоуПей</div>
+                            </div>
+                            <div class="mockup-dashboard">
+                                <div class="dashboard-stats">
+                                    <div class="stat-item">
+                                        <p class="stat-label">Ежемесячные расходы</p>
+                                        <p class="stat-value">8 280 ₽/мес</p>
+                                        <p class="stat-change">↓ На 100% меньше, чем в прошлом месяце</p>
+                                    </div>
+                                    <div class="chart-mini"></div>
+                                </div>
+                                <div class="dashboard-subscriptions">
+                                    <p class="dashboard-title">Ваши подписки</p>
+                                    <div class="sub-item">
+                                        <span class="sub-icon">📺</span>
+                                        <span class="sub-name">Кинопоиск HD</span>
+                                        <span class="sub-price">500 ₽</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="benefits-text-block">
+                            <h3>Простой и удобный интерфейс</h3>
+                            <p>Добавляйте подписки за несколько кликов, указывая название сервиса, стоимость и дату списания.</p>
+                        </div>
                     </div>
-                </div>
-                <div class="reasons-grid">
-                    <div class="reason-card">
-                        <div class="reason-icon">📧</div>
-                        <h4>Забытые уведомления</h4>
-                        <p>Платежи теряются среди сотен писем в почте. Вы пропускаете важные уведомления о списаниях.</p>
+                    <div class="benefits-list">
+                        <div class="benefit-item">
+                            <div class="benefit-icon-circle">🔔</div>
+                            <div class="benefit-content">
+                                <h3>Умные уведомления</h3>
+                                <p>Получайте напоминания о предстоящих списаниях и неиспользуемых сервисах.</p>
+                            </div>
+                        </div>
+                        <div class="benefit-item">
+                            <div class="benefit-icon-circle">💡</div>
+                            <div class="benefit-content">
+                                <h3>Рекомендации по экономии</h3>
+                                <p>Получайте советы по оптимизации расходов на подписки и экономьте до 30% ежемесячно.</p>
+                            </div>
+                        </div>
+                        <div class="benefit-item">
+                            <div class="benefit-icon-circle">🧠</div>
+                            <div class="benefit-content">
+                                <h3>ИИ-технологии</h3>
+                                <p>Используйте голосовой ввод, распознавание фото и безопасное обнаружение подписок в почте для быстрого добавления.</p>
+                            </div>
+                        </div>
+                        <div class="benefit-item">
+                            <div class="benefit-icon-circle">✅</div>
+                            <div class="benefit-content">
+                                <h3>Бесплатный сервис</h3>
+                                <p>ФлоуПей абсолютно бесплатен и не имеет скрытых платежей — создан, чтобы экономить ваши деньги.</p>
+                            </div>
+                        </div>
                     </div>
-                    <div class="reason-card">
-                        <div class="reason-icon">💳</div>
-                        <h4>Неожиданные списания</h4>
-                        <p>Внезапные списания с карты портят планы и бюджет. Особенно неприятно, когда не хватает денег на счету.</p>
-                    </div>
-                    <div class="reason-card">
-                        <div class="reason-icon">⏰</div>
-                        <h4>Потеря времени</h4>
-                        <p>Часы, потраченные на разбор банковских выписок и поиск неиспользуемых подписок вручную.</p>
-                    </div>
-                    <div class="reason-card">
-                        <div class="reason-icon">📊</div>
-                        <h4>Нет контроля</h4>
-                        <p>Сложно понять, сколько вы тратите на подписки в месяц и где можно сэкономить.</p>
-                    </div>
-                </div>
-                <div class="solution-cta">
-                    <h3>FlowPay решает все эти проблемы</h3>
-                    <p>Один инструмент для полного контроля над подписками</p>
-                    <button class="btn btn-primary btn-large" onclick="window.location.href='/signup'">Попробовать бесплатно →</button>
                 </div>
             </div>
         </section>
 
-        <!-- FAQ Section -->
-        <section class="faq-section">
+        <!-- Cancellation Section -->
+        <section class="cancellation-section">
             <div class="container">
-                <div class="section-header-block">
-                    <span class="section-badge">❓ Частые вопросы</span>
-                    <h2 class="section-title">FAQ</h2>
-                    <p class="section-subtitle">Ответы на популярные вопросы о FlowPay</p>
+                <h2 class="section-title-white">Отмена подписок стала проще</h2>
+                <p class="section-subtitle-white">Найдите нужный сервис, чтобы быстро отменить подписку. Мы собрали инструкции<br>для десятков популярных сервисов.</p>
+                <div class="search-box">
+                    <input type="text" class="search-input" placeholder="🔍 Найти сервис (например, Кинопоиск, Spotify...)">
                 </div>
-                <div class="faq-grid">
-                    <div class="faq-item faq-featured">
-                        <div class="faq-icon">💰</div>
-                        <h3>Это действительно бесплатно?</h3>
-                        <p>Да! Базовый функционал FlowPay абсолютно бесплатен и останется таким навсегда. Вы можете добавлять неограниченное количество подписок, получать уведомления и использовать аналитику. Для бизнеса предусмотрены расширенные возможности по индивидуальному тарифу.</p>
+                <div class="services-list">
+                    <div class="service-item">
+                        <span class="service-name">1Password</span>
+                        <span class="service-arrow">›</span>
                     </div>
-                    <div class="faq-item">
-                        <div class="faq-icon">🔒</div>
-                        <h3>Как работает автообнаружение подписок?</h3>
-                        <p>Мы сканируем только метаданные ваших писем (отправитель, тема, дата) через безопасное API. Мы НЕ читаем содержимое писем и не храним вашу переписку. Вы полностью контролируете доступ и можете отключить его в любой момент.</p>
+                    <div class="service-item">
+                        <span class="service-name">Adobe</span>
+                        <span class="service-arrow">›</span>
                     </div>
-                    <div class="faq-item">
-                        <div class="faq-icon">🔔</div>
-                        <h3>Как я получу уведомления?</h3>
-                        <p>Уведомления приходят через Telegram-бота или на email. Вы можете настроить, за сколько дней до списания получать напоминания: 1, 3, 7 или 14 дней. Можно выбрать несколько периодов сразу.</p>
+                    <div class="service-item">
+                        <span class="service-name">Box</span>
+                        <span class="service-arrow">›</span>
                     </div>
-                    <div class="faq-item">
-                        <div class="faq-icon">📱</div>
-                        <h3>Есть ли мобильное приложение?</h3>
-                        <p>Сейчас FlowPay работает как веб-приложение, полностью адаптированное под мобильные устройства. Нативные приложения для iOS и Android в разработке и выйдут в ближайшие месяцы.</p>
+                    <div class="service-item">
+                        <span class="service-name">Canva</span>
+                        <span class="service-arrow">›</span>
                     </div>
-                    <div class="faq-item">
-                        <div class="faq-icon">👥</div>
-                        <h3>Можно ли делиться доступом с семьёй?</h3>
-                        <p>Да! Вы можете пригласить членов семьи или коллег и настроить права доступа. Доступны роли: владелец (полный доступ), редактор (может добавлять и редактировать) и наблюдатель (только просмотр).</p>
-                    </div>
-                    <div class="faq-item">
-                        <div class="faq-icon">💳</div>
-                        <h3>Нужна ли кредитная карта для регистрации?</h3>
-                        <p>Нет! Для регистрации и использования базового функционала карта не требуется. Просто укажите email и создайте аккаунт за 30 секунд.</p>
+                    <div class="service-item">
+                        <span class="service-name">Облако Mail.ru</span>
+                        <span class="service-arrow">›</span>
                     </div>
                 </div>
-                <div class="faq-cta">
-                    <p>Не нашли ответ на свой вопрос?</p>
-                    <a href="/about" class="btn btn-secondary">Связаться с нами</a>
+                <div class="view-all-services">
+                    <a href="#" class="view-all-link">Посмотреть все сервисы →</a>
                 </div>
             </div>
         </section>
 
-        <!-- CTA Section -->
-        <section class="cta-section">
+        <!-- Simple FAQ -->
+        <section class="simple-faq-section">
             <div class="container">
-                <h2>Начать бесплатно за 1 минуту</h2>
-                <p>Бесплатно и без ограничений</p>
-                <button class="btn btn-primary btn-large" onclick="window.location.href='/signup'">Начать бесплатно</button>
+                <h2 class="section-title-dark">Часто задаваемые вопросы</h2>
+                <div class="faq-simple-grid">
+                    <div class="faq-simple-item">
+                        <h3>💰 Это бесплатно?</h3>
+                        <p>Да! ФлоуПей полностью бесплатен для личного использования.</p>
+                    </div>
+                    <div class="faq-simple-item">
+                        <h3>🔒 Безопасно ли это?</h3>
+                        <p>Мы используем шифрование данных и не читаем содержимое ваших писем.</p>
+                    </div>
+                    <div class="faq-simple-item">
+                        <h3>📱 Есть мобильное приложение?</h3>
+                        <p>Веб-версия адаптирована под мобильные. Приложения скоро!</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Final CTA Section -->
+        <section class="final-cta-section">
+            <div class="container">
+                <h2 class="cta-title">Готовы начать?</h2>
+                <p class="cta-subtitle">Присоединяйтесь к тысячам пользователей, которые уже контролируют свои подписки</p>
+                <button class="btn btn-primary btn-large" onclick="window.location.href='/signup'">
+                    Начать с Telegram 💬
+                </button>
             </div>
         </section>
 
