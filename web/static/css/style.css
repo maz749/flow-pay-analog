@@ -3521,3 +3521,128 @@ a:hover {
 section {
     scroll-margin-top: 80px;
 }
+
+/* ============================================
+   CANCELLATION MODAL STYLES
+   ============================================ */
+
+/* Warning button for cancel action */
+.btn-warning {
+    background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+    color: white;
+    border: none;
+}
+
+.btn-warning:hover {
+    background: linear-gradient(135deg, #d97706 0%, #b45309 100%);
+    transform: translateY(-2px);
+}
+
+/* Success button */
+.btn-success {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    color: white;
+    border: none;
+}
+
+.btn-success:hover {
+    background: linear-gradient(135deg, #059669 0%, #047857 100%);
+    transform: translateY(-2px);
+}
+
+/* Cancellation modal specific styles */
+.cancellation-instructions {
+    margin-bottom: 24px;
+}
+
+.cancellation-instructions h4 {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 12px;
+}
+
+.cancellation-instructions p {
+    font-size: 1rem;
+    line-height: 1.7;
+    color: var(--text-secondary);
+}
+
+.cancellation-note {
+    margin-bottom: 24px;
+}
+
+.info-box {
+    padding: 16px 20px;
+    background: rgba(59, 130, 246, 0.08);
+    border-left: 4px solid rgba(59, 130, 246, 0.5);
+    border-radius: var(--radius-md);
+}
+
+.info-box strong {
+    color: var(--primary-color);
+}
+
+.cancellation-link {
+    margin-bottom: 24px;
+    text-align: center;
+}
+
+.cancellation-link .btn {
+    padding: 16px 40px;
+    font-size: 1.1rem;
+    font-weight: 700;
+}
+
+.cancellation-actions {
+    border-top: 1px solid var(--border-color);
+    padding-top: 24px;
+    margin-top: 24px;
+}
+
+.cancellation-info {
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+    margin-bottom: 20px;
+    line-height: 1.6;
+}
+
+.modal-footer {
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end;
+}
+
+.modal-footer .btn {
+    min-width: 140px;
+}
+
+/* Adjust subscription actions spacing for three buttons */
+.subscription-actions-top {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+@media (max-width: 768px) {
+    .subscription-actions-top {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .subscription-actions-top .btn {
+        width: 100%;
+    }
+
+    .modal-footer {
+        flex-direction: column-reverse;
+    }
+
+    .modal-footer .btn {
+        width: 100%;
+    }
+
+    .cancellation-link .btn {
+        width: 100%;
+    }
+}

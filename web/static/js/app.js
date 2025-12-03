@@ -407,6 +407,7 @@ function renderSubscriptions() {
                     </div>
                     <div class="subscription-actions-top">
                         <button class="btn btn-secondary btn-sm" onclick="editSubscription(${sub.id})">Изменить</button>
+                        <button class="btn btn-warning btn-sm" onclick="cancelSubscriptionModal(${sub.id}, '${sub.name.replace(/'/g, "\\'")}')">Отменить</button>
                         <button class="btn btn-danger btn-sm" onclick="deleteSubscription(${sub.id})">Удалить</button>
                     </div>
                 </div>
@@ -1328,6 +1329,118 @@ function handleUserCategoryFilter(e) {
 
     userSubscriptionsFilter = category;
     renderSubscriptions();
+}
+
+// Cancellation modal functions
+async function cancelSubscriptionModal(subId, subName) {
+    try {
+        // Get cancellation instruction for this service
+        const response = await fetch(`/api/cancellation/instructions/${encodeURIComponent(subName)}`, {
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+            }
+        });
+
+        const modal = document.getElementById('cancellation-modal');
+        const modalTitle = document.getElementById('cancellation-modal-title');
+        const modalInstructions = document.getElementById('cancellation-modal-instructions');
+        const modalNote = document.getElementById('cancellation-modal-note');
+        const modalLink = document.getElementById('cancellation-modal-link');
+        const confirmBtn = document.getElementById('confirm-cancellation-btn');
+
+        modalTitle.textContent = `Отмена подписки: ${subName}`;
+
+        if (response.ok) {
+            const data = await response.json();
+            const instruction = data.data || data;
+
+            // Show instructions
+            modalInstructions.innerHTML = `
+                <h4>Инструкция по отмене:</h4>
+                <p>${instruction.instructions}</p>
+            `;
+
+            // Show note if available
+            if (instruction.note) {
+                modalNote.innerHTML = `
+                    <div class="info-box">
+                        <strong>ℹ️ Примечание:</strong><br>
+                        ${instruction.note}
+                    </div>
+                `;
+                modalNote.style.display = 'block';
+            } else {
+                modalNote.style.display = 'none';
+            }
+
+            // Show link if available
+            if (instruction.url) {
+                modalLink.innerHTML = `
+                    <a href="${instruction.url}" target="_blank" class="btn btn-primary btn-large">
+                        Перейти к отмене ↗
+                    </a>
+                `;
+                modalLink.style.display = 'block';
+            } else {
+                modalLink.style.display = 'none';
+            }
+
+            // Update confirm button
+            confirmBtn.onclick = () => confirmCancellation(subId);
+        } else {
+            // No instructions found - show generic message
+            modalInstructions.innerHTML = `
+                <h4>Инструкция по отмене:</h4>
+                <p>К сожалению, у нас пока нет инструкций для этого сервиса.
+                   Обычно отмену подписки можно найти в настройках вашего аккаунта
+                   или в разделе "Подписки" / "Биллинг".</p>
+            `;
+            modalNote.innerHTML = `
+                <div class="info-box">
+                    <strong>ℹ️ Примечание:</strong><br>
+                    Для подписок, оформленных через App Store или Google Play,
+                    отмена производится только в соответствующем магазине приложений.
+                </div>
+            `;
+            modalNote.style.display = 'block';
+            modalLink.style.display = 'none';
+
+            // Update confirm button
+            confirmBtn.onclick = () => confirmCancellation(subId);
+        }
+
+        // Show modal
+        modal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+
+    } catch (error) {
+        console.error('Error loading cancellation instructions:', error);
+        showNotification('Ошибка при загрузке инструкций', 'error');
+    }
+}
+
+async function confirmCancellation(subId) {
+    try {
+        const response = await apiRequest(`/subscriptions/${subId}/cancel`, 'POST');
+
+        if (response.success) {
+            showNotification('Подписка помечена как отмененная', 'success');
+            closeCancellationModal();
+            await loadSubscriptions();
+            await loadStats();
+        } else {
+            showNotification(response.error || 'Не удалось отменить подписку', 'error');
+        }
+    } catch (error) {
+        console.error('Error cancelling subscription:', error);
+        showNotification('Ошибка при отмене подписки', 'error');
+    }
+}
+
+function closeCancellationModal() {
+    const modal = document.getElementById('cancellation-modal');
+    modal.classList.remove('active');
+    document.body.style.overflow = '';
 }
 
 // Initialize theme on app load

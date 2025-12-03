@@ -639,6 +639,39 @@
         </div>
     </div>
 
+    <!-- Cancellation Modal -->
+    <div id="cancellation-modal" class="modal">
+        <div class="modal-content modal-large">
+            <div class="modal-header">
+                <h2 id="cancellation-modal-title">Отмена подписки</h2>
+                <button class="modal-close" onclick="closeCancellationModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div id="cancellation-modal-instructions" class="cancellation-instructions">
+                    <!-- Instructions will be loaded here -->
+                </div>
+                <div id="cancellation-modal-note" class="cancellation-note">
+                    <!-- Note will be loaded here -->
+                </div>
+                <div id="cancellation-modal-link" class="cancellation-link">
+                    <!-- Link will be loaded here -->
+                </div>
+                <div class="cancellation-actions">
+                    <p class="cancellation-info">
+                        Следите шагам выше, чтобы отменить подписку у сервиса.
+                        После отмены нажмите кнопку ниже, чтобы пометить подписку как отмененную в FlowPay.
+                    </p>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" onclick="closeCancellationModal()">Закрыть</button>
+                        <button id="confirm-cancellation-btn" class="btn btn-success">
+                            ✓ Подписка отменена
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Statistics Page -->
     <div id="stats-screen" class="screen">
         <!-- Header -->
