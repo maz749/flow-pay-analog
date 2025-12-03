@@ -7,6 +7,7 @@ import (
 type Subscription struct {
 	ID                int       `db:"id" json:"id"`
 	UserID            int       `db:"user_id" json:"user_id"`
+	TeamID            *int      `db:"team_id" json:"team_id"`
 	Name              string    `db:"name" json:"name"`
 	Description       *string   `db:"description" json:"description"`
 	Amount            float64   `db:"amount" json:"amount"`

@@ -19,11 +19,15 @@ func NewUserRepository(db *database.Database) *UserRepository {
 
 func (r *UserRepository) Create(user *models.User) error {
 	query := `
-		INSERT INTO users (email, password_hash, username)
-		VALUES ($1, $2, $3)
+		INSERT INTO users (email, password_hash, username, role)
+		VALUES ($1, $2, $3, $4)
 		RETURNING id, created_at, updated_at
 	`
-	return r.db.QueryRow(query, user.Email, user.PasswordHash, user.Username).
+	// Default role to 'user' if not set
+	if user.Role == "" {
+		user.Role = "user"
+	}
+	return r.db.QueryRow(query, user.Email, user.PasswordHash, user.Username, user.Role).
 		Scan(&user.ID, &user.CreatedAt, &user.UpdatedAt)
 }
 

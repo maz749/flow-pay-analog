@@ -37,12 +37,16 @@ func main() {
 	subRepo := repository.NewSubscriptionRepository(db)
 	notifRepo := repository.NewNotificationRepository(db)
 	cancelRepo := repository.NewCancellationRepository(db)
+	teamRepo := repository.NewTeamRepository(db)
+	invitationRepo := repository.NewInvitationRepository(db)
 
 	// Initialize handlers
 	authHandler := handlers.NewAuthHandler(userRepo, cfg.JWT.Secret)
 	subHandler := handlers.NewSubscriptionHandler(subRepo, notifRepo)
 	telegramHandler := handlers.NewTelegramHandler(userRepo)
 	cancelHandler := handlers.NewCancellationHandler(cancelRepo, subRepo)
+	teamHandler := handlers.NewTeamHandler(teamRepo, userRepo)
+	invitationHandler := handlers.NewInvitationHandler(invitationRepo, teamRepo, userRepo)
 
 	// Initialize router
 	router := mux.NewRouter()
@@ -53,6 +57,8 @@ func main() {
 	// Public routes
 	router.HandleFunc("/api/auth/register", authHandler.Register).Methods("POST", "OPTIONS")
 	router.HandleFunc("/api/auth/login", authHandler.Login).Methods("POST", "OPTIONS")
+	router.HandleFunc("/api/invitations/{token}", invitationHandler.GetInvitationByToken).Methods("GET", "OPTIONS")
+	router.HandleFunc("/api/invitations/accept", invitationHandler.AcceptInvitation).Methods("POST", "OPTIONS")
 
 	// Protected routes
 	api := router.PathPrefix("/api").Subrouter()
@@ -77,6 +83,21 @@ func main() {
 	// Telegram routes
 	api.HandleFunc("/telegram/settings", telegramHandler.GetSettings).Methods("GET")
 	api.HandleFunc("/telegram/settings", telegramHandler.UpdateSettings).Methods("PUT")
+
+	// Team routes
+	api.HandleFunc("/teams", teamHandler.CreateTeam).Methods("POST")
+	api.HandleFunc("/teams", teamHandler.GetMyTeams).Methods("GET")
+	api.HandleFunc("/teams/{id}", teamHandler.GetTeam).Methods("GET")
+	api.HandleFunc("/teams/{id}", teamHandler.UpdateTeam).Methods("PUT")
+	api.HandleFunc("/teams/{id}", teamHandler.DeleteTeam).Methods("DELETE")
+	api.HandleFunc("/teams/{id}/members", teamHandler.GetTeamMembers).Methods("GET")
+	api.HandleFunc("/teams/{id}/members", teamHandler.AddMember).Methods("POST")
+	api.HandleFunc("/teams/{id}/members/{memberId}", teamHandler.RemoveMember).Methods("DELETE")
+
+	// Invitation routes
+	api.HandleFunc("/invitations", invitationHandler.CreateInvitation).Methods("POST")
+	api.HandleFunc("/invitations", invitationHandler.GetMyInvitations).Methods("GET")
+	api.HandleFunc("/invitations/{token}", invitationHandler.DeleteInvitation).Methods("DELETE")
 
 	// Serve static files
 	router.PathPrefix("/static/").Handler(http.StripPrefix("/static/", http.FileServer(http.Dir("web/static"))))
