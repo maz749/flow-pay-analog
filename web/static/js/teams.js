@@ -10,8 +10,9 @@ let selectedTeam = null;
 async function loadTeamsScreen() {
     try {
         const response = await apiRequest('/teams', 'GET');
-        // Ensure response is an array
-        currentTeams = Array.isArray(response) ? response : [];
+        // Extract data array from response object (API returns {success: true, data: []})
+        const teamsData = response.data || response;
+        currentTeams = Array.isArray(teamsData) ? teamsData : [];
         renderTeams();
     } catch (error) {
         console.error('Error loading teams:', error);
@@ -258,9 +259,10 @@ async function removeMember(teamId, memberId) {
 // Load invitations
 async function loadInvitations() {
     try {
-        const invitations = await apiRequest('/invitations', 'GET');
-        // Ensure response is an array
-        currentInvitations = Array.isArray(invitations) ? invitations : [];
+        const response = await apiRequest('/invitations', 'GET');
+        // Extract data array from response object (API returns {success: true, data: []})
+        const invitationsData = response.data || response;
+        currentInvitations = Array.isArray(invitationsData) ? invitationsData : [];
         renderInvitations();
     } catch (error) {
         console.error('Error loading invitations:', error);
