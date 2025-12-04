@@ -1,0 +1,49 @@
+# Git
+.git
+.gitignore
+.github
+
+# Documentation
+*.md
+docs/
+LOGOS.md
+DEPLOYMENT.md
+TESTING.md
+TELEGRAM_SETUP.md
+PRODUCTION_CHECKLIST.md
+
+# Development
+.env
+.env.local
+.env.development
+*.log
+tmp/
+temp/
+
+# IDE
+.vscode
+.idea
+*.swp
+*.swo
+*~
+
+# Test files
+*_test.go
+test/
+coverage.txt
+
+# Build artifacts
+bin/
+dist/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Scripts
+scripts/
+*.sh
+
+# Docker
+docker-compose*.yml
+Dockerfile*
