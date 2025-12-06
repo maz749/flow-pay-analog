@@ -298,13 +298,13 @@ body {
 
 .features-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 40px;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 32px;
 }
 
 .feature-card {
     text-align: center;
-    padding: 40px 32px;
+    padding: 28px 24px;
     background: white;
     border-radius: var(--radius-lg);
     box-shadow: var(--shadow);
@@ -319,8 +319,8 @@ body {
 }
 
 .feature-icon {
-    font-size: 4rem;
-    margin-bottom: 24px;
+    font-size: 3rem;
+    margin-bottom: 16px;
     display: inline-block;
     transition: var(--transition-base);
 }
@@ -330,16 +330,16 @@ body {
 }
 
 .feature-card h3 {
-    font-size: 1.35rem;
+    font-size: 1.25rem;
     font-weight: 700;
-    margin-bottom: 16px;
+    margin-bottom: 12px;
     color: var(--text-primary);
 }
 
 .feature-card p {
     color: var(--text-secondary);
-    line-height: 1.75;
-    font-size: 1.05rem;
+    line-height: 1.6;
+    font-size: 1rem;
 }
 
 .cta-section {
@@ -1077,6 +1077,95 @@ textarea {
 .stat-card-large:hover {
     transform: translateY(-4px);
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+}
+
+/* Compact Collapsible Stat Card */
+.stat-card-compact {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: var(--shadow-lg);
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.stat-card-compact:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+}
+
+.stat-header {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.stat-visual-small {
+    font-size: 2.5rem;
+    opacity: 0.95;
+}
+
+.stat-content {
+    flex: 1;
+}
+
+.stat-number {
+    font-size: 2.5rem;
+    font-weight: 700;
+    line-height: 1;
+    margin-bottom: 4px;
+}
+
+.stat-label {
+    font-size: 1.1rem;
+    opacity: 0.95;
+    font-weight: 500;
+}
+
+.stat-toggle {
+    font-size: 1.2rem;
+    opacity: 0.8;
+    transition: transform 0.3s ease;
+}
+
+.stat-card-compact.expanded .stat-toggle {
+    transform: rotate(180deg);
+}
+
+.stat-details {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease, margin-top 0.4s ease;
+    opacity: 0;
+}
+
+.stat-card-compact.expanded .stat-details {
+    max-height: 500px;
+    margin-top: 20px;
+    opacity: 1;
+}
+
+.stat-description {
+    margin-bottom: 16px;
+    line-height: 1.6;
+    opacity: 0.95;
+}
+
+.stat-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.stat-list li {
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    line-height: 1.5;
+}
+
+.stat-list li:last-child {
+    border-bottom: none;
 }
 
 .stat-icon-large {
@@ -1864,13 +1953,13 @@ textarea {
 
 .reasons-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 40px;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 32px;
 }
 
 .reason-card {
     text-align: center;
-    padding: 48px 36px;
+    padding: 32px 28px;
     background: linear-gradient(135deg, rgba(99, 102, 241, 0.08), rgba(139, 92, 246, 0.08));
     border-radius: var(--radius-lg);
     border: 2px solid transparent;
@@ -1902,8 +1991,8 @@ textarea {
 }
 
 .reason-icon {
-    font-size: 4rem;
-    margin-bottom: 20px;
+    font-size: 3rem;
+    margin-bottom: 16px;
     display: inline-block;
     transition: var(--transition-base);
 }
@@ -1915,8 +2004,8 @@ textarea {
 .reason-card p {
     color: var(--text-primary);
     font-weight: 600;
-    line-height: 1.7;
-    font-size: 1.1rem;
+    line-height: 1.6;
+    font-size: 1rem;
 }
 
 /* FAQ Section */
