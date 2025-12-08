@@ -1,7 +1,12 @@
 package utils
 
 import (
+	"crypto/hmac"
+	"crypto/sha256"
+	"encoding/hex"
 	"fmt"
+	"sort"
+	"strings"
 	"time"
 
 	"github.com/golang-jwt/jwt/v5"
@@ -55,4 +60,55 @@ func ValidateToken(tokenString, secret string) (*Claims, error) {
 	}
 
 	return nil, fmt.Errorf("invalid token")
+}
+
+// ValidateTelegramAuth validates Telegram authentication data
+func ValidateTelegramAuth(authData map[string]string, botToken string) error {
+	// Check auth_date is within 24 hours
+	authDate, ok := authData["auth_date"]
+	if !ok {
+		return fmt.Errorf("missing auth_date")
+	}
+
+	var authTimestamp int64
+	fmt.Sscanf(authDate, "%d", &authTimestamp)
+	if time.Now().Unix()-authTimestamp > 86400 {
+		return fmt.Errorf("auth data is too old")
+	}
+
+	// Get hash and remove it from data
+	hash, ok := authData["hash"]
+	if !ok {
+		return fmt.Errorf("missing hash")
+	}
+
+	// Create data check string
+	var keys []string
+	for key := range authData {
+		if key != "hash" {
+			keys = append(keys, key)
+		}
+	}
+	sort.Strings(keys)
+
+	var dataCheckArr []string
+	for _, key := range keys {
+		dataCheckArr = append(dataCheckArr, fmt.Sprintf("%s=%s", key, authData[key]))
+	}
+	dataCheckString := strings.Join(dataCheckArr, "\n")
+
+	// Create secret key
+	secretKey := sha256.Sum256([]byte(botToken))
+
+	// Calculate hash
+	h := hmac.New(sha256.New, secretKey[:])
+	h.Write([]byte(dataCheckString))
+	calculatedHash := hex.EncodeToString(h.Sum(nil))
+
+	// Compare hashes
+	if calculatedHash != hash {
+		return fmt.Errorf("invalid hash")
+	}
+
+	return nil
 }

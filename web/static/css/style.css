@@ -596,6 +596,37 @@ textarea {
     text-decoration: underline;
 }
 
+/* Telegram Auth */
+.telegram-auth-container {
+    display: flex;
+    justify-content: center;
+    padding: 10px 0;
+}
+
+.auth-divider {
+    position: relative;
+    text-align: center;
+    margin: 20px 0;
+}
+
+.auth-divider::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: var(--border-color);
+}
+
+.auth-divider span {
+    position: relative;
+    background: var(--card-bg);
+    padding: 0 15px;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
 /* Notification Options */
 .notification-options {
     display: flex;

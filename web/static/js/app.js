@@ -190,11 +190,13 @@ function closeModal(modalId) {
 function openLoginModal() {
     openModal('login-modal');
     document.getElementById('login-form').reset();
+    initTelegramWidget('telegram-login-widget');
 }
 
 function openRegisterModal() {
     openModal('register-modal');
     document.getElementById('register-form').reset();
+    initTelegramWidget('telegram-register-widget');
 }
 
 // Auth handlers
@@ -271,6 +273,55 @@ function handleLogout() {
     subscriptions = [];
     showScreen('landing-screen');
 }
+
+// Telegram Auth
+function initTelegramWidget(elementId) {
+    const container = document.getElementById(elementId);
+    if (!container) return;
+
+    // Clear previous widget if exists
+    container.innerHTML = '';
+
+    // Create Telegram Login Button
+    const script = document.createElement('script');
+    script.src = 'https://telegram.org/js/telegram-widget.js?22';
+    script.setAttribute('data-telegram-login', 'YOUR_BOT_USERNAME');
+    script.setAttribute('data-size', 'large');
+    script.setAttribute('data-radius', '8');
+    script.setAttribute('data-onauth', 'onTelegramAuth(user)');
+    script.setAttribute('data-request-access', 'write');
+    script.async = true;
+
+    container.appendChild(script);
+}
+
+// Global function for Telegram widget callback
+window.onTelegramAuth = async function(user) {
+    console.log('Telegram auth:', user);
+
+    try {
+        const response = await fetch(`${API_URL}/auth/telegram`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(user)
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+            localStorage.setItem('token', data.data.token);
+            currentUser = data.data.user;
+            closeModal('login-modal');
+            closeModal('register-modal');
+            loadApp();
+        } else {
+            alert(data.error || 'Ошибка Telegram авторизации');
+        }
+    } catch (error) {
+        console.error('Telegram auth error:', error);
+        alert('Ошибка подключения к серверу');
+    }
+};
 
 // App loading
 async function loadApp() {

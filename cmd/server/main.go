@@ -38,7 +38,7 @@ func main() {
 	notifRepo := repository.NewNotificationRepository(db)
 
 	// Initialize handlers
-	authHandler := handlers.NewAuthHandler(userRepo, cfg.JWT.Secret)
+	authHandler := handlers.NewAuthHandler(userRepo, cfg.JWT.Secret, cfg.Telegram.BotToken)
 	subHandler := handlers.NewSubscriptionHandler(subRepo, notifRepo)
 	telegramHandler := handlers.NewTelegramHandler(userRepo)
 
@@ -51,6 +51,7 @@ func main() {
 	// Public routes
 	router.HandleFunc("/api/auth/register", authHandler.Register).Methods("POST", "OPTIONS")
 	router.HandleFunc("/api/auth/login", authHandler.Login).Methods("POST", "OPTIONS")
+	router.HandleFunc("/api/auth/telegram", authHandler.TelegramAuth).Methods("POST", "OPTIONS")
 
 	// Protected routes
 	api := router.PathPrefix("/api").Subrouter()
