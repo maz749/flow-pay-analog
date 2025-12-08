@@ -285,7 +285,7 @@ function initTelegramWidget(elementId) {
     // Create Telegram Login Button
     const script = document.createElement('script');
     script.src = 'https://telegram.org/js/telegram-widget.js?22';
-    script.setAttribute('data-telegram-login', 'YOUR_BOT_USERNAME');
+    script.setAttribute('data-telegram-login', 'Flowpay_dev_bot');
     script.setAttribute('data-size', 'large');
     script.setAttribute('data-radius', '8');
     script.setAttribute('data-onauth', 'onTelegramAuth(user)');
