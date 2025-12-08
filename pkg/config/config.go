@@ -116,18 +116,24 @@ func parseDatabaseURL(dbURL string) (DatabaseConfig, error) {
 	password, _ := u.User.Password()
 	dbName := strings.TrimPrefix(u.Path, "/")
 
+	// Get port or use default PostgreSQL port
+	port := u.Port()
+	if port == "" {
+		port = "5432"
+	}
+
 	// Extract SSL mode from query parameters
 	sslMode := "disable"
 	if u.Query().Get("sslmode") != "" {
 		sslMode = u.Query().Get("sslmode")
 	} else if u.Scheme == "postgres" || u.Scheme == "postgresql" {
-		// Railway usually requires SSL
+		// Railway/Render usually requires SSL
 		sslMode = "require"
 	}
 
 	return DatabaseConfig{
 		Host:     u.Hostname(),
-		Port:     u.Port(),
+		Port:     port,
 		User:     u.User.Username(),
 		Password: password,
 		DBName:   dbName,
