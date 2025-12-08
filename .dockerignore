@@ -43,6 +43,7 @@ Thumbs.db
 # Scripts
 scripts/
 *.sh
+!start.sh
 
 # Docker
 docker-compose*.yml
