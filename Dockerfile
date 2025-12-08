@@ -36,7 +36,7 @@ COPY --from=builder /app/web ./web
 COPY --from=builder /app/migrations ./migrations
 
 # Copy start script
-COPY start.sh .
+COPY --from=builder /app/start.sh .
 RUN chmod +x start.sh
 
 # Expose port
