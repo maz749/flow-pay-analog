@@ -2,7 +2,10 @@ package config
 
 import (
 	"fmt"
+	"log"
+	"net/url"
 	"os"
+	"strings"
 
 	"github.com/joho/godotenv"
 )
@@ -45,18 +48,16 @@ func Load() (*Config, error) {
 	// Load .env file if exists
 	_ = godotenv.Load()
 
+	log.Println("Loading configuration...")
+
+	// Parse database configuration
+	dbConfig := parseDatabaseConfig()
+
 	cfg := &Config{
-		Database: DatabaseConfig{
-			Host:     getEnv("DB_HOST", "localhost"),
-			Port:     getEnv("DB_PORT", "5432"),
-			User:     getEnv("DB_USER", "flowpay"),
-			Password: getEnv("DB_PASSWORD", "flowpay_password"),
-			DBName:   getEnv("DB_NAME", "flowpay_db"),
-			SSLMode:  getEnv("DB_SSLMODE", "disable"),
-		},
+		Database: dbConfig,
 		Server: ServerConfig{
-			Port: getEnv("SERVER_PORT", "8080"),
-			Host: getEnv("SERVER_HOST", "localhost"),
+			Port: getEnv("SERVER_PORT", getEnv("PORT", "8080")),
+			Host: getEnv("SERVER_HOST", "0.0.0.0"),
 		},
 		JWT: JWTConfig{
 			Secret: getEnv("JWT_SECRET", "your-secret-key"),
@@ -69,7 +70,75 @@ func Load() (*Config, error) {
 		},
 	}
 
+	log.Printf("Configuration loaded - Server: %s:%s, Environment: %s\n",
+		cfg.Server.Host, cfg.Server.Port, cfg.App.Environment)
+
 	return cfg, nil
+}
+
+// parseDatabaseConfig parses database configuration from DATABASE_URL or individual env vars
+func parseDatabaseConfig() DatabaseConfig {
+	// Check for DATABASE_URL first (Railway, Heroku, etc.)
+	if dbURL := os.Getenv("DATABASE_URL"); dbURL != "" {
+		log.Println("✓ DATABASE_URL found, parsing connection string...")
+		if parsed, err := parseDatabaseURL(dbURL); err == nil {
+			log.Printf("✓ Successfully parsed DATABASE_URL: host=%s port=%s dbname=%s sslmode=%s\n",
+				parsed.Host, parsed.Port, parsed.DBName, parsed.SSLMode)
+			return parsed
+		} else {
+			log.Printf("✗ Failed to parse DATABASE_URL: %v\n", err)
+		}
+	} else {
+		log.Println("✗ DATABASE_URL not found, using individual environment variables")
+	}
+
+	// Fallback to individual environment variables
+	config := DatabaseConfig{
+		Host:     getEnv("DB_HOST", getEnv("PGHOST", "localhost")),
+		Port:     getEnv("DB_PORT", getEnv("PGPORT", "5432")),
+		User:     getEnv("DB_USER", getEnv("PGUSER", "flowpay")),
+		Password: getEnv("DB_PASSWORD", getEnv("PGPASSWORD", "flowpay_password")),
+		DBName:   getEnv("DB_NAME", getEnv("PGDATABASE", "flowpay_db")),
+		SSLMode:  getEnv("DB_SSLMODE", "disable"),
+	}
+	log.Printf("Using fallback config: host=%s port=%s dbname=%s sslmode=%s\n",
+		config.Host, config.Port, config.DBName, config.SSLMode)
+	return config
+}
+
+// parseDatabaseURL parses a DATABASE_URL into DatabaseConfig
+func parseDatabaseURL(dbURL string) (DatabaseConfig, error) {
+	u, err := url.Parse(dbURL)
+	if err != nil {
+		return DatabaseConfig{}, err
+	}
+
+	password, _ := u.User.Password()
+	dbName := strings.TrimPrefix(u.Path, "/")
+
+	// Get port or use default PostgreSQL port
+	port := u.Port()
+	if port == "" {
+		port = "5432"
+	}
+
+	// Extract SSL mode from query parameters
+	sslMode := "disable"
+	if u.Query().Get("sslmode") != "" {
+		sslMode = u.Query().Get("sslmode")
+	} else if u.Scheme == "postgres" || u.Scheme == "postgresql" {
+		// Railway/Render usually requires SSL
+		sslMode = "require"
+	}
+
+	return DatabaseConfig{
+		Host:     u.Hostname(),
+		Port:     port,
+		User:     u.User.Username(),
+		Password: password,
+		DBName:   dbName,
+		SSLMode:  sslMode,
+	}, nil
 }
 
 func (c *Config) GetDSN() string {
