@@ -1,6 +1,9 @@
 # Build stage
 FROM golang:1.21-alpine AS builder
 
+# Force cache bust - increment this to force rebuild
+ARG CACHEBUST=2
+
 WORKDIR /app
 
 # Install dependencies
